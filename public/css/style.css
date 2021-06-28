@@ -1,0 +1,461 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,100;1,300;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Courgette&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+img {
+  width: 100%;
+  vertical-align: top;
+}
+a {
+  text-decoration: none;
+}
+.flex {
+  display: flex;
+}
+strong {
+  font-weight: bold;
+  color: rgba(51, 133, 255);
+}
+.whiteFt {
+  color: white;
+}
+
+/* main container margin auto */
+.marginContainer {
+  width: 85%;
+  margin: auto;
+  position: relative;
+}
+
+/* button(s) */
+.button {
+  background-color: rgb(51, 112, 211);
+  border: 1px solid rgba(174, 174, 248, 0.8);
+  display: inline-block;
+  cursor: pointer;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 15px 35px;
+  text-decoration: none;
+}
+.button:hover {
+  background-color: rgba(71, 134, 235);
+}
+.button:active {
+  position: relative;
+  top: 1px;
+}
+
+/* titles style */
+.bigTitle {
+  text-align: center;
+  font-size: 1.7rem;
+  color: rgb(34, 39, 43);
+}
+
+/* menu burger */
+header .burger {
+  display: none;
+}
+
+/* go to top button */
+.gotop {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 1.6rem;
+  position: fixed;
+  right: 10px;
+  bottom: 20px;
+  z-index: 3;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* navBar */
+.mainNav {
+  height: 50px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  padding: 0px 80px;
+  transition: all 0.6s ease-in-out;
+  font-size: 1.4rem;
+}
+.logo {
+  color: white;
+  letter-spacing: -1px;
+  font-family: "Courgette", cursive;
+  font-size: 1.5rem;
+}
+.mainNav div {
+  width: 50%;
+  justify-content: space-around;
+}
+.mainNav a {
+  color: white;
+  text-shadow: 1px 1px black;
+  text-decoration: none;
+}
+.nav-animation {
+  background-color: rgb(45, 44, 46);
+  font-size: 1.1rem;
+  justify-content: space-evenly;
+}
+/* slide over banner effect */
+.mainWrapper {
+  width: 100%;
+  position: relative;
+  top: 500px;
+  background: #fff;
+}
+
+/* banner */
+.banner-container {
+  width: 100%;
+  height: 500px;
+  position: fixed;
+  top: 0;
+  /* background-image: linear-gradient(
+      to bottom,
+      rgba(245, 246, 252, 0.52),
+      rgba(65, 19, 117, 0.73)
+    ),
+    url(img/horseForm.jpg); */
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+}
+.banner-container p {
+  padding-top: 10%;
+  padding-left: 40%;
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: "Courgette", cursive;
+}
+#videoChevaux {
+  width: 100%;
+  height: auto;
+}
+/* content at the bottom of the video */
+.videoContent {
+  position: fixed;
+  top: 180px;
+  left: 215px;
+  color: white;
+  font-family: "Courgette", cursive;
+  text-shadow: 1px 1px black;
+}
+.videoContent h1 {
+  font-size: 2.8rem;
+}
+.videoContent p {
+  font-size: 1.5rem;
+  margin: 0;
+}
+/* Style the button used to pause/play the video */
+/* #myBtn {
+  width: 200px;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+#myBtn:hover {
+  background: #ddd;
+  color: black;
+} */
+
+/* indications section */
+.indicationContainer {
+  justify-content: space-around;
+  padding: 25px;
+}
+.indicationsSection h2 {
+  padding-top: 40px;
+}
+.indicationContainer article {
+  width: calc(85% / 2);
+  font-size: 1.1rem;
+  text-align: justify;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.indicationContainer article h3 {
+  text-align: center;
+}
+.fgrIndication {
+  width: 70%;
+  position: relative;
+}
+.imgIndication {
+  border-radius: 20px;
+  filter: drop-shadow(0 0 0.25rem rgb(66, 64, 64));
+}
+.fgrIndication figcaption {
+  position: absolute;
+  background-color: rgba(58, 119, 211, 0.7);
+  text-shadow: 1px 1px black;
+  color: white;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  opacity: 0;
+  transition: all 0.3s ease-in;
+}
+.fgrIndication :hover {
+  opacity: 1;
+}
+
+/* slider */
+/* section slider & background */
+.sliderSection {
+  height: 72vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 85%;
+  margin: auto;
+}
+/* slider size and overflow hidden */
+.slider {
+  width: 900px;
+  height: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+/* horizontal disposition */
+.slides {
+  width: 500%;
+  height: 500px;
+  display: flex;
+}
+/* radio buttons */
+.slides input {
+  display: none;
+}
+/* slide */
+.slide {
+  width: 20%;
+  transition: 2s;
+  position: relative;
+}
+.slide figcaption {
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(36, 42, 53, 0.8);
+  color: white;
+  text-shadow: 1px 1px black;
+  font-size: 1.1rem;
+  width: 100%;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.slideQuote {
+  font-style: italic;
+}
+.slide img {
+  /* width: 900px; */
+  width: 100%;
+  /* height: 500px; */
+  height: auto;
+}
+/* slider navigation */
+.navigation-manual {
+  position: absolute;
+  width: 900px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+.manual-btn {
+  border: 1px solid #035afc;
+  padding: 5px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 1s;
+  display: none;
+}
+.manual-btn:not(:last-child) {
+  margin-right: 40px;
+}
+.manual-btn:hover {
+  background: #73a1f8;
+}
+#radio1:checked ~ .first {
+  margin-left: 0;
+}
+#radio2:checked ~ .first {
+  margin-left: -20%;
+}
+#radio3:checked ~ .first {
+  margin-left: -40%;
+}
+#radio4:checked ~ .first {
+  margin-left: -60%;
+}
+/* slider auto nav */
+.navigation-auto {
+  position: absolute;
+  display: flex;
+  width: 900px;
+  justify-content: center;
+  margin-top: 515px;
+}
+.navigation-auto div {
+  border: 1px solid #035afc;
+  padding: 5px;
+  border-radius: 10px;
+  transition: 1s;
+  display: none;
+}
+.navigation-auto div:not(:last-child) {
+  margin-right: 40px;
+}
+#radio1:checked ~ .navigation-auto .auto-btn1 {
+  background: #73a1f8;
+}
+#radio2:checked ~ .navigation-auto .auto-btn2 {
+  background: #73a1f8;
+}
+#radio3:checked ~ .navigation-auto .auto-btn3 {
+  background: #73a1f8;
+}
+#radio4:checked ~ .navigation-auto .auto-btn4 {
+  background: #73a1f8;
+}
+
+/* promoting Stallion picture*/
+.promoting {
+  width: 100%;
+  margin: 0;
+  max-height: 860px;
+  overflow: hidden;
+  clip-path: polygon(0 34%, 100% 10%, 100% 74%, 0 100%);
+  position: relative;
+}
+.promotingFigcaption {
+  color: white;
+  position: absolute;
+  top: 420px;
+  left: 85px;
+  width: 45%;
+  font-size: 1.3rem;
+  font-style: italic;
+}
+
+/* new users promoting */
+.recentPosts {
+  padding: 55px;
+  margin-bottom: 55px;
+}
+
+/* second promoting */
+.secondPromotingSection {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 55px;
+}
+.secondPromotingSection h2 {
+  font-size: 2rem;
+}
+.secondPromotingSection p {
+  text-align: center;
+  font-size: 1.3rem;
+  color: rgba(15, 31, 173, 0.8);
+  /* padding: 0px 150px; */
+  text-align: justify;
+}
+.layout figure {
+  width: 100%;
+}
+.layout {
+  width: 75%;
+}
+
+/* footer */
+footer {
+  font-size: 1.3rem;
+  justify-content: center;
+  flex-direction: column;
+  background: rgb(57, 105, 199);
+  background: linear-gradient(
+    343deg,
+    rgba(57, 105, 199, 1) 15%,
+    rgba(29, 176, 253, 1) 42%,
+    rgba(74, 218, 242, 1) 73%
+  );
+  color: white;
+  align-items: center;
+  height: 35vh;
+}
+/* wrappers */
+.footerDivWraper {
+  width: 80%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.evenlyDiv {
+  justify-content: space-evenly;
+}
+/* articles width */
+.evenlyDiv article {
+  width: calc(80% / 2);
+}
+.linksList {
+  list-style-type: none;
+}
+.fab {
+  font-size: 2.5rem;
+  transition: 0.2s ease-in;
+}
+.fab:hover {
+  color: #294baa;
+}
+/* icons */
+.fa-instagram,
+.fa-youtube,
+.fa-facebook {
+  color: white;
+}
+.divHelpQuestions {
+  flex-direction: column;
+}
+.divHelpQuestions ul {
+  padding: 0;
+}
+.linksList a {
+  color: white;
+  transition: 0.2s ease-in;
+}
+.linksList a:hover {
+  color: #294baa;
+  text-decoration: underline;
+}
+.allRights {
+  justify-content: center;
+}
