@@ -1,315 +1,354 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="mediaStyle.css" />
-    <title>Title</title>
-  </head>
-  <body>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="style.css"/>
+		<link rel="stylesheet" href="mediaStyle.css"/>
+		<title>Title</title>
+	</head>
+	<body>
 
-    <header>
+		<header>
 
-      <!-- navigation -->
-      <nav class="mainNav flex visible" id="mainNav">
-        <a href="#" class="logo">
-          <span>
-            EmprunteMonPoney 
-          </span>
-        </a>
-        <div class="flex">
-          <a href="#">A propos</a>
-          <a href="#">Inscription</a>
-          <a href="#">Connexion</a>
-          <a href="#">Contact</a>
-        </div>
-      </nav>
+			<!-- navigation -->
+			<nav class="mainNav flex visible" id="mainNav">
+				<a href="#" class="logo">
+					<span>
+						EmprunteMonPoney
+					</span>
+				</a>
+				<div class="flex">
+					<a href="#">A propos</a>
+					<a href="#">Inscription</a>
+					<a href="#">Connexion</a>
+					<a href="#">Contact</a>
+				</div>
+			</nav>
 
-      <!-- menu burger -->
-      <div class="burger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+			<!-- menu burger -->
+			<div class="burger">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
 
-    </header>
+		</header>
 
-    <!-- banner -->
-    <!-- <div class="banner-container">
-      <p>L’air du paradis est celui qui souffle entre les oreilles d’un cheval.</p>
-    </div> -->
-    <div class="banner-container">
-      <video autoplay muted loop id="videoChevaux">
-        <source src="img/chevaux_plage.mp4" type="video/mp4">
-      </video>
-    </div>
-    <!-- overlay text -->
-    <div class="videoContent">
-      <h1>EmprunteMonPoney</h1>
-      <p>Le monde équestre s'ouvre à vous</p>
-      <!-- button to pause/play the video with JavaScript -->
-      <!-- <button id="myBtn" onclick="myFunction()">Pause</button> -->
-    </div>
+		<!-- banner -->
+		<!-- <div class="banner-container">
+		      <p>L’air du paradis est celui qui souffle entre les oreilles d’un cheval.</p>
+		    </div> -->
+		<div class="banner-container">
+			<video autoplay muted loop id="videoChevaux">
+				<source src="img/cheval_home.mp4" type="video/mp4">
+			</video>
+		</div>
+		<!-- overlay text -->
+		<div class="videoContent">
+			<h1>EmprunteMonPoney</h1>
+			<p>Le monde équestre s'ouvre à vous</p>
+			<!-- button to pause/play the video with JavaScript -->
+			<!-- <button id="myBtn" onclick="myFunction()">Pause</button> -->
+		</div>
 
-    <!-- main wrapper = slide effect on the banner -->
-    <main class="mainWrapper">
+		<!-- main wrapper = slide effect on the banner -->
+		<main
+			class="mainWrapper">
 
-    <!-- main container - margin auto when needed -->
-    <div class="marginContainer">
+			<!-- main container - margin auto when needed -->
+			<div
+				class="marginContainer">
 
-      <!-- arrow go to top -->
-      <button onclick="scrolltotop()" class="gotop">
-        <i class="fas fa-chevron-up"></i>
-      </button>
+				<!-- arrow go to top -->
+				<button onclick="scrolltotop()" class="gotop">
+					<i class="fas fa-chevron-up"></i>
+				</button>
 
-      <!-- indications section -->
-      <section class="indicationsSection">
-        <h2 class="bigTitle">Comment ça fonctionne ?</h2>
-        <div class="flex indicationContainer">
-          <article>
-            <h3> <strong>Propriétaire ?</strong> <br> 
-              Trouvez un emprunteur pour votre cheval.</h3>
-            <p>
-              Lorem ipsum <strong>cheval</strong> ou <strong>poney</strong> ? Dolor sit amet consectetur adipisicing elit. Iure
-              dolor quas nesciunt magnam accusantium aliquid sed enim nam <em>EmprunteMonPoney</em>
-              voluptate. Accusamus <strong>demi pension</strong> reprehenderit unde iste assumenda. Quaerat.
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora,
-              delectus.
-            </p>
-            <figure class="fgrIndication">
-              <img class="imgIndication" src="img/pexels-dids-2334005.jpg" alt="concours complet">
-              <figcaption>Des emprunteurs fiables</figcaption>
-            </figure>
-          </article>
-          <article>
-            <h3><strong>Emprunteur ?</strong> <br> 
-              Trouvez un cheval qui vous correspond.</h3>
-            <p>
-              Lorem <strong>demi pension</strong> ipsum dolor sit amet consectetur adipisicing elit. Expedita
-              repellat molestias voluptatum dolores <em>EmprunteMonPoney</em> quae repellendus sunt
-              perferendis provident beatae sit, <strong>chevaux</strong> quia natus fugit nam ad
-              asperiores nihil, harum totam minus voluptas ducimus dolore
-              tempore porro?
-            </p>
-            <figure class="fgrIndication">
-              <img class="imgIndication" src="img/pexels-jean-van-der-meulen-1559388.jpg" alt="pension cheval">
-              <figcaption>Un cheval au-delà de vos espérances</figcaption>
-            </figure>
-          </article>
-        </div>
-      </section>
-    </div>
+				<!-- indications section -->
+				<section class="indicationsSection">
+					<h2 class="bigTitle">Comment ça fonctionne ?</h2>
+					<div class="flex indicationContainer">
+						<article>
+							<h3>
+								<strong>Propriétaire ?</strong>
+								<br>
+								Trouvez un emprunteur pour votre cheval.</h3>
+							<p>
+								Lorem ipsum
+								<strong>cheval</strong>
+								ou
+								<strong>poney</strong>
+								? Dolor sit amet consectetur adipisicing elit. Iure
+								              dolor quas nesciunt magnam accusantium aliquid sed enim nam
+								<em>EmprunteMonPoney</em>
+								voluptate. Accusamus
+								<strong>demi pension</strong>
+								reprehenderit unde iste assumenda. Quaerat.
+								              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora,
+								              delectus.
+							</p>
+							<figure class="fgrIndication">
+								<img class="imgIndication" src="img/pexels-dids-2334005.jpg" alt="concours complet">
+								<figcaption>Des emprunteurs fiables</figcaption>
+							</figure>
+						</article>
+						<article>
+							<h3>
+								<strong>Emprunteur ?</strong>
+								<br>
+								Trouvez un cheval qui vous correspond.</h3>
+							<p>
+								Lorem
+								<strong>demi pension</strong>
+								ipsum dolor sit amet consectetur adipisicing elit. Expedita
+								              repellat molestias voluptatum dolores
+								<em>EmprunteMonPoney</em>
+								quae repellendus sunt
+								              perferendis provident beatae sit,
+								<strong>chevaux</strong>
+								quia natus fugit nam ad
+								              asperiores nihil, harum totam minus voluptas ducimus dolore
+								              tempore porro?
+							</p>
+							<figure class="fgrIndication">
+								<img class="imgIndication" src="img/pexels-jean-van-der-meulen-1559388.jpg" alt="pension cheval">
+								<figcaption>Un cheval au-delà de vos espérances</figcaption>
+							</figure>
+						</article>
+					</div>
+				</section>
+			</div>
 
-    <!-- first promoting -->
-    <figure class="promoting">
-      <img
-        src="img/promotingStallion.jpg"
-        alt="cheval de concours"
-      />
-      <figcaption class="promotingFigcaption">
-        Un <strong>cheval</strong> c'est ipsum dolor sit amet <em>EmprunteMonPoney</em> consectetur adipisicing elit. Labore
-        voluptatibus explicabo eaque voluptate mollitia possimus dolore esse
-        vero ! Car, une <strong>demi pension</strong>, psum lorem obcaecati.
-      </figcaption>
-    </figure>
+			<!-- first promoting -->
+			<figure class="promoting">
+				<img src="img/promotingStallion.jpg" alt="cheval de concours"/>
+				<figcaption class="promotingFigcaption">
+					Un
+					<strong>cheval</strong>
+					c'est ipsum dolor sit amet
+					<em>EmprunteMonPoney</em>
+					consectetur adipisicing elit. Labore
+					        voluptatibus explicabo eaque voluptate mollitia possimus dolore esse
+					        vero ! Car, une
+					<strong>demi pension</strong>, psum lorem obcaecati.
+				</figcaption>
+			</figure>
 
-    <!-- recent posts -->
-   <div class="marginContainer">
-      <section class="recentPosts">
-        <h2 class="bigTitle">Nos nouveaux arrivants :</h2>
-        <div class="flex">
+			<!-- recent posts -->
+			<div class="marginContainer">
+				<section class="recentPosts">
+					<h2 class="bigTitle">Nos nouveaux arrivants :</h2>
+					<div class="flex">
 
-          <article>
-            <h3>Lorem, ipsum.</h3>
-            <figure>
-              <img src="https://via.placeholder.com/150" alt="" />
-            </figure>
-            <figcaption>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
-              dolore.
-            </figcaption>
-          </article>
+						<article>
+							<h3>Lorem, ipsum.</h3>
+							<figure>
+								<img src="https://via.placeholder.com/150" alt=""/>
+							</figure>
+							<figcaption>
+								Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
+								              dolore.
+							</figcaption>
+						</article>
 
-          <article>
-            <h3>Lorem, ipsum.</h3>
-            <figure>
-              <img src="https://via.placeholder.com/150" alt="" />
-            </figure>
-            <figcaption>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
-              dolore.
-            </figcaption>
-          </article>
+						<article>
+							<h3>Lorem, ipsum.</h3>
+							<figure>
+								<img src="https://via.placeholder.com/150" alt=""/>
+							</figure>
+							<figcaption>
+								Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
+								              dolore.
+							</figcaption>
+						</article>
 
-          <article>
-            <h3>Lorem, ipsum.</h3>
-            <figure>
-              <img src="https://via.placeholder.com/150" alt="" />
-            </figure>
-            <figcaption>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
-              dolore.
-            </figcaption>
-          </article>
+						<article>
+							<h3>Lorem, ipsum.</h3>
+							<figure>
+								<img src="https://via.placeholder.com/150" alt=""/>
+							</figure>
+							<figcaption>
+								Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
+								              dolore.
+							</figcaption>
+						</article>
 
-          <article>
-            <h3>Lorem, ipsum.</h3>
-            <figure>
-              <img src="https://via.placeholder.com/150" alt="" />
-            </figure>
-            <figcaption>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
-              dolore.
-            </figcaption>
-          </article>
+						<article>
+							<h3>Lorem, ipsum.</h3>
+							<figure>
+								<img src="https://via.placeholder.com/150" alt=""/>
+							</figure>
+							<figcaption>
+								Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
+								              dolore.
+							</figcaption>
+						</article>
 
-        </div>
-      </section>
-    </div>
+					</div>
+				</section>
+			</div>
 
-     <!-- testimonials slider -->
-     <section class="sliderSection">
-      <div>
-         <h2 class="bigTitle">Ils ont trouvé leur bonheur !</h2>
-      </div>
+			<!-- testimonials slider -->
+			<section class="sliderSection">
+				<div>
+					<h2 class="bigTitle">Ils ont trouvé leur bonheur !</h2>
+				</div>
 
-      <!-- the main slider container -->
-      <div class="slider">
+				<!-- the main slider container -->
+				<div
+					class="slider">
 
-        <!-- all slides -->
-        <div class="slides">
+					<!-- all slides -->
+					<div
+						class="slides">
 
-          <!-- radio buttons -->
-          <input type="radio" name="radio-btn" id="radio1" />
-          <input type="radio" name="radio-btn" id="radio2" />
-          <input type="radio" name="radio-btn" id="radio3" />
-          <input type="radio" name="radio-btn" id="radio4" />
+						<!-- radio buttons -->
+						<input type="radio" name="radio-btn" id="radio1"/>
+						<input type="radio" name="radio-btn" id="radio2"/>
+						<input type="radio" name="radio-btn" id="radio3"/>
+						<input
+						type="radio" name="radio-btn" id="radio4"/>
 
-          <!-- slide images -->
-          <div class="first slide">
-            <img src="img/slider1.jpg" alt="Poney demi pension" />
-            <figcaption> Juliette : <span class="slideQuote">
-              "Je peux enfin m'occuper d'un poney comme si c'était le mien" 
-            </span>
-          </figcaption>
-          </div>
-          <div class="slide">
-            <img
-              src="img/slider2.jpg"
-              alt="Concours complet"
-            />
-            <figcaption>Marc : <span class="slideQuote">
-              "Grâce au site j'ai trouvé Kenzo, un cheval qui me permet de faire du complet." 
-            </span>
-          </figcaption>
-          </div>
-          <div class="slide">
-            <img src="img/slider3.jpg" alt="Ethologie" />
-            <figcaption>Virginie : <span class="slideQuote">
-              "J'ai trouvé une personne qui s'occupe de mon vieux cheval tout en douceur." 
-            </span>
-          </figcaption>
-          </div>
-          <div class="slide">
-            <img src="img/slider4.jpg" alt="Cheval demi pension" />
-            <figcaption>Maeva : <span class="slideQuote">
-              "EmprunteMonPoney m'a aidé à trouver une demi-pension qui me correspondait !" 
-            </span>
-          </figcaption>
-          </div>
+						<!-- slide images -->
+						<div class="first slide">
+							<img src="img/slider1.jpg" alt="Poney demi pension"/>
+							<figcaption>
+								Juliette :
+								<span class="slideQuote">
+									"Je peux enfin m'occuper d'un poney comme si c'était le mien"
+								</span>
+							</figcaption>
+						</div>
+						<div class="slide">
+							<img src="img/slider2.jpg" alt="Concours complet"/>
+							<figcaption>Marc :
+								<span class="slideQuote">
+									"Grâce au site j'ai trouvé Kenzo, un cheval qui me permet de faire du complet."
+								</span>
+							</figcaption>
+						</div>
+						<div class="slide">
+							<img src="img/slider3.jpg" alt="Ethologie"/>
+							<figcaption>Virginie :
+								<span class="slideQuote">
+									"J'ai trouvé une personne qui s'occupe de mon vieux cheval tout en douceur."
+								</span>
+							</figcaption>
+						</div>
+						<div class="slide">
+							<img src="img/slider4.jpg" alt="Cheval demi pension"/>
+							<figcaption>Maeva :
+								<span class="slideQuote">
+									"EmprunteMonPoney m'a aidé à trouver une demi-pension qui me correspondait !"
+								</span>
+							</figcaption>
+						</div>
 
-          <!-- navigation -->
-          <div class="navigation-auto">
-            <div class="auto-btn1"></div>
-            <div class="auto-btn2"></div>
-            <div class="auto-btn3"></div>
-            <div class="auto-btn4"></div>
-          </div>
-        </div>
+						<!-- navigation -->
+						<div class="navigation-auto">
+							<div class="auto-btn1"></div>
+							<div class="auto-btn2"></div>
+							<div class="auto-btn3"></div>
+							<div class="auto-btn4"></div>
+						</div>
+					</div>
 
-        <!-- manual navigation -->
-        <div class="navigation-manual">
-          <label for="radio1" class="manual-btn"></label>
-          <label for="radio2" class="manual-btn"></label>
-          <label for="radio3" class="manual-btn"></label>
-          <label for="radio4" class="manual-btn"></label>
-      </div>
-    </section>
+					<!-- manual navigation -->
+					<div class="navigation-manual">
+						<label for="radio1" class="manual-btn"></label>
+						<label for="radio2" class="manual-btn"></label>
+						<label for="radio3" class="manual-btn"></label>
+						<label for="radio4" class="manual-btn"></label>
+					</div>
+				</section>
 
-    <div class="marginContainer">
-      <!-- second promoting -->
-      <section class="secondPromotingSection flex">
-        <h2 class="bigTitle">On part au galop ?</h2>
-        <div class="flex layout">
-          <figure><img src="img/transparent-horse-animal-sports-horse-racing-horse-supplies-jo-5ddbb1f9a76384.2056891515746790336856.png" alt=""></figure>
-            <p>
-              Lorem ipsum dolor sit, <strong>chevaux</strong> amet consectetur adipisicing elit. Unde tempore
-              quia est aliquam eaque officiis dolorum nostrum <strong>poney</strong> veritatis, beatae quas. 
-              Lorem ipsum <em>EmprunteMonPoney</em> dolor sit, amet consectetur adipisicing elit. 
-              Possimus magni <strong>emprunteurs</strong> ou <strong>propriétaires</strong> voluptatem unde aperiam laboriosam architecto obcaecati 
-              quo quod rem laborum harum commodi corporis in ut ad aut ratione totam.Dolore,
-              consequatur <em>demi pension</em>.
-            </p>
-        </div>
-        <a class="button" href="#">Nous rejoindre</a>
-      </section>
-    </div>
+				<div
+					class="marginContainer">
+					<!-- second promoting -->
+					<section class="secondPromotingSection flex">
+						<h2 class="bigTitle">On part au galop ?</h2>
+						<div class="flex layout">
+							<figure><img src="img/transparent-horse-animal-sports-horse-racing-horse-supplies-jo-5ddbb1f9a76384.2056891515746790336856.png" alt=""></figure>
+							<p>
+								Lorem ipsum dolor sit,
+								<strong>chevaux</strong>
+								amet consectetur adipisicing elit. Unde tempore
+								              quia est aliquam eaque officiis dolorum nostrum
+								<strong>poney</strong>
+								veritatis, beatae quas. 
+								              Lorem ipsum
+								<em>EmprunteMonPoney</em>
+								dolor sit, amet consectetur adipisicing elit. 
+								              Possimus magni
+								<strong>emprunteurs</strong>
+								ou
+								<strong>propriétaires</strong>
+								voluptatem unde aperiam laboriosam architecto obcaecati 
+								              quo quod rem laborum harum commodi corporis in ut ad aut ratione totam.Dolore,
+								              consequatur
+								<em>demi pension</em>.
+							</p>
+						</div>
+						<a class="button" href="#">Nous rejoindre</a>
+					</section>
+				</div>
 
-    <!-- footer with links -->
-    <footer class="flex">
+				<!-- footer with links -->
+				<footer class="flex">
 
-      <div class="flex footerDivWraper">
-        <div class="flex evenlyDiv">
-          <article>
-            <h3 style="text-align: center;" class="whiteFt">Nous suivre</h3>
-            <div class="flex" style="justify-content: space-evenly;">
-                  <a href="#"  title="Nous suivre sur "><i class="fab fa-instagram"></i></a>
-                  <a href="#" title="Nous suivre sur "><i class="fab fa-youtube"></i></a>
-                  <a href="#" title="Nous suivre sur "><i class="fab fa-facebook"></i></a>
-            </div>
-          </article>
-            
-            <article>
-              <div class="flex divHelpQuestions">
-                <h3 class="whiteFt">Aide et questions</h3>
-                <ul class="linksList">
-                  <li>
-                    <a href="#">Conditions générales d'utilisations</a>
-                  </li>
-                  <li>
-                    <a href="#">Comment fonctionne le site ?</a>
-                  </li>
-                  <li>
-                    <a href="#">Nous contacter</a>
-                  </li>
-                  <li>
-                    <a href="#">FAQ</a>
-                  </li>
-                </ul>
-              </div>
-            </article>
-        </div>
-          
-          <article class="flex allRights">
-            <p class="whiteFt">
-              © 2021 Tous droits réservés | EmprunteMonPoney - Béatrice Machalica |
-              All rights reserved
-            </p>
-          </article>
-      </div>
+					<div class="flex footerDivWraper">
+						<div class="flex evenlyDiv">
+							<article>
+								<h3 style="text-align: center;" class="whiteFt">Nous suivre</h3>
+								<div class="flex" style="justify-content: space-evenly;">
+									<a href="#" title="Nous suivre sur ">
+										<i class="fab fa-instagram"></i>
+									</a>
+									<a href="#" title="Nous suivre sur ">
+										<i class="fab fa-youtube"></i>
+									</a>
+									<a href="#" title="Nous suivre sur ">
+										<i class="fab fa-facebook"></i>
+									</a>
+								</div>
+							</article>
 
-    </footer>
-  
-  </main>
-    <script src="app.js"></script>
-  
-  </body>
+							<article>
+								<div class="flex divHelpQuestions">
+									<h3 class="whiteFt">Aide et questions</h3>
+									<ul class="linksList">
+										<li>
+											<a href="#">Conditions générales d'utilisations</a>
+										</li>
+										<li>
+											<a href="#">Comment fonctionne le site ?</a>
+										</li>
+										<li>
+											<a href="#">Nous contacter</a>
+										</li>
+										<li>
+											<a href="#">FAQ</a>
+										</li>
+									</ul>
+								</div>
+							</article>
+						</div>
+
+						<article class="flex allRights">
+							<p class="whiteFt">
+								© 2021 Tous droits réservés | EmprunteMonPoney - Béatrice Machalica |
+								              All rights reserved
+							</p>
+						</article>
+					</div>
+
+				</footer>
+
+			</main>
+			<script src="app.js"></script>
+		</body>
+	</body>
 </html>
