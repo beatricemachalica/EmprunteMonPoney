@@ -28,16 +28,16 @@ class Comment
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
     private $post;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comment")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -68,18 +68,6 @@ class Comment
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getPost(): ?Post
     {
         return $this->post;
@@ -88,6 +76,18 @@ class Comment
     public function setPost(?Post $post): self
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

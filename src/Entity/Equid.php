@@ -63,15 +63,14 @@ class Equid
     private $departement;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="equid", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\OneToOne(targetEntity=Post::class, mappedBy="equid", cascade={"persist", "remove"})
      */
     private $post;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="equid", cascade={"persist", "remove"})
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -186,18 +185,6 @@ class Equid
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getPost(): ?Post
     {
         return $this->post;
@@ -216,6 +203,28 @@ class Equid
         }
 
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setEquid(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getEquid() !== $this) {
+            $user->setEquid($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

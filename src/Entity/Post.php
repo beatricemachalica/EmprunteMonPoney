@@ -35,11 +35,6 @@ class Post
     private $price;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="post", cascade={"persist", "remove"})
-     */
-    private $user;
-
-    /**
      * @ORM\OneToOne(targetEntity=Equid::class, inversedBy="post", cascade={"persist", "remove"})
      */
     private $equid;
@@ -54,6 +49,11 @@ class Post
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", orphanRemoval=true)
      */
     private $comments;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="post", cascade={"persist", "remove"})
+     */
+    private $user;
 
     public function __construct()
     {
@@ -97,18 +97,6 @@ class Post
     public function setPrice(?float $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
@@ -163,6 +151,28 @@ class Post
                 $comment->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setPost(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getPost() !== $this) {
+            $user->setPost($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

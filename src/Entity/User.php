@@ -6,11 +6,13 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -20,68 +22,39 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=155)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $firstName;
+    private $email;
 
     /**
-     * @ORM\Column(type="string", length=155)
+     * @ORM\Column(type="json")
      */
-    private $lastName;
+    private $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $mail;
-
-    /**
-     * @ORM\Column(type="string", length=155, nullable=true)
-     */
-    private $city;
-
-    /**
-     * @ORM\Column(type="string", length=35, nullable=true)
-     */
-    private $cp;
-
-    /**
-     * @ORM\Column(type="string", length=155, nullable=true)
-     */
-    private $departement;
-
-    /**
-     * @ORM\Column(type="string", length=35, nullable=true)
-     */
-    private $phoneNumber;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @var string The hashed password
+     * @ORM\Column(type="string")
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=155)
-     */
-    private $role;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Equid::class, mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $equid;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Post::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Post::class, inversedBy="user", cascade={"persist", "remove"})
      */
     private $post;
 
     /**
+     * @ORM\OneToOne(targetEntity=Equid::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $equid;
+
+    /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
      */
-    private $comments;
+    private $comment;
 
     public function __construct()
     {
-        $this->comments = new ArrayCollection();
+        $this->comment = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,91 +62,59 @@ class User
         return $this->id;
     }
 
-    public function getFirstName(): ?string
+    public function getEmail(): ?string
     {
-        return $this->firstName;
+        return $this->email;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setEmail(string $email): self
     {
-        $this->firstName = $firstName;
+        $this->email = $email;
 
         return $this;
     }
 
-    public function getLastName(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
     {
-        return $this->lastName;
+        return (string) $this->email;
     }
 
-    public function setLastName(string $lastName): self
+    /**
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
+     */
+    public function getUsername(): string
     {
-        $this->lastName = $lastName;
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
 
-    public function getMail(): ?string
-    {
-        return $this->mail;
-    }
-
-    public function setMail(string $mail): self
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(?string $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    public function getCp(): ?string
-    {
-        return $this->cp;
-    }
-
-    public function setCp(string $cp): self
-    {
-        $this->cp = $cp;
-
-        return $this;
-    }
-
-    public function getDepartement(): ?string
-    {
-        return $this->departement;
-    }
-
-    public function setDepartement(?string $departement): self
-    {
-        $this->departement = $departement;
-
-        return $this;
-    }
-
-    public function getPhoneNumber(): ?string
-    {
-        return $this->phoneNumber;
-    }
-
-    public function setPhoneNumber(?string $phoneNumber): self
-    {
-        $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -185,33 +126,24 @@ class User
         return $this;
     }
 
-    public function getRole(): ?string
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
     {
-        return $this->role;
+        return null;
     }
 
-    public function setRole(string $role): self
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
     {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    public function getEquid(): ?Equid
-    {
-        return $this->equid;
-    }
-
-    public function setEquid(Equid $equid): self
-    {
-        // set the owning side of the relation if necessary
-        if ($equid->getUser() !== $this) {
-            $equid->setUser($this);
-        }
-
-        $this->equid = $equid;
-
-        return $this;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getPost(): ?Post
@@ -221,17 +153,19 @@ class User
 
     public function setPost(?Post $post): self
     {
-        // unset the owning side of the relation if necessary
-        if ($post === null && $this->post !== null) {
-            $this->post->setUser(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($post !== null && $post->getUser() !== $this) {
-            $post->setUser($this);
-        }
-
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getEquid(): ?Equid
+    {
+        return $this->equid;
+    }
+
+    public function setEquid(?Equid $equid): self
+    {
+        $this->equid = $equid;
 
         return $this;
     }
@@ -239,15 +173,15 @@ class User
     /**
      * @return Collection|Comment[]
      */
-    public function getComments(): Collection
+    public function getComment(): Collection
     {
-        return $this->comments;
+        return $this->comment;
     }
 
     public function addComment(Comment $comment): self
     {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
+        if (!$this->comment->contains($comment)) {
+            $this->comment[] = $comment;
             $comment->setUser($this);
         }
 
@@ -256,7 +190,7 @@ class User
 
     public function removeComment(Comment $comment): self
     {
-        if ($this->comments->removeElement($comment)) {
+        if ($this->comment->removeElement($comment)) {
             // set the owning side to null (unless already changed)
             if ($comment->getUser() === $this) {
                 $comment->setUser(null);
