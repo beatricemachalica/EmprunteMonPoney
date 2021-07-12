@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription EmprunteMonPoney
+{% endblock %}
+
+{% block body %}
+
+	<div class="backgroundForm">
+
+		{% block header %}{% endblock %}
+
+		<!-- navigation -->
+		<nav class="mainNav flex visible" id="mainNav">
+			<a href="{{path('home')}}" class="logo">
+				<span>
+					EmprunteMonPoney
+				</span>
+			</a>
+			<div class="flex">
+				<a href="#">À propos</a>
+				<a href="{{path('app_register')}}">Inscription</a>
+				<a href="{{path('app_login')}}">Connexion</a>
+				<a href="#">Contact</a>
+				{% if is_granted("ROLE_ADMIN") %}
+					<a href="{{path('admin')}}">
+						Admin
+					</a>
+				{% endif %}
+				{% if is_granted("ROLE_USER") %}
+					<a href="{{path('app_logout')}}">Déconnexion</a>
+				{% endif %}
+			</div>
+		</nav>
+
+		<!-- menu burger -->
+		<div class="burger">
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+
+
+		{% for flashError in app.flashes('verify_email_error') %}
+			<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+		{% endfor %}
+
+		{% block container %}
+			<div class="littleForm">
+				<h1 class="text-center" style="color:white;">Inscription</h1>
+				<div class="registerForm">
+					{{ form_start(registrationForm) }}
+					{{ form_row(registrationForm.pseudo) }}
+					{{ form_row(registrationForm.email) }}
+					{{ form_row(registrationForm.plainPassword, {
+            label: 'Mot de passe'
+        }) }}
+					{{ form_row(registrationForm.agreeTerms) }}
+					<button type="submit" class="btn btn-secondary">
+						Envoyer</button>
+					{{ form_end(registrationForm) }}
+				</div>
+			</div>
+		{% endblock %}
+
+		{% block footer %}{% endblock %}
+
+	</div>
+
+{% endblock %}

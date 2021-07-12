@@ -73,8 +73,8 @@ header .burger {
   outline: none;
   font-size: 1.6rem;
   position: fixed;
-  right: 10px;
-  bottom: 20px;
+  right: 15px;
+  bottom: 60px;
   z-index: 3;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.8);
@@ -243,7 +243,6 @@ header .burger {
 .slider {
   width: 900px;
   height: 550px;
-  border-radius: 10px;
   overflow: hidden;
 }
 /* horizontal disposition */
@@ -424,7 +423,8 @@ footer {
 .evenlyDiv {
   justify-content: space-evenly;
 }
-/* articles width */
+
+/* footer articles width */
 .evenlyDiv article {
   width: calc(80% / 2);
 }
@@ -438,7 +438,8 @@ footer {
 .fab:hover {
   color: #294baa;
 }
-/* icons */
+
+/* footer icons */
 .fa-instagram,
 .fa-youtube,
 .fa-facebook {
@@ -460,4 +461,47 @@ footer {
 }
 .allRights {
   justify-content: center;
+}
+
+/* forms */
+form {
+  padding: 20px 0 25px 0;
+}
+.backgroundForm {
+  background-image: url("../img/horseForm.jpg");
+  width: 100%;
+  height: 100vh;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+}
+.littleForm {
+  width: 65%;
+  margin: auto;
+  position: relative;
+  top: 160px;
+}
+.littleForm textarea {
+  border: none !important;
+  background-color: rgb(110, 110, 110) !important;
+  color: white !important;
+}
+.text-muted {
+  color: black !important;
+}
+.loginForm,
+.registerForm {
+  color: white;
+}
+.loginForm input {
+  border: none !important;
+  background-color: rgb(110, 110, 110) !important;
+  color: white !important;
+}
+.registerForm input {
+  border: none !important;
+  background-color: rgb(110, 110, 110) !important;
+  color: white !important;
 }

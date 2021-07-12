@@ -1,9 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
+{% block title %}Emprunte Mon Poney
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+	<link rel="stylesheet" href="{{ asset('css/mediaStyle.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 {% endblock %}
 
 {% block container %}
+
+	{# Home Header #}
+	<header>
+		<!-- navigation -->
+		<nav class="mainNav flex visible" id="mainNav">
+			<a href="{{path('home')}}" class="logo">
+				<span>
+					EmprunteMonPoney
+				</span>
+			</a>
+			<div class="flex">
+				<a href="#">À propos</a>
+				<a href="{{path('app_register')}}">Inscription</a>
+				<a href="{{path('app_login')}}">Connexion</a>
+				<a href="#">Contact</a>
+				{% if is_granted("ROLE_ADMIN") %}
+					<a href="{{path('admin')}}">
+						Admin
+					</a>
+				{% endif %}
+				{% if is_granted("ROLE_USER") %}
+					<a href="{{path('app_logout')}}">Déconnexion</a>
+				{% endif %}
+			</div>
+		</nav>
+
+		<!-- menu burger -->
+		<div class="burger">
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+
+
+		<!-- banner -->
+
+		{# banner without video #}
+		{# <div class="banner-container"><p>L’air du paradis est celui qui souffle entre les oreilles d’un cheval.</p></div> #}
+
+		{# video banner #}
+			<div class="banner-container"> <video autoplay muted loop id="videoChevaux">
+				<source src="{{ asset('img/cheval_home.mp4') }}" type="video/mp4">
+			</video>
+		</div>
+
+		<!-- overlay text -->
+		<div class="videoContent">
+			<h1>EmprunteMonPoney</h1>
+			<p>Le monde équestre s'ouvre à vous</p>
+			<!-- button to pause/play the video with JavaScript -->
+			<!-- <button id="myBtn" onclick="myFunction()">Pause</button> -->
+		</div>
+	</header>
+
 	<!-- main wrapper = slide effect on the banner -->
 	<main
 		class="mainWrapper">
