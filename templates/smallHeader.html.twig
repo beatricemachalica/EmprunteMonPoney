@@ -1,0 +1,31 @@
+{% block header %}
+	<!-- navigation -->
+	<nav class="mainNav flex visible" id="mainNav">
+		<a href="{{path('home')}}" class="logo">
+			<span>
+				EmprunteMonPoney
+			</span>
+		</a>
+		<div class="flex">
+			<a href="#">À propos</a>
+			<a href="{{path('app_register')}}">Inscription</a>
+			<a href="{{path('app_login')}}">Connexion</a>
+			<a href="#">Contact</a>
+			{% if is_granted("ROLE_ADMIN") %}
+				<a href="{{path('admin')}}">
+					Admin
+				</a>
+			{% endif %}
+			{% if is_granted("ROLE_USER") %}
+				<a href="{{path('app_logout')}}">Déconnexion</a>
+			{% endif %}
+		</div>
+	</nav>
+
+	<!-- menu burger -->
+	<div class="burger">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+{% endblock %}

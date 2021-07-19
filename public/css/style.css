@@ -26,7 +26,9 @@ strong {
 .whiteFt {
   color: white;
 }
-
+.mt-20 {
+  margin-top: 20px;
+}
 /* main container margin auto */
 .marginContainer {
   width: 85%;
@@ -391,7 +393,11 @@ header .burger {
   text-align: justify;
 }
 .layout figure {
-  width: 100%;
+  width: 130%;
+}
+.layout img {
+  border-radius: 25px;
+  filter: drop-shadow(0 0 0.25rem rgb(66, 64, 64));
 }
 .layout {
   width: 75%;
@@ -463,6 +469,15 @@ footer {
   justify-content: center;
 }
 
+/* small footer */
+.articleSmallFooter {
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+  font-size: 1.3rem;
+  justify-content: center;
+}
+
 /* forms */
 form {
   padding: 20px 0 25px 0;
@@ -478,30 +493,22 @@ form {
   position: relative;
 }
 .littleForm {
-  width: 65%;
+  width: 45%;
   margin: auto;
   position: relative;
   top: 160px;
+  color: rgb(80, 80, 80);
 }
-.littleForm textarea {
-  border: none !important;
-  background-color: rgb(110, 110, 110) !important;
-  color: white !important;
+.littleForm input {
+  /* border: none !important; */
+  /* background-color: rgb(230, 230, 230) !important; */
+  color: rgb(120, 120, 120) !important;
 }
-.text-muted {
-  color: black !important;
+.centerButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
-.loginForm,
-.registerForm {
-  color: white;
-}
-.loginForm input {
-  border: none !important;
-  background-color: rgb(110, 110, 110) !important;
-  color: white !important;
-}
-.registerForm input {
-  border: none !important;
-  background-color: rgb(110, 110, 110) !important;
-  color: white !important;
+.centerButton button {
+  width: 40%;
 }
