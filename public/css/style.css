@@ -480,7 +480,7 @@ footer {
 
 /* forms */
 form {
-  padding: 20px 0 25px 0;
+  padding: 20px 0 20px 0;
 }
 .backgroundForm {
   background-image: url("../img/horseForm.jpg");
@@ -496,8 +496,11 @@ form {
   width: 45%;
   margin: auto;
   position: relative;
-  top: 160px;
-  color: rgb(80, 80, 80);
+  top: 80px;
+  color: rgb(255, 255, 255);
+  background: #4a4a4a6e;
+  padding: 15px;
+  border-radius: 25px;
 }
 .littleForm input {
   /* border: none !important; */

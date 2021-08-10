@@ -15,14 +15,20 @@
 
 			<div class="littleForm">
 				<form method="post">
+
 					{% if error %}
 						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 					{% endif %}
 
+					{# flash message #}
+					{% for message in app.flashes('success') %}
+						<div class="alert alert-success" role="alert">{{ message }}</div>
+					{% endfor %}
+
 					{% if app.user %}
 						<div class="mb-3">
-							You are logged in as
-							{{ app.user.username }},
+							Vous êtes déjà déjà connecté.e sous :
+							{{ app.user.username }}.
 							<a href="{{ path('app_logout') }}">Logout</a>
 						</div>
 					{% endif %}

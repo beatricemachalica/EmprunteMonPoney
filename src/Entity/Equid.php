@@ -23,11 +23,6 @@ class Equid
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=155, nullable=true)
-     */
-    private $race;
-
-    /**
      * @ORM\Column(type="string", length=35, nullable=true)
      */
     private $sex;
@@ -72,6 +67,11 @@ class Equid
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string", length=55, nullable=true)
+     */
+    private $breed;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,18 +85,6 @@ class Equid
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getRace(): ?string
-    {
-        return $this->race;
-    }
-
-    public function setRace(?string $race): self
-    {
-        $this->race = $race;
 
         return $this;
     }
@@ -225,6 +213,18 @@ class Equid
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getBreed(): ?string
+    {
+        return $this->breed;
+    }
+
+    public function setBreed(?string $breed): self
+    {
+        $this->breed = $breed;
 
         return $this;
     }

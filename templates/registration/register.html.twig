@@ -13,31 +13,49 @@
 
 		{% block container %}
 
+			{# flash message #}
 			{% for flashError in app.flashes('verify_email_error') %}
 				<div class="alert alert-danger" role="alert">{{ flashError }}</div>
 			{% endfor %}
+
 			<div class="littleForm">
 				<h1 class="text-center" style="color:white;">Inscription</h1>
 
 				{{ form_start(registrationForm) }}
+
 				{{ form_row(registrationForm.pseudo) }}
+
 				{{ form_row(registrationForm.email) }}
+
+				{{ form_row(registrationForm.city) }}
+
+				{{ form_row(registrationForm.cp) }}
+
+				{{ form_row(registrationForm.departement) }}
+
+				{{ form_row(registrationForm.phoneNumber) }}
+
+				{# {{ form_row(registrationForm.roles) }} #}
+
 				{{ form_row(registrationForm.plainPassword, {
             label: 'Mot de passe'
         }) }}
-				<small class="form-text text-muted">Le mot de passe doit contenir ...</small>
+
+				<small class="form-text">Le mot de passe doit contenir ...</small>
 
 				{{ form_row(registrationForm.agreeTerms) }}
-				<small class="form-text text-muted">L'inscription vous engage à respecter les conditions d'utilisation consultables
-					<a href="#">
-						ici
-					</a>
-				</small>
 
 				<div class="centerButton">
 					<button type="submit" class="btn btn-primary mt-20">
 						Envoyer</button>
 				</div>
+
+				<small class="form-text">L'inscription vous engage à respecter les conditions d'utilisation consultables
+					<a href="#">
+						ici
+					</a>
+				</small>
+
 				{{ form_end(registrationForm) }}
 
 			</div>

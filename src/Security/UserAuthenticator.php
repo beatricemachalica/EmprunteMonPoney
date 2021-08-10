@@ -50,9 +50,9 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // ici changer la route de redirection une fois que l'utilisateur est connecté
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
+        // redirection une fois que l'utilisateur est connecté
+        return new RedirectResponse($this->urlGenerator->generate('user_account'));
+        // throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
     }
 
     protected function getLoginUrl(Request $request): string
