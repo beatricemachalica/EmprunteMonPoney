@@ -29,6 +29,11 @@ strong {
 .mt-20 {
   margin-top: 20px;
 }
+.whiteLink {
+  color: white !important;
+  text-decoration: underline !important;
+}
+
 /* main container margin auto */
 .marginContainer {
   width: 85%;
@@ -102,7 +107,7 @@ header .burger {
   font-size: 1.5rem;
 }
 .mainNav div {
-  width: 50%;
+  width: 60%;
   justify-content: space-around;
 }
 .mainNav a {
@@ -150,7 +155,7 @@ header .burger {
   width: 100%;
   height: auto;
 }
-/* content at the bottom of the video */
+/* content of the video */
 .videoContent {
   position: fixed;
   top: 180px;
@@ -503,7 +508,7 @@ form {
   position: relative;
   top: 80px;
   color: rgb(255, 255, 255);
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
   padding: 15px;
   border-radius: 25px;
 }
@@ -511,6 +516,11 @@ form {
   /* border: none !important; */
   /* background-color: rgb(230, 230, 230) !important; */
   color: rgb(120, 120, 120) !important;
+}
+.littleForm h1 {
+  color: white;
+  margin: 0;
+  font-size: 2rem;
 }
 
 /* simple way to center a button */

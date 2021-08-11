@@ -45,16 +45,17 @@
 
 				{{ form_row(registrationForm.agreeTerms) }}
 
+				<small class="form-text">L'inscription vous engage à respecter les
+					<a href="{{ path('conditions_utilisation')}}" class="whiteLink">
+						conditions d'utilisation
+					</a>
+				</small>
+
 				<div class="centerButton">
 					<button type="submit" class="btn btn-primary mt-20">
 						Envoyer</button>
 				</div>
 
-				<small class="form-text">L'inscription vous engage à respecter les conditions d'utilisation consultables
-					<a href="#">
-						ici
-					</a>
-				</small>
 
 				{{ form_end(registrationForm) }}
 

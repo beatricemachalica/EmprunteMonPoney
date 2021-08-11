@@ -1,0 +1,53 @@
+/* small smartphone */
+@media screen and (max-device-width: 330px) {
+}
+/* smartphone */
+@media screen and (max-device-width: 765px) {
+}
+/* iPad and iPad Pro */
+@media screen and (min-device-width: 768px) and (max-width: 1023px) {
+}
+/* small device */
+@media screen and (max-device-width: 1290px) {
+  /* content of the video */
+  .videoContent {
+    top: 165px;
+    left: 155px;
+  }
+  .videoContent h1 {
+    font-size: 2rem;
+  }
+  .videoContent p {
+    font-size: 1.4rem;
+    margin: 0;
+  }
+
+  /* slide over banner */
+  .mainWrapper {
+    top: 460px;
+  }
+
+  /* second promoting */
+  .layout {
+    width: 100%;
+  }
+
+  /* forms */
+  .littleForm {
+    top: 50px;
+    padding: 8px;
+  }
+  form {
+    padding: 0;
+  }
+  .mt-20 {
+    margin: 4px;
+  }
+  /* small footer */
+  .articleSmallFooter {
+    font-size: 1.1rem;
+  }
+  .littleFormLogin {
+    top: 155px;
+  }
+}

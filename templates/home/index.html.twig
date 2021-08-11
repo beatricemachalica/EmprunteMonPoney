@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Emprunte Mon Poney
+{% block title %}EmprunteMonPoney
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-	<link rel="stylesheet" href="{{ asset('css/mediaStyle.css') }}">
+	{# font-awesome #}
+	<link
+	rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+	{# CSS stylesheets #}
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/mediaStyle.css') }}">
 {% endblock %}
 
 {% block container %}
@@ -21,7 +24,7 @@
 				</span>
 			</a>
 			<div class="flex">
-				<a href="#">À propos</a>
+				<a href="{{path('a_propos')}}">À propos</a>
 				<a href="{{path('app_register')}}">Inscription</a>
 				<a href="{{path('app_login')}}">Connexion</a>
 				<a href="#">Contact</a>
@@ -118,7 +121,7 @@
 						</p>
 						<figure class="fgrIndication">
 							<img class="imgIndication" src="{{ asset('img/cheval_concours.jpg') }}" alt="pension cheval">
-							<figcaption>Un cheval au-delà de vos espérances</figcaption>
+							<figcaption>Un cheval pour vous</figcaption>
 						</figure>
 					</article>
 				</div>
@@ -328,16 +331,13 @@
 								<h3 class="whiteFt">Aide et questions</h3>
 								<ul class="linksList">
 									<li>
-										<a href="#">Conditions générales d'utilisations</a>
+										<a href="{{ path('conditions_utilisation')}}">Conditions générales d'utilisations</a>
 									</li>
 									<li>
-										<a href="#">Comment fonctionne le site ?</a>
+										<a href="{{ path('a_propos')}}">Comment fonctionne le site ?</a>
 									</li>
 									<li>
 										<a href="#">Nous contacter</a>
-									</li>
-									<li>
-										<a href="#">FAQ</a>
 									</li>
 								</ul>
 							</div>
