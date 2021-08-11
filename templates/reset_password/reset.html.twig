@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisation du mot de passe
+{% endblock %}
+
+{% block body %}
+	<div class="backgroundForm">
+
+		{% block header %}
+			{% include "smallHeader.html.twig" %}
+		{% endblock %}
+
+		<div class="littleForm">
+
+			<h1 class="d-flex justify-content-center">Réinitialisation du mot de passe.</h1>
+
+			{{ form_start(resetForm) }}
+			{{ form_row(resetForm.plainPassword) }}
+
+			<p>Le mot de passe doit contenir huit caractères, dont des lettres majuscules et minuscules, un chiffre et un symbole.</p>
+
+			<div class="centerButton">
+				<button class="btn btn-primary">Réinitialiser le mot de passe</button>
+			</div>
+			{{ form_end(resetForm) }}
+
+		</div>
+
+		{% block footer %}
+			{% include "smallFooter.html.twig" %}
+		{% endblock %}
+
+	</div>
+{% endblock %}

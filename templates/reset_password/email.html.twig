@@ -1,0 +1,12 @@
+<h1>Mot de passe oublié.
+</h1>
+
+<p>Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe :</p>
+
+<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+
+<p>Ce lien va expirer dans une heure.</p>
+
+<p>Merci d'utiliser EmprunteMonPoney</p>
+
+<p>À bientôt !</p>

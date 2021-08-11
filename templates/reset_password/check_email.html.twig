@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisation du mot de passe.
+{% endblock %}
+
+{% block body %}
+
+	<div class="backgroundForm">
+
+		{% block header %}
+			{% include "smallHeader.html.twig" %}
+		{% endblock %}
+
+		<div class="littleForm">
+			<p class="d-flex justify-content-center font-weight-bold">L'email de réinitialisation a été envoyé !</p>
+			<p>
+				Un email de réinitialisation du mot de passe vient d'être envoyé à l'email donné. Veuillez cliquer sur le lien présent dans cet email afin de modifier le mot de passe. Le lien va expirer dans une heure.
+			</p>
+			<p>
+				Si vous n'avez pas reçu l'email de réinitialisation, veuillez vérifier votre boite spam ou cliquez
+				<a href="{{ path('app_forgot_password_request') }}" style="color:white; text-decoration:underline;">ici</a>.</p>
+		</div>
+
+		{% block footer %}
+			{% include "smallFooter.html.twig" %}
+		{% endblock %}
+
+	</div>
+
+{% endblock %}

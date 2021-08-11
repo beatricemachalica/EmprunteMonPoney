@@ -476,11 +476,16 @@ footer {
   width: 100%;
   font-size: 1.3rem;
   justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+}
+.articleSmallFooter p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 /* forms */
 form {
-  padding: 20px 0 20px 0;
+  padding: 10px 0 10px 0;
 }
 .backgroundForm {
   background-image: url("../img/horseForm.jpg");
@@ -498,7 +503,7 @@ form {
   position: relative;
   top: 80px;
   color: rgb(255, 255, 255);
-  background: #4a4a4a6e;
+  background: rgba(0, 0, 0, 0.3);
   padding: 15px;
   border-radius: 25px;
 }
@@ -507,6 +512,8 @@ form {
   /* background-color: rgb(230, 230, 230) !important; */
   color: rgb(120, 120, 120) !important;
 }
+
+/* simple way to center a button */
 .centerButton {
   width: 100%;
   display: flex;
