@@ -58,6 +58,7 @@ class Post
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->setCreatedAt(new \DateTimeImmutable());
     }
 
     public function getId(): ?int

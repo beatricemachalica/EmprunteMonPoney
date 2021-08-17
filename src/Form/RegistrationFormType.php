@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
@@ -31,6 +32,11 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Merci d\'entrer un e-mail',
+                    ]),
+                ],
                 'label' => 'Email',
                 'attr' => [
                     'class' => 'form-control'
@@ -73,20 +79,21 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-
-            // ->add('roles', ChoiceType::class, [
-            //     'label' => 'Je souhaite :',
-            //     'required' => true,
-            //     'mapped' => true,
-            //     'choices' => [
-            //         'trouver un cheval' => 'ROLE_EMPRUNTEUR',
-            //         'trouver un emprunteur pour mon cheval' => 'ROLE_PROPRIO',
-            //     ],
-            //     'attr' => [
-            //         'class' => 'form-control'
-            //     ]
-            // ])
-
+            ->add('roles', ChoiceType::class, [
+                'label' => 'Je souhaite :',
+                'choices'  => [
+                    'Trouver un emprunteur pour mon cheval' => "ROLE_PROPRIO",
+                    'Trouver un cheval' => "ROLE_EMPRUNT"
+                ],
+                'expanded' => true,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+            ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -107,6 +114,19 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ]);
+
+        // data transformer in order to solve the problem of the choicetype field above
+        $builder->get('roles')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($rolesArray) {
+                    // transform the array to a string
+                    return count($rolesArray) ? $rolesArray[0] : null;
+                },
+                function ($rolesString) {
+                    // transform the string back to an array
+                    return [$rolesString];
+                }
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,24 +1,43 @@
 {% block header %}
 	<!-- navigation -->
-	<nav class="mainNav flex visible" id="mainNav">
+	<nav class="smallNav flex visible" id="smallNav">
 		<a href="{{path('home')}}" class="logo">
 			<span>
 				EmprunteMonPoney
 			</span>
 		</a>
 		<div class="flex">
-			<a href="#">À propos</a>
-			<a href="{{path('app_register')}}">Inscription</a>
-			<a href="{{path('app_login')}}">Connexion</a>
-			<a href="#">Contact</a>
+
 			{% if is_granted("ROLE_ADMIN") %}
-				<a href="{{path('admin')}}">
+				<a href="{{path('admin_home')}}">
 					Admin
 				</a>
-			{% endif %}
-			{% if is_granted("ROLE_USER") %}
+				<a href="#">
+					Annonces
+				</a>
+				<a href="{{path('user_account')}}">
+					Mon annonce
+				</a>
+				<a href="{{path('user_account')}}">
+					Compte
+				</a>
 				<a href="{{path('app_logout')}}">Déconnexion</a>
+			{% elseif is_granted("ROLE_USER") or is_granted("ROLE_PROPRIO") or is_granted("ROLE_EMPRUNT") %}
+				<a href="#">
+					Annonces
+				</a>
+				<a href="{{path('user_account')}}">
+					Mon annonce
+				</a>
+				<a href="{{path('user_account')}}">
+					Compte
+				</a>
+				<a href="{{path('app_logout')}}">Déconnexion</a>
+			{% else %}
+				<a href="{{path('app_register')}}">Inscription</a>
+				<a href="{{path('app_login')}}">Connexion</a>
 			{% endif %}
+
 		</div>
 	</nav>
 

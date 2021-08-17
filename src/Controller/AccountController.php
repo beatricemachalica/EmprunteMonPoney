@@ -14,7 +14,7 @@ class AccountController extends AbstractController
     /**
      * @Route("/account", name="user_account")
      */
-    public function index(): Response
+    public function show(): Response
     {
         return $this->render('account/index.html.twig', [
             'user' => $this->getUser()->getUsername(),

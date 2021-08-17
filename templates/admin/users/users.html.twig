@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panneau Admin
+{% endblock %}
+
+{% block body %}
+
+	{% block container %}
+
+		{% block header %}
+			{% include "admin/adminHeader.html.twig" %}
+		{% endblock %}
+
+		<div
+			class="m-3">
+
+			{# <button type="button" class="btn btn-primary mt-4 mb-4">
+																			<a href="{{ path('add_user') }}" class="aWithoutStyle">Ajouter un utilisateur</a>
+																		</button> #}
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Utilisateurs</th>
+						<th scope="col">Adresse mail</th>
+						<th scope="col">Rôle(s)</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for user in users %}
+						<tr>
+							<td>{{ user.pseudo }}</td>
+							<td>{{ user.email}}</td>
+							<td>
+								{% for role in user.roles %}
+									{% if role == 'ROLE_ADMIN' %}
+										administrateur
+									{% elseif role == 'ROLE_PROPRIO' %}
+										propriétaire
+									{% elseif role == 'ROLE_EMPRUNT' %}
+										emprunteur
+									{% endif %}
+								{% endfor %}
+							</td>
+							<td>
+								<a href="{{ path('edit_user', {id: user.id}) }}">Editer</a>
+							</td>
+							<td>
+								<a href="{{ path('delete_user', {id: user.id}) }}">Supprimer</a>
+							</td>
+						</tr>
+					</td>
+				</tbody>
+			</tr>
+		{% endfor %}
+	</tbody>
+</div>{% endblock %}{% endblock %}

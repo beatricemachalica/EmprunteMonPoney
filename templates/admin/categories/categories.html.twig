@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panneau Admin
+{% endblock %}
+
+{% block body %}
+
+	{% block container %}
+
+		{% block header %}
+			{% include "admin/adminHeader.html.twig" %}
+		{% endblock %}
+
+		<div class="m-4">
+
+			<button type="button" class="btn btn-primary mt-2 mb-2">
+				<a href="{{ path('add_category') }}" class="aWithoutStyle">Ajouter une catégorie</a>
+			</button>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Catégories</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for category in categories %}
+						<tr>
+							<td>{{ category.name |capitalize}}</td>
+							<td>
+								<a href="{{ path('edit_category', {id: category.id}) }}">Editer</a>
+							</td>
+							<td>
+								<a href="{{ path('delete_categoy', {id: category.id}) }}">Supprimer</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</tr>
+		</tbody>
+	</td>
+</tbody></tr></tbody></div>{% endblock %}{% endblock %}

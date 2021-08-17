@@ -1,37 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccountController!
+{% block title %}EmprunteMonPoney Compte
 {% endblock %}
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style>
 
-	<div class="example-wrapper">
-		<h1>Hello</h1>
+	{% block header %}
+		{% include "smallHeader.html.twig" %}
+	{% endblock %}
 
-		This friendly message is coming from:
-		<ul>
-			<li>Your controller at
-				<code>
-					<a href="{{ 'D:/laragon/www/EmprunteMonPoney/src/Controller/AccountController.php'|file_link(0) }}">src/Controller/AccountController.php</a>
-				</code>
-			</li>
-			<li>Your template at
-				<code>
-					<a href="{{ 'D:/laragon/www/EmprunteMonPoney/templates/account/index.html.twig'|file_link(0) }}">templates/account/index.html.twig</a>
-				</code>
-			</li>
-		</ul>
-	</div>
+	{% block container %}
+
+		<div class="m-4">
+
+			<h2>Bienvenue
+				{{app.user.pseudo |capitalize }}
+			</h2>
+
+			<div>
+				{# photo de profil ici #}
+				<div>
+					<p>Nom d'utilisateur :
+						{{ app.user.pseudo |capitalize }}</p>
+					<p>Date d'inscription :
+						{{ app.user.registerDate |date("d/m/Y") }}</p>
+				</div>
+			</div>
+
+			{# pseudo and email #}
+			<h3>Vos coordonnées de contact</h3>
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Adresse mail</th>
+						<th scope="col">Téléphone</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ app.user.email }}</td>
+						<td>{{ app.user.phoneNumber }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			{# address #}
+			<h3>Adresse</h3>
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Département</th>
+						<th scope="col">Code postal</th>
+						<th scope="col">Ville</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ app.user.departement |capitalize}}</td>
+						<td>{{ app.user.cp}}</td>
+						<td>{{ app.user.city |capitalize}}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			{# equid // post // comment #}
+			<button type="button" class="btn btn-primary mt-2 mb-2">
+				<a href="{{ path('add_post') }}" class="aWithoutStyle">Créer mon annonce</a>
+			</button>
+
+			<button type="button" class="btn btn-primary mt-2 mb-2">
+				<a href="{{ path('user_edit', {id: app.user.id} )}}" class="aWithoutStyle">Modifier mes informations</a>
+			</button>
+
+			<button type="button" class="btn btn-primary mt-2 mb-2">
+				<a href="{{ path('update_password') }}" class="aWithoutStyle">Changer mon mot de passe</a>
+			</button>
+
+		</div>
+
+	{% endblock %}
+
 {% endblock %}
