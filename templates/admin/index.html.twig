@@ -11,14 +11,14 @@
 			{% include "admin/adminHeader.html.twig" %}
 		{% endblock %}
 
-		<div class="m-4">
+		<div class="container-lg">
 
 			<h2>Bonjour,
 				{{ actual |capitalize }}</h2>
 			<p>Bienvenue sur le panneau admin.</p>
 
 			<h3>Activité du site</h3>
-			<table class="table">
+			<table class="table border">
 				<thead>
 					<tr>
 						<th scope="col">Nombre d'annonces</th>
@@ -29,11 +29,10 @@
 					{% for user in users %}
 						<tr>
 							<td></td>
-							<td></td>
 						</tr>
-					</td>
-				</tbody>
-			</tr>
-		{% endfor %}
-	</tbody>
-</div>{% endblock %}{% endblock %}
+					</tbody>
+				{% endfor %}
+			</tbody>
+		</div>
+	{% endblock %}
+{% endblock %}

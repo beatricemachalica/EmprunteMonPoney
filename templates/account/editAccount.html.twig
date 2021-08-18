@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmprunteMonPoney compte
+{% endblock %}
+
+{% block body %}
+
+	<div class="backgroundForm">
+
+		{% block header %}
+			{% include "smallHeader.html.twig" %}
+		{% endblock %}
+
+		{% block container %}
+
+			{# flash message #}
+			{% for flashError in app.flashes('verify_email_error') %}
+				<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+			{% endfor %}
+
+			<div class="littleForm">
+				<h1 class="text-center" style="color:white;">Les informations du compte</h1>
+
+				{{ form_start(form) }}
+
+				{{ form_row(form.pseudo) }}
+
+				{{ form_row(form.email) }}
+
+				{{ form_row(form.city) }}
+
+				{{ form_row(form.cp) }}
+
+				{{ form_row(form.departement) }}
+
+				{{ form_row(form.phoneNumber) }}
+
+				<div class="centerButton">
+					<button type="submit" class="btn btn-primary mt-20">
+						Modifier</button>
+				</div>
+
+				{{ form_end(form) }}
+
+			</div>
+		{% endblock %}
+
+		{% block footer %}
+			{% include "smallFooter.html.twig" %}
+		{% endblock %}
+
+	</div>
+
+{% endblock %}

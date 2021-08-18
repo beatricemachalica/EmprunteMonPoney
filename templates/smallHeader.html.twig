@@ -1,9 +1,10 @@
 {% block header %}
 	<!-- navigation -->
-	<nav class="smallNav flex visible" id="smallNav">
+	<nav class="smallNav flex visible navbar-dark bg-dark" id="smallNav">
 		<a href="{{path('home')}}" class="logo">
 			<span>
-				EmprunteMonPoney
+				Emprunte mon Poney
+				<i class="fas fa-horse-head"></i>
 			</span>
 		</a>
 		<div class="flex">
@@ -15,6 +16,9 @@
 				<a href="#">
 					Annonces
 				</a>
+				<a href="{{path('user_equid')}}">
+					Mon cheval
+				</a>
 				<a href="{{path('user_account')}}">
 					Mon annonce
 				</a>
@@ -22,7 +26,21 @@
 					Compte
 				</a>
 				<a href="{{path('app_logout')}}">Déconnexion</a>
-			{% elseif is_granted("ROLE_USER") or is_granted("ROLE_PROPRIO") or is_granted("ROLE_EMPRUNT") %}
+			{% elseif is_granted("ROLE_PROPRIO") %}
+				<a href="#">
+					Annonces
+				</a>
+				<a href="{{path('user_equid')}}">
+					Mon cheval
+				</a>
+				<a href="{{path('user_account')}}">
+					Mon annonce
+				</a>
+				<a href="{{path('user_account')}}">
+					Compte
+				</a>
+				<a href="{{path('app_logout')}}">Déconnexion</a>
+			{% elseif is_granted("ROLE_EMPRUNT") %}
 				<a href="#">
 					Annonces
 				</a>

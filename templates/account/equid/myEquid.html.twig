@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmprunteMonPoney - Moncheval
+{% endblock %}
+
+{% block body %}
+
+	{% block header %}
+		{% include "smallHeader.html.twig" %}
+	{% endblock %}
+
+	{% block container %}
+
+		<div class="container-lg">
+
+			<h2 class="mt-2">Mon cheval
+				{% if app.user.equid is not null and app.user.equid is defined %}
+					{{app.user.equid.name |capitalize }}
+				{% endif %}
+			</h2>
+
+			<hr>
+
+			{# pseudo and email #}
+			<h3>Informations</h3>
+			<table class="table border">
+				<thead>
+					<tr>
+						<th scope="col">Nom</th>
+						<th scope="col">Race</th>
+						<th scope="col">Sexe</th>
+						<th scope="col">Taille</th>
+						<th scope="col">Date de naissance</th>
+						<th scope="col">Age</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if app.user.equid is not null and app.user.equid is defined %}
+						<tr>
+							<td>{{ app.user.equid.name }}</td>
+							<td>{{ app.user.equid.breed }}</td>
+							<td>{{ app.user.equid.sex }}</td>
+							<td>{{ app.user.equid.size }}</td>
+							<td>{{ app.user.equid.birthDate |date("d/m/Y") }}</td>
+							<td>{{ app.user.equid.age }}</td>
+						</tr>
+					{% endif %}
+				</tbody>
+			</table>
+
+
+			{# address #}
+			<h3>Adresse</h3>
+			<table class="table border">
+				<thead>
+					<tr>
+						<th scope="col">Département</th>
+						<th scope="col">Code postal</th>
+						<th scope="col">Ville</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if app.user.equid is not null and app.user.equid is defined %}
+						<tr>
+							<td>{{ app.user.equid.departement |capitalize}}</td>
+							<td>{{ app.user.equid.cp}}</td>
+							<td>{{ app.user.equid.city |capitalize}}</td>
+						</tr>
+					{% endif %}
+				</tbody>
+			</table>
+
+
+			{% if app.user.equid is not null and app.user.equid is defined %}
+
+				<button type="button" class="btn btn-primary mt-2 mb-2">
+					<a href="{{ path('edit_equid', {id: app.user.equid.id} )}}" class="aWithoutStyle">Modifier les informations</a>
+				</button>
+
+				<button type="button" class="btn btn-primary mt-2 mb-2">
+					<a href="{{ path('delete_equid', {id: app.user.equid.id}) }}" class="aWithoutStyle">Supprimer mon cheval</a>
+				</button>
+			{% else %}
+
+				<button type="button" class="btn btn-primary mt-2 mb-2">
+					<a href="{{ path('add_equid') }}" class="aWithoutStyle">Inscrire mon cheval</a>
+				</button>
+
+			{% endif %}
+
+
+		</div>
+
+	{% endblock %}
+
+{% endblock %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\PasswordUpdate;
+use App\Form\PasswordUpdateType;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\FormError;
@@ -16,6 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
@@ -45,8 +47,6 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-
-    // !!!!!! code de l'exo session !!!!!!! à vérifier
 
     /**
      * @Route("/security/forgotten_Password", name="forgotten_password")
@@ -100,7 +100,7 @@ class SecurityController extends AbstractController
      * 
      * @Route("resetPassword/{token}", name="resetPassword")
      */
-    public function resetPassword(User $user = null, EntityManagerInterface $manager, Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder, UserRepository $userRepository): Response
+    public function resetPassword(User $user = null, EntityManagerInterface $manager, Request $request, string $token, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
     {
         $form = $this->createForm(ChangePasswordType::class);
         $form->handleRequest($request);
@@ -117,7 +117,7 @@ class SecurityController extends AbstractController
                 $newPassword = $form->get('password')->getData();
                 // on set le nouveau password
                 $user->setPassword(
-                    $passwordEncoder->encodePassword($user, $newPassword)
+                    $passwordHasher->hashPassword($user, $newPassword)
                 );
                 $manager->flush();
                 // message add flash de confirmation
@@ -133,13 +133,12 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * Pour modifier le mdp via le compte utilisateur
-     * 
      * @IsGranted("ROLE_USER")
+     * Require ROLE_USER in order to update a password
      * 
      * @Route("/passwordUpdate", name="update_password")
      */
-    public function update_user_password(EntityManagerInterface $manager, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function update_user_password(EntityManagerInterface $manager, Request $request, UserPasswordHasherInterface $passwordHasher)
     {
         // $this->getUser get the connected user
         $user = $this->getUser();
@@ -159,7 +158,7 @@ class SecurityController extends AbstractController
             } else {
 
                 $newPassword = $passwordUpdate->getNewPassword();
-                $password = $passwordEncoder->encodePassword($user, $newPassword);
+                $password = $passwordHasher->hashPassword($user, $newPassword);
 
                 $user->setPassword($password);
 
@@ -170,9 +169,9 @@ class SecurityController extends AbstractController
                 $this->addFlash('info', 'Le mdp a bien été changé.');
                 return $this->redirectToRoute('user_index');
             }
-            return $this->render('security/updatePassword.html.twig', [
-                'form' => $form->createView(),
-            ]);
         }
+        return $this->render('security/updatePassword.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

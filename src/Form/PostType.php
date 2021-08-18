@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Post;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +17,7 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('text', TextareaType::class, [
+            ->add('text', CKEditorType::class, [
                 'required' => true,
                 'label' => 'Description de l\'annonce',
                 'attr' => [

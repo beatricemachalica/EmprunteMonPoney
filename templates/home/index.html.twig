@@ -20,38 +20,54 @@
 		<nav class="mainNav flex visible" id="mainNav">
 			<a href="{{path('home')}}" class="logo">
 				<span>
-					EmprunteMonPoney
+					Emprunte mon Poney
+					<i class="fas fa-horse-head"></i>
 				</span>
 			</a>
 			<div class="flex">
 
-				{% if is_granted("ROLE_USER") or is_granted("ROLE_PROPRIO") or is_granted("ROLE_EMPRUNT") %}
-					<a href="{{path('user_account')}}">
-						Compte
-					</a>
-					<a href="#">
-						Annonces
-					</a>
-					<a href="#">
-						Mon annonce
-					</a>
-					<a href="{{path('app_logout')}}">Déconnexion</a>
-
-				{% elseif is_granted("ROLE_ADMIN") and is_granted("ROLE_USER") %}
+				{% if is_granted("ROLE_ADMIN") %}
 					<a href="{{path('admin_home')}}">
 						Admin
 					</a>
-					<a href="{{path('user_account')}}">
-						Compte
-					</a>
 					<a href="#">
 						Annonces
 					</a>
-					<a href="#">
+					<a href="{{path('user_equid')}}">
+						Mon cheval
+					</a>
+					<a href="{{path('user_account')}}">
 						Mon annonce
 					</a>
+					<a href="{{path('user_account')}}">
+						Compte
+					</a>
 					<a href="{{path('app_logout')}}">Déconnexion</a>
-
+				{% elseif is_granted("ROLE_PROPRIO") %}
+					<a href="#">
+						Annonces
+					</a>
+					<a href="{{path('user_equid')}}">
+						Mon cheval
+					</a>
+					<a href="{{path('user_account')}}">
+						Mon annonce
+					</a>
+					<a href="{{path('user_account')}}">
+						Compte
+					</a>
+					<a href="{{path('app_logout')}}">Déconnexion</a>
+				{% elseif is_granted("ROLE_EMPRUNT") %}
+					<a href="#">
+						Annonces
+					</a>
+					<a href="{{path('user_account')}}">
+						Mon annonce
+					</a>
+					<a href="{{path('user_account')}}">
+						Compte
+					</a>
+					<a href="{{path('app_logout')}}">Déconnexion</a>
 				{% else %}
 					<a href="{{path('app_register')}}">Inscription</a>
 					<a href="{{path('app_login')}}">Connexion</a>

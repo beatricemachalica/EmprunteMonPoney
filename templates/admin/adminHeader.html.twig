@@ -1,17 +1,21 @@
 <!-- navigation -->
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand logo" href="{{path('home')}}">EmprunteMonPoney</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<a class="navbar-brand logo" href="{{path('home')}}">Emprunte mon Poney
+		<i class="fas fa-horse-head"></i>
+	</a>
 	<div class="collapse navbar-collapse" id="navbarNav">
 		<ul class="navbar-nav">
 			<li class="nav-item">
-				<a class="nav-link" href="{{ path('admin_home') }}">Accueil</a>
+				<a class="nav-link" href="{{ path('admin_home') }}">Activités</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="{{ path('admin_users') }}">Utilisateurs</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="{{ path('admin_categories') }}">Catégories</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('home') }}">Revenir au site</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
