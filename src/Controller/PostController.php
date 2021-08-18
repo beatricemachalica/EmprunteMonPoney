@@ -37,7 +37,7 @@ class PostController extends AbstractController
             ->getRepository(Post::class)
             ->findAll();
 
-        return $this->render('post/index.html.twig', [
+        return $this->render('post/showMyPost.html.twig', [
             'posts' => $posts,
         ]);
     }
@@ -61,9 +61,17 @@ class PostController extends AbstractController
 
             // get the authenticated user
             $post->setUser($this->getUser());
+            // $post->setActive(false);
+
+            // flash message
+            $idPost = $post->getId();
+            if ($idPost == null) {
+                $this->addFlash('message', 'L\'annonce a bien été enregistrée.');
+            } else {
+                $this->addFlash('message', 'Votre annonce a bien été modifiée.');
+            }
 
             $post = $form->getData();
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->flush();
@@ -88,6 +96,8 @@ class PostController extends AbstractController
         $entityManager->remove($post);
         $entityManager->flush();
 
-        return $this->redirectToRoute('posts');
+        // flash message
+        $this->addFlash('message', 'Votre annonce a bien été supprimée.');
+        return $this->redirectToRoute('my_post');
     }
 }

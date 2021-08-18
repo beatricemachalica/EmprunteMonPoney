@@ -69,15 +69,24 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // flash message
+            $idUser = $user->getId();
+            if ($idUser == null) {
+                // $this->addFlash('message', 'L\'utilisateur a bien été enregistré.');
+            } else {
+                $this->addFlash('message', 'Les informations de l\'utilisateur ont bien été modifiées.');
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_home');
+            return $this->redirectToRoute('admin_users');
         }
 
         return $this->render('admin/users/newUser.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            // 'editMode' => $user->getId() !== null
         ]);
     }
 
@@ -94,7 +103,9 @@ class AdminController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('admin_home');
+        // flash message
+        $this->addFlash('message', 'L\'utilisateur a bien été supprimé.');
+        return $this->redirectToRoute('admin_users');
     }
 
     /**
@@ -130,6 +141,14 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // flash message
+            $idCategory = $category->getId();
+            if ($idCategory == null) {
+                $this->addFlash('message', 'La nouvelle catégorie a bien été enregistrée.');
+            } else {
+                $this->addFlash('message', 'La catégorie a bien été modifiée.');
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
             $entityManager->flush();
@@ -156,6 +175,8 @@ class AdminController extends AbstractController
         $entityManager->remove($category);
         $entityManager->flush();
 
+        // flash message
+        $this->addFlash('message', 'La catégorie a bien été supprimée.');
         return $this->redirectToRoute('admin_categories');
     }
 }

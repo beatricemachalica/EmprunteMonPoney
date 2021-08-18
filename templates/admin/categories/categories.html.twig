@@ -11,7 +11,15 @@
 			{% include "admin/adminHeader.html.twig" %}
 		{% endblock %}
 
-		<div class="container-lg">
+		<div
+			class="container-lg">
+
+			{# flash message #}
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success" role="alert">
+					{{ message }}
+				</div>
+			{% endfor %}
 
 			<h3>Liste des catégories</h3>
 
@@ -34,7 +42,7 @@
 								<a href="{{ path('edit_category', {id: category.id}) }}">Editer</a>
 							</td>
 							<td>
-								<a href="{{ path('delete_categoy', {id: category.id}) }}">Supprimer</a>
+								<a href="{{ path('delete_categoy', {id: category.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette catégorie ?')">Supprimer</a>
 							</td>
 						</tr>
 					{% endfor %}

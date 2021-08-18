@@ -50,6 +50,8 @@ class AccountController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            // flash message
+            $this->addFlash('message', 'Votre profil a bien été mis à jour.');
             return $this->redirectToRoute('user_account');
         }
 
@@ -74,6 +76,7 @@ class AccountController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_PROPRIO")
      * @Route("/account/equid", name="user_equid")
      */
     public function showEquid(): Response
@@ -85,6 +88,7 @@ class AccountController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_PROPRIO")
      * @Route("/newEquid", name="add_equid")
      * @Route("/editEquid/{id}", name="edit_equid")
      */
@@ -101,6 +105,17 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // flash message
+            $idEquid = $equid->getId();
+            if ($idEquid == null) {
+                $this->addFlash('message', 'Votre cheval a bien été enregistré.');
+            } else {
+                $this->addFlash('message', 'Les informations de votre cheval ont bien été modifiées.');
+            }
+
+            // set the authenticated user (the owner)
+            $equid->setUser($this->getUser());
+
             $equid = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($equid);
@@ -116,6 +131,7 @@ class AccountController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_PROPRIO")
      * @Route("/deleteEquid/{id}", name="delete_equid")
      */
     public function delete(Equid $equid): Response

@@ -14,9 +14,17 @@
 		<div
 			class="container-lg">
 
-			{# <button type="button" class="btn btn-primary mt-4 mb-4"><a href="{{ path('add_user') }}" class="aWithoutStyle">Ajouter un utilisateur</a></button> #}
+			{# flash message #}
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success" role="alert">
+					{{ message }}
+				</div>
+			{% endfor %}
 
 			<h3>Liste des utilisateurs</h3>
+
+			{# <button type="button" class="btn btn-primary mt-4 mb-4"><a href="{{ path('add_user') }}" class="aWithoutStyle">Ajouter un utilisateur</a></button> #}
+
 
 			<table class="table border">
 				<thead>
@@ -47,7 +55,7 @@
 								<a href="{{ path('edit_user', {id: user.id}) }}">Editer</a>
 							</td>
 							<td>
-								<a href="{{ path('delete_user', {id: user.id}) }}">Supprimer</a>
+								<a href="{{ path('delete_user', {id: user.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')">Supprimer</a>
 							</td>
 						</tr>
 					</td>

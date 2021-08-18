@@ -79,7 +79,7 @@ class RegistrationController extends AbstractController
             $this->addFlash('verify_email_error', $exception->getReason());
 
             // redirect to route if wrong token or wrong email
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_login');
         }
 
         // success flash message

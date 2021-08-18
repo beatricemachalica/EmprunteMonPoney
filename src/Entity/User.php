@@ -319,4 +319,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    // to string function (in order to get names of categories instead of objects)
+    public function __toString()
+    {
+        return $this->getPseudo();
+    }
 }

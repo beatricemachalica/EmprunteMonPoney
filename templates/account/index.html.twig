@@ -11,7 +11,15 @@
 
 	{% block container %}
 
-		<div class="container-lg">
+		<div
+			class="container-lg">
+
+			{# flash message #}
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success" role="alert">
+					{{ message }}
+				</div>
+			{% endfor %}
 
 			<h2 class="mt-2">Bienvenue
 				{{app.user.pseudo |capitalize }}
@@ -83,7 +91,7 @@
 			</button>
 
 			<button type="button" class="btn btn-primary mt-2 mb-2">
-				<a href="{{ path('user_delete', {id: app.user.id}) }}" class="aWithoutStyle">Supprimer le compte</a>
+				<a href="{{ path('user_delete', {id: app.user.id}) }}" onclick="return confirm('Voulez-vous supprimer votre compte ?')" class="aWithoutStyle">Supprimer le compte</a>
 			</button>
 
 		</div>
