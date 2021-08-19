@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmprunteMonPoney - Annonces
+{% endblock %}
+
+{% block body %}
+
+	{% block header %}
+		{% include "smallHeader.html.twig" %}
+	{% endblock %}
+
+	{% block container %}
+
+		<div
+			class="container-lg">
+			{# flash message #}
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success" role="alert">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+
+			<h2 class="mt-2">Mon annonce</h2>
+
+			<hr>
+
+			{# $text; aperçu; photo #}
+
+			<table class="table border">
+				<thead>
+					<tr>
+						<th scope="col">Catégorie de l'annonce</th>
+						<th scope="col">Date de création</th>
+						<th scope="col">Prix / mois</th>
+						{% if app.user.equid is not null %}
+							<th scope="col">Cheval</th>
+						{% endif %}
+						<th scope="col">Active</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if app.user.post is not null and app.user.post is defined %}
+						<tr>
+							<td>{{ app.user.post.category }}</td>
+							<td>{{ app.user.post.createdAt |date("d/m/Y") }}</td>
+							<td>{{ app.user.post.price }}
+								€</td>
+							{% if app.user.equid is not null %}
+								<td scope="col">{{ app.user.equid }}</td>
+							{% endif %}
+							<td>
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="customSwitch1" {{ (app.user.post.active) ? 'checked' : '' }} data-id="{{ app.user.post.id }}">
+									<label class="custom-control-label" for="customSwitch1"></label>
+								</div>
+							</td>
+						</tr>
+					{% endif %}
+				</tbody>
+			</table>
+
+			{% if app.user.post is not null and app.user.post is defined %}
+				{# if post already exists #}
+
+				<button type="button" class="btn btn-primary mt-2 mb-2">
+					<a href="{{ path('edit_post', {id: app.user.post.id} )}}" class="aWithoutStyle">Modifier mon annonce</a>
+				</button>
+
+				<button type="button" class="btn btn-primary mt-2 mb-2">
+					<a href="{{ path('delete_post', {id: app.user.post.id} )}}" class="aWithoutStyle" onclick="return confirm('Êtes-vous sûr.e de vouloir supprimer votre annonce ?')">Supprimer mon annonce</a>
+				</button>
+
+			{% else %}
+				{# if post has not been created yet #}
+
+				{% if is_granted("ROLE_PROPRIO") and app.user.equid is null  %}
+					{# if the user is an owner ("ROLE_PROPRIO") and he has not registered his horse yet #}
+
+					<p class="alert alert-secondary">
+						<i class="fas fa-exclamation-triangle text-danger"></i>
+						Veuillez inscrire votre cheval avant de créer une annonce
+					</p>
+
+				{% else %}
+
+					<button type="button" class="btn btn-primary mt-2 mb-2">
+						<a href="{{ path('add_post') }}" class="aWithoutStyle">Créer mon annonce</a>
+					</button>
+
+				{% endif %}
+
+			{% endif %}
+
+		</div>
+
+	{% endblock %}
+
+{% endblock %}

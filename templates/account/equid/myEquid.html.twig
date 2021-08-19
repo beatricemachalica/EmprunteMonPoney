@@ -11,14 +11,15 @@
 
 	{% block container %}
 
-		{# flash message #}
-		{% for message in app.flashes('message') %}
-			<div class="alert alert-success" role="alert">
-				{{ message }}
-			</div>
-		{% endfor %}
+		<div
+			class="container-lg">
+			{# flash message #}
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success" role="alert">
+					{{ message }}
+				</div>
+			{% endfor %}
 
-		<div class="container-lg">
 
 			<h2 class="mt-2">Mon cheval
 				{% if app.user.equid is not null and app.user.equid is defined %}
@@ -80,16 +81,15 @@
 				</tbody>
 			</table>
 
-
 			{% if app.user.equid is not null and app.user.equid is defined %}
 
 				<button type="button" class="btn btn-primary mt-2 mb-2">
 					<a href="{{ path('edit_equid', {id: app.user.equid.id} )}}" class="aWithoutStyle">Modifier les informations</a>
 				</button>
 
-				{# <button type="button" class="btn btn-primary mt-2 mb-2">
-																																																									<a href="{{ path('delete_equid', {id: app.user.equid.id}) }}" class="aWithoutStyle">Supprimer mon cheval</a>
-																																																								</button> #}
+				<button type="button" class="btn btn-primary mt-2 mb-2">
+					<a href="{{ path('delete_equid', {id: app.user.equid.id}) }}" class="aWithoutStyle">Supprimer mon cheval</a>
+				</button>
 			{% else %}
 
 				<button type="button" class="btn btn-primary mt-2 mb-2">

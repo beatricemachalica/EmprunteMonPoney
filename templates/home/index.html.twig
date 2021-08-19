@@ -36,7 +36,7 @@
 					<a href="{{path('user_equid')}}">
 						Mon cheval
 					</a>
-					<a href="{{path('user_account')}}">
+					<a href="{{path('my_post')}}">
 						Mon annonce
 					</a>
 					<a href="{{path('user_account')}}">
@@ -50,7 +50,7 @@
 					<a href="{{path('user_equid')}}">
 						Mon cheval
 					</a>
-					<a href="{{path('user_account')}}">
+					<a href="{{path('my_post')}}">
 						Mon annonce
 					</a>
 					<a href="{{path('user_account')}}">
@@ -61,7 +61,7 @@
 					<a href="#">
 						Annonces
 					</a>
-					<a href="{{path('user_account')}}">
+					<a href="{{path('my_post')}}">
 						Mon annonce
 					</a>
 					<a href="{{path('user_account')}}">
@@ -71,6 +71,7 @@
 				{% else %}
 					<a href="{{path('app_register')}}">Inscription</a>
 					<a href="{{path('app_login')}}">Connexion</a>
+					<a href="{{ path('contact')}}">Contact</a>
 				{% endif %}
 
 			</div>
@@ -339,7 +340,14 @@
 						</p>
 					</div>
 
-					<a class="button" href="#">Nous rejoindre</a>
+					{% if app.user is not null %}
+						<p>Merci d'utiliser EmprunteMonPoney
+							<i class="fas fa-heart"></i>
+						</p>
+					{% else %}
+						<a class="button" href="{{path('app_register')}}">Nous rejoindre</a>
+					{% endif %}
+
 				</section>
 			</div>
 
@@ -351,13 +359,13 @@
 						<article>
 							<h3 style="text-align: center;" class="whiteFt">Nous suivre</h3>
 							<div class="flex" style="justify-content: space-evenly;">
-								<a href="#" title="Nous suivre sur ">
+								<a href="https://www.instagram.com" title="Nous suivre sur ">
 									<i class="fab fa-instagram"></i>
 								</a>
-								<a href="#" title="Nous suivre sur ">
+								<a href="https://www.youtube.com" title="Nous suivre sur ">
 									<i class="fab fa-youtube"></i>
 								</a>
-								<a href="#" title="Nous suivre sur ">
+								<a href="https://www.facebook.com" title="Nous suivre sur ">
 									<i class="fab fa-facebook"></i>
 								</a>
 							</div>

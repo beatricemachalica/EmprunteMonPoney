@@ -68,16 +68,13 @@ class AccountController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        // $entityManager = $this->getDoctrine()->getManager();
-        // $entityManager->remove($user);
-        // $entityManager->flush();
-
+        // set token to null or it will throw an error 
         $user = $this->getUser();
         $this->container->get('security.token_storage')->setToken(null);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($user);
-        $em->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($user);
+        $entityManager->flush();
 
         return $this->redirectToRoute('home');
     }

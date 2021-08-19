@@ -24,18 +24,17 @@ class PostType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
+            // ->add('category', EntityType::class, [
+            //     'class' => Category::class,
+            //     'required' => true,
+            //     'label' => 'Catégorie de l\'annonce',
+            //     'attr' => [
+            //         'class' => 'form-control'
+            //     ]
+            // ])
             ->add('price', MoneyType::class, [
                 'required' => true,
-                'label' => 'Prix souhaité',
-                'attr' => [
-                    'class' => 'form-control'
-                ]
-            ])
-            // ->add('equid')
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'required' => true,
-                'label' => 'Catégorie de l\'annonce',
+                'label' => 'Prix souhaité par mois',
                 'attr' => [
                     'class' => 'form-control'
                 ]

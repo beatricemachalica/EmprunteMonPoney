@@ -75,12 +75,7 @@
 				</tbody>
 			</table>
 
-			{# equid // post // comment ? #}
-			{# app.user.post #}
-
-			<button type="button" class="btn btn-primary mt-2 mb-2">
-				<a href="{{ path('add_post') }}" class="aWithoutStyle">Créer mon annonce</a>
-			</button>
+			{# afficher des info supplémentaires : equid // post // commentaires ? #}
 
 			<button type="button" class="btn btn-primary mt-2 mb-2">
 				<a href="{{ path('user_edit', {id: app.user.id} )}}" class="aWithoutStyle">Modifier le profil</a>

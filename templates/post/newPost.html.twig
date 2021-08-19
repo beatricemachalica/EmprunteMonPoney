@@ -12,12 +12,16 @@
 
 		<div class="littleForm">
 
-			<h1 class="d-flex justify-content-center">Ajouter une annonce</h1>
+			{% if editMode %}
+				<h1 class="d-flex justify-content-center">Modifier mon annonce</h1>
+			{% else %}
+				<h1 class="d-flex justify-content-center">Ajouter une annonce</h1>
+			{% endif %}
 
 			{{ form_start(form) }}
 			{{ form_row(form.text) }}
-			{{ form_row(form.category) }}
 			{{ form_row(form.price) }}
+			{# {{ form_row(form.category) }} #}
 
 			<div class="centerButton mt-20">
 				<button class="btn btn-primary">Valider</button>

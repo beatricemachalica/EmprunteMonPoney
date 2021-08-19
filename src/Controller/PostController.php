@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Post;
 use App\Form\PostType;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,25 +27,39 @@ class PostController extends AbstractController
             'posts' => $posts,
         ]);
     }
+
     /**
      * @Route("/post", name="my_post")
      */
     public function showPost(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
 
-        $posts = $this->getDoctrine()
-            ->getRepository(Post::class)
-            ->findAll();
-
-        return $this->render('post/showMyPost.html.twig', [
-            'posts' => $posts,
-        ]);
+        return $this->render('post/myPost.html.twig', []);
     }
 
     /**
-     * @Route("/new", name="add_post")
-     * @Route("/edit/{id}", name="edit_post")
+     * @Route("/post/activate", name="activate_post")
+     * this method allow to activate or not a post
+     */
+    public function activatePost(Post $post)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // if the post is already activated => false, if it is not activated => true
+        $post->setActive(($post->getActive()) ? false : true);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($post);
+        $entityManager->flush();
+
+        return new Response("true");
+    }
+
+    /**
+     * @Route("/newPost", name="add_post")
+     * @Route("/editPost/{id}", name="edit_post")
      */
     public function newPost(Request $request, Post $post = null): Response
     {
@@ -55,13 +70,47 @@ class PostController extends AbstractController
         }
 
         $form = $this->createForm(PostType::class, $post);
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // get the authenticated user
+            // set the authenticated user
             $post->setUser($this->getUser());
-            // $post->setActive(false);
+
+            // set the active attribut to false
+            $post->setActive(false);
+
+            // get the owner's horse ID
+            $usersHorse = $this->getUser()->getEquid();
+
+            // get the array of roles
+            $userRoles = $this->getUser()->getRoles();
+
+            // get the categories
+            $categoryEmprunt = $this->getDoctrine()
+                ->getRepository(Category::class)
+                ->findOneBy(array('name' => 'profil d\'emprunteur'), null);
+
+            $categoryProprio = $this->getDoctrine()
+                ->getRepository(Category::class)
+                ->findOneBy(array('name' => 'profil d\'un cheval'), null);
+
+            // if the user is a borrower ("ROLE_EMPRUNT")
+            if (in_array("ROLE_EMPRUNT", $userRoles)) {
+                // set the right category
+                $post->setCategory($categoryEmprunt);
+            }
+
+            // if the user is an owner ("ROLE_PROPRIO") and his horse has been correctly registered
+            if ((in_array("ROLE_PROPRIO", $userRoles)) && ($usersHorse !== null)) {
+                // set the right category
+                $post->setCategory($categoryProprio);
+                // set the equid
+                $post->setEquid($usersHorse);
+            } elseif ($usersHorse == null) {
+                // if the owner has fogotten to register his horse first
+                $this->addFlash('error', "Veuillez inscrire votre cheval avant de créer une annonce.");
+            }
 
             // flash message
             $idPost = $post->getId();
@@ -79,14 +128,14 @@ class PostController extends AbstractController
             return $this->redirectToRoute('my_post');
         }
 
-        return $this->render('post/new.html.twig', [
+        return $this->render('post/newPost.html.twig', [
             'form' => $form->createView(),
             'editMode' => $post->getId() !== null
         ]);
     }
 
     /**
-     * @Route("/delete/{id}", name="Post_delete")
+     * @Route("/deletePost/{id}", name="delete_post")
      */
     public function deletePost(Post $post): Response
     {
