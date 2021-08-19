@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}EmprunteMonPoney Compte
+{% block title %}EmprunteMonPoney - Compte
 {% endblock %}
 
 {% block body %}
@@ -91,7 +91,7 @@
 			</button>
 
 			<button type="button" class="btn btn-primary mt-2 mb-2">
-				<a href="{{ path('user_delete', {id: app.user.id}) }}" onclick="return confirm('Voulez-vous supprimer votre compte ?')" class="aWithoutStyle">Supprimer le compte</a>
+				<a href="{{ path('user_delete', {id: app.user.id}) }}" onclick="return confirm('Êtes-vous sûr.e de vouloir supprimer votre compte ?')" class="aWithoutStyle">Supprimer le compte</a>
 			</button>
 
 		</div>

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmprunteMonPoney - Contact
+{% endblock %}
+
+{% block body %}
+
+	<div class="backgroundForm">
+
+		{% block header %}
+			{% include "smallHeader.html.twig" %}
+		{% endblock %}
+
+		{% block container %}
+
+			{# flash message #}
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success" role="alert">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+			<div class="littleForm">
+
+				<h1 class="d-flex justify-content-center">Nous contacter</h1>
+
+				<div>
+					<p>
+						Besoin d'aide ? N'hésitez pas à nous contacter en remplissant les champs nécessaires ci-dessous.
+					</p>
+				</div>
+
+				<div class="form-group">
+					{{ form_start(form) }}
+					{{ form_row(form.pseudo) }}
+					{{ form_row(form.email) }}
+					{{ form_row(form.message) }}
+				</div>
+
+				<div class="centerButton">
+					<button class="btn btn-primary">Envoyer</button>
+				</div>
+				{{ form_end(form) }}
+
+			</div>
+
+
+		{% endblock %}
+
+		{% block footer %}
+			{% include "smallFooter.html.twig" %}
+		{% endblock %}
+
+	</div>
+
+{% endblock %}

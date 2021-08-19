@@ -49,7 +49,9 @@
 							<td>{{ app.user.equid.sex }}</td>
 							<td>{{ app.user.equid.size }}</td>
 							<td>{{ app.user.equid.birthDate |date("d/m/Y") }}</td>
-							<td>{{ app.user.equid.age }}</td>
+							<td>{% set difference = date(app.user.equid.birthDate).diff(date()) %}
+								{% set leftYears = difference.y %}{{leftYears}}
+								ans</td>
 						</tr>
 					{% endif %}
 				</tbody>
@@ -86,8 +88,8 @@
 				</button>
 
 				{# <button type="button" class="btn btn-primary mt-2 mb-2">
-													<a href="{{ path('delete_equid', {id: app.user.equid.id}) }}" class="aWithoutStyle">Supprimer mon cheval</a>
-												</button> #}
+																																																									<a href="{{ path('delete_equid', {id: app.user.equid.id}) }}" class="aWithoutStyle">Supprimer mon cheval</a>
+																																																								</button> #}
 			{% else %}
 
 				<button type="button" class="btn btn-primary mt-2 mb-2">
