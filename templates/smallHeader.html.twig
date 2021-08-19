@@ -13,7 +13,7 @@
 				<a href="{{path('admin_home')}}">
 					Admin
 				</a>
-				<a href="#">
+				<a href="{{path('posts')}}">
 					Annonces
 				</a>
 				<a href="{{path('user_equid')}}">
@@ -27,7 +27,7 @@
 				</a>
 				<a href="{{path('app_logout')}}">Déconnexion</a>
 			{% elseif is_granted("ROLE_PROPRIO") %}
-				<a href="#">
+				<a href="{{path('posts')}}">
 					Annonces
 				</a>
 				<a href="{{path('user_equid')}}">
@@ -41,7 +41,7 @@
 				</a>
 				<a href="{{path('app_logout')}}">Déconnexion</a>
 			{% elseif is_granted("ROLE_EMPRUNT") %}
-				<a href="#">
+				<a href="{{path('posts')}}">
 					Annonces
 				</a>
 				<a href="{{path('my_post')}}">

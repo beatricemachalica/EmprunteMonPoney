@@ -21,16 +21,11 @@
 			{% endfor %}
 
 
-			<h2 class="mt-2">Mon cheval
-				{% if app.user.equid is not null and app.user.equid is defined %}
-					{{app.user.equid.name |capitalize }}
-				{% endif %}
-			</h2>
+			<h2 class="mt-2">Mon cheval</h2>
 
 			<hr>
 
-			{# pseudo and email #}
-			<h3>Informations</h3>
+			{# <h3>Informations</h3>
 			<table class="table border">
 				<thead>
 					<tr>
@@ -50,6 +45,40 @@
 							<td>{{ app.user.equid.sex }}</td>
 							<td>{{ app.user.equid.size }}</td>
 							<td>{{ app.user.equid.birthDate |date("d/m/Y") }}</td>
+							<td>{% set difference = date(app.user.equid.birthDate).diff(date()) %}
+								{% set leftYears = difference.y %}{{leftYears}}
+								ans</td>
+						</tr>
+					{% endif %}
+				</tbody>
+			</table> #}
+
+			<h3>Informations générales</h3>
+			<table class="table border">
+				<tbody>
+					{% if app.user.equid is not null and app.user.equid is defined %}
+						<tr>
+							<td scope="col" class="font-weight-bold">Nom</td>
+							<td>{{ app.user.equid.name |capitalize }}</td>
+						</tr>
+						<tr>
+							<td scope="col" class="font-weight-bold">Race</td>
+							<td>{{ app.user.equid.breed |capitalize }}</td>
+						</tr>
+						<tr>
+							<td scope="col" class="font-weight-bold">Sexe</td>
+							<td>{{ app.user.equid.sex |capitalize }}</td>
+						</tr>
+						<tr>
+							<td scope="col" class="font-weight-bold">Hauteur au garrot (cm)</td>
+							<td>{{ app.user.equid.size |capitalize }}</td>
+						</tr>
+						<tr>
+							<td scope="col" class="font-weight-bold">Date de naissance</td>
+							<td>{{ app.user.equid.birthDate |date("d/m/Y") }}</td>
+						</tr>
+						<tr>
+							<td scope="col" class="font-weight-bold">Age</td>
 							<td>{% set difference = date(app.user.equid.birthDate).diff(date()) %}
 								{% set leftYears = difference.y %}{{leftYears}}
 								ans</td>

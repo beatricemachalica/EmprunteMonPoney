@@ -49,4 +49,22 @@ setInterval(function () {
   if (counter > 4) {
     counter = 1;
   }
-}, 8000);
+}, 6000);
+
+// toggle button = activate post
+window.onload = () => {
+  let activate = document.querySelectorAll("[type=checkbox]");
+  for (let bouton of activate) {
+    bouton.addEventListener("click", function () {
+      let xmlhttp = new XMLHttpRequest();
+
+      // xmlhttp.onreadystatechange = () => {
+      //   // vérifier si 200 etc
+      //   }
+
+      xmlhttp.open("get", `/post/activate/${this.dataset.id}`);
+
+      xmlhttp.send();
+    });
+  }
+};

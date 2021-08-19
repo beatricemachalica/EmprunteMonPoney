@@ -5,15 +5,33 @@
 
 {% block body %}
 
-	<div class="example-wrapper">
-		<h1>Hello ✅</h1>
-	</div>
+	{% block header %}
+		{% include "smallHeader.html.twig" %}
+	{% endblock %}
 
-	{# flash message #}
-	{% for message in app.flashes('message') %}
-		<div class="alert alert-success" role="alert">
-			{{ message }}
+	{% block container %}
+
+		<div class="container-lg">
+
+			<h2 class="mt-2">Les annonces</h2>
+
+			{# flash message #}
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success" role="alert">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+			<pre>
+				{{ dump(cards) }}
+			</pre>
+
+			{% for card in cards %}
+				{% include "post/postsCards.html.twig" %}
+			{% endfor %}
+
 		</div>
-	{% endfor %}
+
+	{% endblock %}
 
 {% endblock %}

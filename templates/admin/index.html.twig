@@ -23,15 +23,17 @@
 					<tr>
 						<th scope="col">Nombre d'annonces</th>
 						<th scope="col">Nombre d'utilisateurs</th>
+						{# <th scope="col">Nombre d'emprunteur</th><th scope="col">Nombre de propriétaires</th> #}
 					</tr>
 				</thead>
 				<tbody>
-					{% for user in users %}
-						<tr>
-							<td></td>
-						</tr>
-					</tbody>
-				{% endfor %}
+					<tr>
+						<td>{{ posts | length }}</td>
+						<td>{{ users | length }}</td>
+						{# <td>{{ userEmprunt | length }}</td><td>{{ userProprio | length }}</td> #}
+					</tr>
+				</tbody>
+
 			</tbody>
 		</div>
 	{% endblock %}

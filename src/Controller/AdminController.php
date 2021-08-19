@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Entity\Category;
+use App\Entity\Post;
 use App\Form\CategoryType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,9 +31,24 @@ class AdminController extends AbstractController
             ->getRepository(User::class)
             ->findAll();
 
+        $posts = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->findAll();
+
+        // $userEmprunt = $this->getDoctrine()
+        //     ->getRepository(User::class)
+        //     ->findBy(array('roles' => 'ROLE_EMPRUNT'), null);
+
+        // $userProprio = $this->getDoctrine()
+        //     ->getRepository(User::class)
+        //     ->findBy(array('roles' => "ROLE_PROPRIO"), null);
+
         return $this->render('admin/index.html.twig', [
             'actual' => $this->getUser()->getPseudo(),
             'users' => $users,
+            'posts' => $posts,
+            // 'userEmprunt' => $userEmprunt,
+            // 'userProprio' => $userProprio
         ]);
     }
 

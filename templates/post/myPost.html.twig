@@ -11,8 +11,10 @@
 
 	{% block container %}
 
-		<div
-			class="container-lg">
+		<div class="container-lg">
+
+			<h2 class="mt-2">Mon annonce</h2>
+
 			{# flash message #}
 			{% for message in app.flashes('message') %}
 				<div class="alert alert-success" role="alert">
@@ -20,45 +22,86 @@
 				</div>
 			{% endfor %}
 
+			<div
+				class="d-lg-flex flex-row justify-content-between">
 
-			<h2 class="mt-2">Mon annonce</h2>
 
-			<hr>
+				{# <table class="table border">
+									<thead>
+										<tr>
+											<th scope="col">Catégorie de l'annonce</th>
+											{% if app.user.equid is not null %}
+												<th scope="col">Cheval</th>
+											{% endif %}
+											<th scope="col">Date de création</th>
+											<th scope="col">Prix / mois</th>
+											<th scope="col">Active</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% if app.user.post is not null and app.user.post is defined %}
+											<tr>
+												<td>{{ app.user.post.category }}</td>
+												{% if app.user.equid is not null %}
+													<td scope="col">{{ app.user.equid |capitalize }}</td>
+												{% endif %}
+												<td>{{ app.user.post.createdAt |date("d/m/Y") }}</td>
+												<td>{{ app.user.post.price }}
+													€</td>
+												<td>
+													<div class="custom-control custom-switch">
+														<input type="checkbox" class="custom-control-input" id="customSwitch1" {{ (app.user.post.active) ? 'checked' : '' }} data-id="{{ app.user.post.id }}">
+														<label class="custom-control-label" for="customSwitch1"></label>
+													</div>
+												</td>
+											</tr>
+										{% endif %}
+									</tbody>
+								</table> #}
 
-			{# $text; aperçu; photo #}
-
-			<table class="table border">
-				<thead>
-					<tr>
-						<th scope="col">Catégorie de l'annonce</th>
-						<th scope="col">Date de création</th>
-						<th scope="col">Prix / mois</th>
-						{% if app.user.equid is not null %}
-							<th scope="col">Cheval</th>
+				<table class="table border">
+					<tbody>
+						{% if app.user.equid is not null and app.user.equid is defined %}
+							<tr>
+								<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
+								<td>{{ app.user.post.category |capitalize }}</td>
+							</tr>
+							<tr>
+								<td scope="col" class="font-weight-bold">Cheval</td>
+								<td>{{ app.user.equid |capitalize}}</td>
+							</tr>
+							<tr>
+								<td scope="col" class="font-weight-bold">Date de création</td>
+								<td>{{ app.user.post.createdAt |date("d/m/Y") }}</td>
+							</tr>
+							<tr>
+								<td scope="col" class="font-weight-bold">Prix / mois</td>
+								<td>{{ app.user.post.price }}
+									€</td>
+							</tr>
+							<tr>
+								<td scope="col" class="font-weight-bold">Active</td>
+								<td>
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="customSwitch1" {{ (app.user.post.active) ? 'checked' : '' }} data-id="{{ app.user.post.id }}">
+										<label class="custom-control-label" for="customSwitch1"></label>
+									</div>
+								</td>
+							</tr>
 						{% endif %}
-						<th scope="col">Active</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% if app.user.post is not null and app.user.post is defined %}
-						<tr>
-							<td>{{ app.user.post.category }}</td>
-							<td>{{ app.user.post.createdAt |date("d/m/Y") }}</td>
-							<td>{{ app.user.post.price }}
-								€</td>
-							{% if app.user.equid is not null %}
-								<td scope="col">{{ app.user.equid }}</td>
-							{% endif %}
-							<td>
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customSwitch1" {{ (app.user.post.active) ? 'checked' : '' }} data-id="{{ app.user.post.id }}">
-									<label class="custom-control-label" for="customSwitch1"></label>
-								</div>
-							</td>
-						</tr>
-					{% endif %}
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+
+				{% if app.user.post is not null and app.user.post is defined %}
+					<div class="ml-5">
+						{% include "post/postCard.html.twig" %}
+					</div>
+				{% endif %}
+
+
+			</div>
+
+			{# buttons edit delete post #}
 
 			{% if app.user.post is not null and app.user.post is defined %}
 				{# if post already exists #}

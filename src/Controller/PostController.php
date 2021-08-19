@@ -24,7 +24,7 @@ class PostController extends AbstractController
             ->findAll();
 
         return $this->render('post/index.html.twig', [
-            'posts' => $posts,
+            'cards' => $posts,
         ]);
     }
 
@@ -40,7 +40,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/post/activate", name="activate_post")
+     * @Route("/post/activate/{id}", name="activate_post")
      * this method allow to activate or not a post
      */
     public function activatePost(Post $post)
@@ -77,10 +77,11 @@ class PostController extends AbstractController
             // set the authenticated user
             $post->setUser($this->getUser());
 
-            // set the active attribut to false
-            $post->setActive(false);
+            // set the active attribut to true
+            // by default the post will be activated and will appear on the website
+            $post->setActive(true);
 
-            // get the owner's horse ID
+            // get the owner's horse
             $usersHorse = $this->getUser()->getEquid();
 
             // get the array of roles
@@ -106,7 +107,7 @@ class PostController extends AbstractController
                 // set the right category
                 $post->setCategory($categoryProprio);
                 // set the equid
-                $post->setEquid($usersHorse);
+                $post->setEquid($this->getUser()->getEquid());
             } elseif ($usersHorse == null) {
                 // if the owner has fogotten to register his horse first
                 $this->addFlash('error', "Veuillez inscrire votre cheval avant de créer une annonce.");

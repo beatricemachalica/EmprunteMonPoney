@@ -1,0 +1,12 @@
+<div class="card" style="width: 18rem;">
+	<img src="..." class="card-img-top" alt="photo annonce">
+	<div class="card-body">
+		<h5 class="card-title">{{ card.user.equid }},
+			{# {{ card.user.equid.breed }} #}
+		</h5>
+		<h6 class="card-subtitle mb-2 text-muted">{{ card.user.post.price }}
+			€ / mois</h6>
+		<p class="card-text">{{ card.user.post.text | raw }}</p>
+		<a href="#" class="btn btn-primary">Détails</a>
+	</div>
+</div>
