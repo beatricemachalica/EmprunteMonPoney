@@ -51,7 +51,7 @@ class Post
     private $comments;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="post", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="post", orphanRemoval=true)
      */
     private $user;
 
@@ -60,10 +60,22 @@ class Post
      */
     private $active;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="post", orphanRemoval=true)
+     */
+    private $photos;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="favorites")
+     */
+    private $favorite;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->setCreatedAt(new \DateTimeImmutable());
+        $this->photos = new ArrayCollection();
+        $this->favorite = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -191,6 +203,60 @@ class Post
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Photo[]
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(Photo $photo): self
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos[] = $photo;
+            $photo->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photo $photo): self
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getPost() === $this) {
+                $photo->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getFavorite(): Collection
+    {
+        return $this->favorite;
+    }
+
+    public function addFavorite(User $favorite): self
+    {
+        if (!$this->favorite->contains($favorite)) {
+            $this->favorite[] = $favorite;
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(User $favorite): self
+    {
+        $this->favorite->removeElement($favorite);
 
         return $this;
     }
