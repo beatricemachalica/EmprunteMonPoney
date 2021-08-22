@@ -46,7 +46,7 @@ class Post
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", orphanRemoval=true, cascade={"persist"})
      */
     private $comments;
 
@@ -61,7 +61,7 @@ class Post
     private $active;
 
     /**
-     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="post", orphanRemoval=true, cascade={"persist"})
      */
     private $photos;
 

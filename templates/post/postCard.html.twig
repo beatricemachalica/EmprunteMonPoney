@@ -1,11 +1,15 @@
 <div class="card" style="width: 18rem;">
-	<img src="..." class="card-img-top" alt="photo annonce">
+	{% for photo in app.user.post.photos | slice(0,1) %}
+		<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="card-img-top" alt="photo annonce">
+	{% endfor %}
 	<div class="card-body">
 		<h5 class="card-title">{{ app.user.equid }},
 			{{ app.user.equid.breed }}</h5>
 		<h6 class="card-subtitle mb-2 text-muted">{{ app.user.post.price }}
 			€ / mois</h6>
-		<p class="card-text">{{ app.user.post.text | raw }}</p>
+		<div style="overflow: hidden; white-space: nowrap;">
+			<p class="card-text">{{ app.user.post.text | raw }}</p>
+		</div>
 		<a href="#" class="btn btn-primary">Détails</a>
 	</div>
 </div>

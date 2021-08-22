@@ -13,7 +13,7 @@
 
 		<div class="container-lg">
 
-			<h2 class="mt-2">Mon annonce</h2>
+			<h2 class="mt-20">Mon annonce</h2>
 
 			{# flash message #}
 			{% for message in app.flashes('message') %}
@@ -27,37 +27,37 @@
 
 
 				{# <table class="table border">
-									<thead>
-										<tr>
-											<th scope="col">Catégorie de l'annonce</th>
-											{% if app.user.equid is not null %}
-												<th scope="col">Cheval</th>
-											{% endif %}
-											<th scope="col">Date de création</th>
-											<th scope="col">Prix / mois</th>
-											<th scope="col">Active</th>
-										</tr>
-									</thead>
-									<tbody>
-										{% if app.user.post is not null and app.user.post is defined %}
-											<tr>
-												<td>{{ app.user.post.category }}</td>
-												{% if app.user.equid is not null %}
-													<td scope="col">{{ app.user.equid |capitalize }}</td>
-												{% endif %}
-												<td>{{ app.user.post.createdAt |date("d/m/Y") }}</td>
-												<td>{{ app.user.post.price }}
-													€</td>
-												<td>
-													<div class="custom-control custom-switch">
-														<input type="checkbox" class="custom-control-input" id="customSwitch1" {{ (app.user.post.active) ? 'checked' : '' }} data-id="{{ app.user.post.id }}">
-														<label class="custom-control-label" for="customSwitch1"></label>
-													</div>
-												</td>
-											</tr>
-										{% endif %}
-									</tbody>
-								</table> #}
+																	<thead>
+																		<tr>
+																			<th scope="col">Catégorie de l'annonce</th>
+																			{% if app.user.equid is not null %}
+																				<th scope="col">Cheval</th>
+																			{% endif %}
+																			<th scope="col">Date de création</th>
+																			<th scope="col">Prix / mois</th>
+																			<th scope="col">Active</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		{% if app.user.post is not null and app.user.post is defined %}
+																			<tr>
+																				<td>{{ app.user.post.category }}</td>
+																				{% if app.user.equid is not null %}
+																					<td scope="col">{{ app.user.equid |capitalize }}</td>
+																				{% endif %}
+																				<td>{{ app.user.post.createdAt |date("d/m/Y") }}</td>
+																				<td>{{ app.user.post.price }}
+																					€</td>
+																				<td>
+																					<div class="custom-control custom-switch">
+																						<input type="checkbox" class="custom-control-input" id="customSwitch1" {{ (app.user.post.active) ? 'checked' : '' }} data-id="{{ app.user.post.id }}">
+																						<label class="custom-control-label" for="customSwitch1"></label>
+																					</div>
+																				</td>
+																			</tr>
+																		{% endif %}
+																	</tbody>
+																</table> #}
 
 				<table class="table border">
 					<tbody>
@@ -98,7 +98,6 @@
 					</div>
 				{% endif %}
 
-
 			</div>
 
 			{# buttons edit delete post #}
@@ -135,8 +134,24 @@
 
 			{% endif %}
 
+			{# post pictures #}
+			<div>
+				<h3>Photos</h3>
+				{% for photo in app.user.post.photos %}
+					<div>
+						<figure><img src="{{ asset('/uploads/' ~ photo.name ) }}" alt="photo" style="width:350px"></figure>
+						<a href="{{ path('delete_picture', {id: photo.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ photo.id) }}">supprimer</a>
+					</div>
+				{% endfor %}
+			</div>
+
+
 		</div>
 
 	{% endblock %}
 
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('js/myPost.js') }}"></script>
 {% endblock %}

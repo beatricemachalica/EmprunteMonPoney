@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -32,6 +33,16 @@ class PostType extends AbstractType
             //         'class' => 'form-control'
             //     ]
             // ])
+            // upload pictures, but will not be linked with DB (mapped=false)
+            ->add('photo', FileType::class, [
+                'label' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control-file mt-3'
+                ]
+            ])
             ->add('price', MoneyType::class, [
                 'required' => true,
                 'label' => 'Prix souhaité par mois',

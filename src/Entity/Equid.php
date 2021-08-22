@@ -58,7 +58,7 @@ class Equid
     private $post;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="equid", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="equid")
      */
     private $user;
 

@@ -50,21 +50,3 @@ setInterval(function () {
     counter = 1;
   }
 }, 6000);
-
-// toggle button = activate post
-window.onload = () => {
-  let activate = document.querySelectorAll("[type=checkbox]");
-  for (let bouton of activate) {
-    bouton.addEventListener("click", function () {
-      let xmlhttp = new XMLHttpRequest();
-
-      // xmlhttp.onreadystatechange = () => {
-      //   // vérifier si 200 etc
-      //   }
-
-      xmlhttp.open("get", `/post/activate/${this.dataset.id}`);
-
-      xmlhttp.send();
-    });
-  }
-};
