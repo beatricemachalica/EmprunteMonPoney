@@ -46,12 +46,13 @@ class Post
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", orphanRemoval=true)
      */
     private $comments;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
@@ -180,16 +181,6 @@ class Post
 
     public function setUser(?User $user): self
     {
-        // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
-            $this->user->setPost(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($user !== null && $user->getPost() !== $this) {
-            $user->setPost($this);
-        }
-
         $this->user = $user;
 
         return $this;

@@ -53,12 +53,8 @@ class Equid
     private $departement;
 
     /**
-     * @ORM\OneToOne(targetEntity=Post::class, mappedBy="equid", cascade={"persist", "remove"})
-     */
-    private $post;
-
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="equid")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="equids")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
@@ -66,6 +62,11 @@ class Equid
      * @ORM\Column(type="string", length=55, nullable=true)
      */
     private $breed;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Post::class, mappedBy="equid", cascade={"persist", "remove"})
+     */
+    private $post;
 
     public function getId(): ?int
     {
@@ -156,6 +157,30 @@ class Equid
         return $this;
     }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getBreed(): ?string
+    {
+        return $this->breed;
+    }
+
+    public function setBreed(?string $breed): self
+    {
+        $this->breed = $breed;
+
+        return $this;
+    }
+
     public function getPost(): ?Post
     {
         return $this->post;
@@ -174,40 +199,6 @@ class Equid
         }
 
         $this->post = $post;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
-            $this->user->setEquid(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($user !== null && $user->getEquid() !== $this) {
-            $user->setEquid($this);
-        }
-
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getBreed(): ?string
-    {
-        return $this->breed;
-    }
-
-    public function setBreed(?string $breed): self
-    {
-        $this->breed = $breed;
 
         return $this;
     }

@@ -88,7 +88,17 @@ class AccountController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        return $this->render('account/equid/myEquid.html.twig', []);
+        // get user id
+        $userId = $this->getUser()->getId();
+
+        // get user's horses
+        $horses = $this->getDoctrine()
+            ->getRepository(Equid::class)
+            ->findBy(array('user' => $userId), null);
+
+        return $this->render('account/equid/myEquid.html.twig', [
+            'horses' => $horses,
+        ]);
     }
 
     /**

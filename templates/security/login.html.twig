@@ -28,8 +28,8 @@
 					{% if app.user %}
 						<div class="mb-3">
 							Vous êtes déjà déjà connecté.e sous :
-							{{ app.user.username }}.
-							<a href="{{ path('app_logout') }}">Logout</a>
+							{{ app.user.pseudo }}.
+							<a href="{{ path('app_logout') }}" class="aWithoutStyle">Déconnexion</a>
 						</div>
 					{% endif %}
 

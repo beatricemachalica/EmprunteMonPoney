@@ -19,6 +19,13 @@
 			{% endif %}
 
 			{{ form_start(form) }}
+
+			{% if proprioPost %}
+				{{ form_row(form.equid) }}
+			{% else %}
+				{% do form.equid.setRendered() %}
+			{% endif %}
+
 			{{ form_row(form.text) }}
 			{{ form_row(form.price) }}
 			{# {{ form_row(form.category) }} #}

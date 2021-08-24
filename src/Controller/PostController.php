@@ -2,16 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
-use App\Entity\Photo;
 use App\Entity\Post;
+use App\Entity\Equid;
+use App\Entity\Photo;
 use App\Form\PostType;
 use PHPUnit\Util\Json;
+use App\Entity\Category;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PostController extends AbstractController
 {
@@ -41,7 +42,23 @@ class PostController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        return $this->render('post/myPost.html.twig', []);
+        // get user id
+        $userId = $this->getUser()->getId();
+
+        // get user's posts
+        $posts = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->findBy(array('user' => $userId), null);
+
+        // get user's horses
+        $horses = $this->getDoctrine()
+            ->getRepository(Equid::class)
+            ->findBy(array('user' => $userId), null);
+
+        return $this->render('post/myPost.html.twig', [
+            'posts' => $posts,
+            'horses' => $horses
+        ]);
     }
 
     /**
@@ -74,8 +91,23 @@ class PostController extends AbstractController
             $post = new Post();
         }
 
-        $form = $this->createForm(PostType::class, $post);
+        // get user id
+        $userId = $this->getUser()->getId();
+
+        // get user's horses
+        // an exact collection of entities that I want to include in the choice element
+        $horses = $this->getDoctrine()
+            ->getRepository(Equid::class)
+            ->findBy(array('user' => $userId), null);
+
+        $form = $this->createForm(PostType::class, $post, [
+            'horses' => $horses
+        ]);
+
         $form->handleRequest($request);
+
+        // get the array of user's roles
+        $userRolesArray = $this->getUser()->getRoles();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -85,12 +117,6 @@ class PostController extends AbstractController
             // set the active attribut to true
             // by default the post will be activated and will appear on the website
             $post->setActive(true);
-
-            // get the owner's horse
-            $usersHorse = $this->getUser()->getEquid();
-
-            // get the array of roles
-            $userRoles = $this->getUser()->getRoles();
 
             // get the categories
             $categoryEmprunt = $this->getDoctrine()
@@ -102,20 +128,21 @@ class PostController extends AbstractController
                 ->findOneBy(array('name' => 'profil d\'un cheval'), null);
 
             // if the user is a borrower ("ROLE_EMPRUNT")
-            if (in_array("ROLE_EMPRUNT", $userRoles)) {
+            if (in_array("ROLE_EMPRUNT", $userRolesArray)) {
+
                 // set the right category
                 $post->setCategory($categoryEmprunt);
             }
 
-            // if the user is an owner ("ROLE_PROPRIO") and his horse has been correctly registered
-            if ((in_array("ROLE_PROPRIO", $userRoles)) && ($usersHorse !== null)) {
+            // if the user is an owner ("ROLE_PROPRIO") and his horse(s) has been correctly registered
+            if ((in_array("ROLE_PROPRIO", $userRolesArray)) && (!empty($horses))) {
+
                 // set the right category
                 $post->setCategory($categoryProprio);
-                // set the equid
-                $post->setEquid($this->getUser()->getEquid());
-            } elseif ($usersHorse == null) {
-                // if the owner has fogotten to register his horse first
-                $this->addFlash('error', "Veuillez inscrire votre cheval avant de créer une annonce.");
+            } elseif (empty($horses)) {
+
+                // if the owner has fogotten to register at least one horse
+                $this->addFlash('error', "Veuillez inscrire au moins un cheval avant de créer une annonce.");
             }
 
             // pictures
@@ -139,7 +166,7 @@ class PostController extends AbstractController
                 $post->addPhoto($img);
             }
 
-            // flash message
+            // flash message in case of edit or a new post
             $idPost = $post->getId();
             if ($idPost == null) {
                 $this->addFlash('message', 'L\'annonce a bien été enregistrée.');
@@ -157,7 +184,8 @@ class PostController extends AbstractController
 
         return $this->render('post/newPost.html.twig', [
             'form' => $form->createView(),
-            'editMode' => $post->getId() !== null
+            'editMode' => $post->getId() !== null,
+            'proprioPost' => in_array("ROLE_PROPRIO", $userRolesArray)
         ]);
     }
 

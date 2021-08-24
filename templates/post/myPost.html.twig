@@ -11,9 +11,8 @@
 
 	{% block container %}
 
-		<div class="container-lg">
-
-			<h2 class="mt-20">Mon annonce</h2>
+		<div
+			class="container-lg">
 
 			{# flash message #}
 			{% for message in app.flashes('message') %}
@@ -22,134 +21,106 @@
 				</div>
 			{% endfor %}
 
-			<div
-				class="d-lg-flex flex-row justify-content-between">
+			<h2 class="mt-20">Mes annonces</h2>
 
+			<button type="button" class="btn btn-primary mt-2 mb-2">
+				<a href="{{ path('add_post') }}" class="aWithoutStyle">Nouvelle annonce</a>
+			</button>
 
-				{# <table class="table border">
-																	<thead>
-																		<tr>
-																			<th scope="col">Catégorie de l'annonce</th>
-																			{% if app.user.equid is not null %}
-																				<th scope="col">Cheval</th>
-																			{% endif %}
-																			<th scope="col">Date de création</th>
-																			<th scope="col">Prix / mois</th>
-																			<th scope="col">Active</th>
-																		</tr>
-																	</thead>
-																	<tbody>
-																		{% if app.user.post is not null and app.user.post is defined %}
-																			<tr>
-																				<td>{{ app.user.post.category }}</td>
-																				{% if app.user.equid is not null %}
-																					<td scope="col">{{ app.user.equid |capitalize }}</td>
-																				{% endif %}
-																				<td>{{ app.user.post.createdAt |date("d/m/Y") }}</td>
-																				<td>{{ app.user.post.price }}
-																					€</td>
-																				<td>
-																					<div class="custom-control custom-switch">
-																						<input type="checkbox" class="custom-control-input" id="customSwitch1" {{ (app.user.post.active) ? 'checked' : '' }} data-id="{{ app.user.post.id }}">
-																						<label class="custom-control-label" for="customSwitch1"></label>
-																					</div>
-																				</td>
-																			</tr>
-																		{% endif %}
-																	</tbody>
-																</table> #}
+			{% for post in posts %}
 
-				<table class="table border">
-					<tbody>
-						{% if app.user.equid is not null and app.user.equid is defined %}
-							<tr>
-								<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
-								<td>{{ app.user.post.category |capitalize }}</td>
-							</tr>
-							<tr>
-								<td scope="col" class="font-weight-bold">Cheval</td>
-								<td>{{ app.user.equid |capitalize}}</td>
-							</tr>
-							<tr>
-								<td scope="col" class="font-weight-bold">Date de création</td>
-								<td>{{ app.user.post.createdAt |date("d/m/Y") }}</td>
-							</tr>
-							<tr>
-								<td scope="col" class="font-weight-bold">Prix / mois</td>
-								<td>{{ app.user.post.price }}
-									€</td>
-							</tr>
-							<tr>
-								<td scope="col" class="font-weight-bold">Active</td>
-								<td>
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="customSwitch1" {{ (app.user.post.active) ? 'checked' : '' }} data-id="{{ app.user.post.id }}">
-										<label class="custom-control-label" for="customSwitch1"></label>
-									</div>
-								</td>
-							</tr>
-						{% endif %}
-					</tbody>
-				</table>
-
-				{% if app.user.post is not null and app.user.post is defined %}
-					<div class="ml-5">
-						{% include "post/postCard.html.twig" %}
-					</div>
+				{% if post.equid is not null %}
+					<h4>
+						{{ post.equid.name |capitalize }}
+					</h4>
 				{% endif %}
+				<div class="d-lg-flex flex-row justify-content-between">
 
-			</div>
+					<table class="table border">
+						<tbody>
+							{% if post.equid is not null and post.equid is defined %}
+								<tr>
+									<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
+									<td>{{ post.category |capitalize }}</td>
+								</tr>
+								<tr>
+									<td scope="col" class="font-weight-bold">Cheval</td>
+									<td>{{ post.equid.name |capitalize}}</td>
+								</tr>
+								<tr>
+									<td scope="col" class="font-weight-bold">Date de création</td>
+									<td>{{ post.createdAt |date("d/m/Y") }}</td>
+								</tr>
+								<tr>
+									<td scope="col" class="font-weight-bold">Prix / mois</td>
+									<td>{{ post.price }}
+										€</td>
+								</tr>
+								<tr>
+									<td scope="col" class="font-weight-bold">Active</td>
+									<td>
+										<div class="custom-control custom-switch">
+											<input type="checkbox" class="custom-control-input" id="customSwitch1" {{ (post.active) ? 'checked' : '' }} data-id="{{ post.id }}">
+											<label class="custom-control-label" for="customSwitch1"></label>
+										</div>
+									</td>
+								</tr>
+							{% endif %}
+						</tbody>
+					</table>
 
-			{# buttons edit delete post #}
 
-			{% if app.user.post is not null and app.user.post is defined %}
-				{# if post already exists #}
+					{% if post is not null and post is defined %}
+						<div class="ml-5">
+							{% include "post/postCard.html.twig" %}
+						</div>
+					{% endif %}
+
+				</div>
+
+
+				{# post pictures #}
+				<div>
+					<h3>Photos</h3>
+
+					{% for photo in post.photos %}
+						<div>
+							<figure>
+								<img src="{{ asset('/uploads/' ~ photo.name ) }}" alt="photo" style="width:350px">
+							</figure>
+							<a href="{{ path('delete_picture', {id: photo.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ photo.id) }}">
+								<i class="fas fa-times"></i>
+								supprimer la photo</a>
+						</div>
+					{% endfor %}
+				</div>
 
 				<button type="button" class="btn btn-primary mt-2 mb-2">
-					<a href="{{ path('edit_post', {id: app.user.post.id} )}}" class="aWithoutStyle">Modifier mon annonce</a>
+					<a href="{{ path('edit_post', {id: post.id} )}}" class="aWithoutStyle">
+						<i class="fas fa-pencil-alt"></i>
+						Modifier</a>
 				</button>
 
 				<button type="button" class="btn btn-primary mt-2 mb-2">
-					<a href="{{ path('delete_post', {id: app.user.post.id} )}}" class="aWithoutStyle" onclick="return confirm('Êtes-vous sûr.e de vouloir supprimer votre annonce ?')">Supprimer mon annonce</a>
+					<a href="{{ path('delete_post', {id: post.id} )}}" class="aWithoutStyle" onclick="return confirm('Êtes-vous sûr.e de vouloir supprimer votre annonce ? Attention cela supprimera également le cheval qui y est associé.')">
+						<i class="fas fa-times"></i>
+						Supprimer</a>
 				</button>
 
-			{% else %}
-				{# if post has not been created yet #}
+				<hr>
 
-				{% if is_granted("ROLE_PROPRIO") and app.user.equid is null  %}
-					{# if the user is an owner ("ROLE_PROPRIO") and he has not registered his horse yet #}
+			{% endfor %}
 
-					<p class="alert alert-secondary">
-						<i class="fas fa-exclamation-triangle text-danger"></i>
-						Veuillez inscrire votre cheval avant de créer une annonce
-					</p>
-
-				{% else %}
-
-					<button type="button" class="btn btn-primary mt-2 mb-2">
-						<a href="{{ path('add_post') }}" class="aWithoutStyle">Créer mon annonce</a>
-					</button>
-
-				{% endif %}
-
+			{% if is_granted("ROLE_PROPRIO") and horses is null %}
+				<p class="alert alert-secondary">
+					<i class="fas fa-exclamation-triangle text-danger"></i>
+					Veuillez inscrire au moins un cheval avant de créer une annonce
+				</p>
 			{% endif %}
-
-			{# post pictures #}
-			<div>
-				<h3>Photos</h3>
-				{% for photo in app.user.post.photos %}
-					<div>
-						<figure><img src="{{ asset('/uploads/' ~ photo.name ) }}" alt="photo" style="width:350px"></figure>
-						<a href="{{ path('delete_picture', {id: photo.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ photo.id) }}">supprimer</a>
-					</div>
-				{% endfor %}
-			</div>
-
 
 		</div>
 
 	{% endblock %}
-
 {% endblock %}
 
 {% block javascripts %}

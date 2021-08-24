@@ -21,112 +21,82 @@
 			{% endfor %}
 
 
-			<h2 class="mt-2">Mon cheval</h2>
+			<h2 class="mt-2">Mes chevaux</h2>
 
-			<hr>
+			<button type="button" class="btn btn-primary mt-2 mb-2">
+				<a href="{{ path('add_equid') }}" class="aWithoutStyle">Inscrire un cheval</a>
+			</button>
 
-			{# <h3>Informations</h3>
-			<table class="table border">
-				<thead>
-					<tr>
-						<th scope="col">Nom</th>
-						<th scope="col">Race</th>
-						<th scope="col">Sexe</th>
-						<th scope="col">Taille</th>
-						<th scope="col">Date de naissance</th>
-						<th scope="col">Age</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% if app.user.equid is not null and app.user.equid is defined %}
-						<tr>
-							<td>{{ app.user.equid.name }}</td>
-							<td>{{ app.user.equid.breed }}</td>
-							<td>{{ app.user.equid.sex }}</td>
-							<td>{{ app.user.equid.size }}</td>
-							<td>{{ app.user.equid.birthDate |date("d/m/Y") }}</td>
-							<td>{% set difference = date(app.user.equid.birthDate).diff(date()) %}
-								{% set leftYears = difference.y %}{{leftYears}}
-								ans</td>
-						</tr>
-					{% endif %}
-				</tbody>
-			</table> #}
+			{% for horse in horses %}
 
-			<h3>Informations générales</h3>
-			<table class="table border">
-				<tbody>
-					{% if app.user.equid is not null and app.user.equid is defined %}
+				<h3>{{ horse.name }}</h3>
+				<h4>Informations générales</h4>
+				<table class="table border">
+					<tbody>
 						<tr>
 							<td scope="col" class="font-weight-bold">Nom</td>
-							<td>{{ app.user.equid.name |capitalize }}</td>
+							<td>{{ horse.name |capitalize }}</td>
 						</tr>
 						<tr>
 							<td scope="col" class="font-weight-bold">Race</td>
-							<td>{{ app.user.equid.breed |capitalize }}</td>
+							<td>{{ horse.breed |capitalize }}</td>
 						</tr>
 						<tr>
 							<td scope="col" class="font-weight-bold">Sexe</td>
-							<td>{{ app.user.equid.sex |capitalize }}</td>
+							<td>{{ horse.sex |capitalize }}</td>
 						</tr>
 						<tr>
 							<td scope="col" class="font-weight-bold">Hauteur au garrot (cm)</td>
-							<td>{{ app.user.equid.size |capitalize }}</td>
+							<td>{{ horse.size |capitalize }}</td>
 						</tr>
 						<tr>
 							<td scope="col" class="font-weight-bold">Date de naissance</td>
-							<td>{{ app.user.equid.birthDate |date("d/m/Y") }}</td>
+							<td>{{ horse.birthDate |date("d/m/Y") }}</td>
 						</tr>
 						<tr>
 							<td scope="col" class="font-weight-bold">Age</td>
-							<td>{% set difference = date(app.user.equid.birthDate).diff(date()) %}
+							<td>{% set difference = date(horse.birthDate).diff(date()) %}
 								{% set leftYears = difference.y %}{{leftYears}}
 								ans</td>
 						</tr>
-					{% endif %}
-				</tbody>
-			</table>
+					</tbody>
+				</table>
 
 
-			{# address #}
-			<h3>Adresse</h3>
-			<table class="table border">
-				<thead>
-					<tr>
-						<th scope="col">Département</th>
-						<th scope="col">Code postal</th>
-						<th scope="col">Ville</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% if app.user.equid is not null and app.user.equid is defined %}
+				{# address #}
+				<h4>Adresse</h4>
+				<table class="table border">
+					<thead>
 						<tr>
-							<td>{{ app.user.equid.departement |capitalize}}</td>
-							<td>{{ app.user.equid.cp}}</td>
-							<td>{{ app.user.equid.city |capitalize}}</td>
+							<th scope="col">Département</th>
+							<th scope="col">Code postal</th>
+							<th scope="col">Ville</th>
 						</tr>
-					{% endif %}
-				</tbody>
-			</table>
-
-			{% if app.user.equid is not null and app.user.equid is defined %}
-
-				<button type="button" class="btn btn-primary mt-2 mb-2">
-					<a href="{{ path('edit_equid', {id: app.user.equid.id} )}}" class="aWithoutStyle">Modifier les informations</a>
-				</button>
-
-				<button type="button" class="btn btn-primary mt-2 mb-2">
-					<a href="{{ path('delete_equid', {id: app.user.equid.id}) }}" class="aWithoutStyle">Supprimer mon cheval</a>
-				</button>
-			{% else %}
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{ horse.departement |capitalize}}</td>
+							<td>{{ horse.cp}}</td>
+							<td>{{ horse.city |capitalize}}</td>
+						</tr>
+					</tbody>
+				</table>
 
 				<button type="button" class="btn btn-primary mt-2 mb-2">
-					<a href="{{ path('add_equid') }}" class="aWithoutStyle">Inscrire mon cheval</a>
+					<a href="{{ path('edit_equid', {id: horse.id} )}}" class="aWithoutStyle">
+						<i class="fas fa-pencil-alt"></i>
+						Modifier
+					</a>
+				</button>
+				<button type="button" class="btn btn-primary mt-2 mb-2">
+					<a href="{{ path('delete_equid', {id: horse.id}) }}" class="aWithoutStyle">
+						<i class="fas fa-times"></i>
+						Supprimer</a>
 				</button>
 
-			{% endif %}
+				<hr class="">
 
+			{% endfor %}
 
 		</div>
 

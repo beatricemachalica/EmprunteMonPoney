@@ -40,16 +40,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
-     * @ORM\OneToOne(targetEntity=Post::class, inversedBy="user", cascade={"persist", "remove"})
-     */
-    private $post;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Equid::class, inversedBy="user", cascade={"persist", "remove"})
-     */
-    private $equid;
-
-    /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
      */
     private $comment;
@@ -90,6 +80,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $phoneNumber;
 
     /**
+     * @ORM\OneToMany(targetEntity=Equid::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $equids;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $posts;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="favorite")
      */
     private $favorites;
@@ -99,6 +99,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->comment = new ArrayCollection();
         $this->setRegisterDate(new \DateTimeImmutable());
         $this->favorites = new ArrayCollection();
+        $this->equids = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -186,30 +188,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function getPost(): ?Post
-    {
-        return $this->post;
-    }
-
-    public function setPost(?Post $post): self
-    {
-        $this->post = $post;
-
-        return $this;
-    }
-
-    public function getEquid(): ?Equid
-    {
-        return $this->equid;
-    }
-
-    public function setEquid(?Equid $equid): self
-    {
-        $this->equid = $equid;
-
-        return $this;
     }
 
     /**
@@ -330,6 +308,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->getPseudo();
+    }
+
+    /**
+     * @return Collection|Equid[]
+     */
+    public function getEquids(): Collection
+    {
+        return $this->equids;
+    }
+
+    public function addEquid(Equid $equid): self
+    {
+        if (!$this->equids->contains($equid)) {
+            $this->equids[] = $equid;
+            $equid->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquid(Equid $equid): self
+    {
+        if ($this->equids->removeElement($equid)) {
+            // set the owning side to null (unless already changed)
+            if ($equid->getUser() === $this) {
+                $equid->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->removeElement($post)) {
+            // set the owning side to null (unless already changed)
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
     /**
