@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostController extends AbstractController
 {
@@ -21,23 +22,21 @@ class PostController extends AbstractController
      */
     public function index(): Response
     {
-        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $posts = $this->getDoctrine()
             ->getRepository(Post::class)
-            ->findAll();
-
-        // récupérer l'id (objet proxy) pour afficher les informations
+            ->findBy(['active' => true], ['createdAt' => 'desc']);
 
         return $this->render('post/index.html.twig', [
-            'cards' => $posts,
+            'posts' => $posts,
         ]);
     }
 
     /**
      * @Route("/post", name="my_post")
      */
-    public function showPost(): Response
+    public function myPost(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
@@ -186,6 +185,30 @@ class PostController extends AbstractController
             'form' => $form->createView(),
             'editMode' => $post->getId() !== null,
             'proprioPost' => in_array("ROLE_PROPRIO", $userRolesArray)
+        ]);
+    }
+
+    /**
+     * @Route("/showPost/{id}", name="show_post", methods="GET")
+     */
+    public function showPost(Post $post): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
+        if (!$post) {
+            throw new NotFoundHttpException('L\'annonce n\'a pas été trouvée.');
+        }
+
+        // $postCategory = $post->getCategory();
+        // $horsePost = false;
+        // if ($postCategory == "profil cheval") {
+        //     $horsePost = true;
+        // }
+
+        return $this->render('post/showPost.html.twig', [
+            'post' => $post,
+            // 'horsePost' => $horsePost
         ]);
     }
 

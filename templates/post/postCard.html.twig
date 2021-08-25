@@ -1,15 +1,40 @@
-<div class="card" style="width: 18rem;">
-	{% for photo in post.photos | slice(0,1) %}
-		<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="card-img-top" alt="photo annonce">
-	{% endfor %}
-	<div class="card-body">
-		<h5 class="card-title">{{ post.equid.name |capitalize }},
-			{{ post.equid.breed |capitalize }}</h5>
+<article
+	class="card h-100" style="width: 18rem;">
+
+	{# pictures #}
+	{% if post.category == "profil d'un cheval" %}
+
+		<img src="{{ asset('/uploads/' ~ post.photos[0].name ) }}" class="card-img-top" alt="photo annonce">
+
+	{% else %}
+
+		<img src="..." class="card-img-top" alt="photo annonce">
+
+	{% endif %}
+
+	<div
+		class="card-body">
+
+		{# title #}
+		{% if post.category == "profil d'un cheval" %}
+
+			<h5 class="card-title">{{ post.equid.name|capitalize }},
+				{{ post.equid.breed|capitalize }}
+			</h5>
+		{% else %}
+			<h5 class="card-title">{{ post.user.pseudo|capitalize }}</h5>
+
+		{% endif %}
+
+		{# price #}
 		<h6 class="card-subtitle mb-2 text-muted">{{ post.price }}
 			€ / mois</h6>
-		<div style="overflow: hidden; white-space: nowrap;">
-			<p class="card-text">{{ post.text | raw }}</p>
-		</div>
-		<a href="#" class="btn btn-primary">Détails</a>
+
+		{# text #}
+		<p class="card-text">{{ post.text |u.truncate(50,'...') |raw }}</p>
+
+		<a href="{{ path('show_post', {id: post.id}) }}" class="btn btn-primary">Détails</a>
+
 	</div>
-</div>
+
+</article>

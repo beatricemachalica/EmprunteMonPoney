@@ -23,30 +23,41 @@
 
 			<h2 class="mt-20">Mes annonces</h2>
 
-			<button type="button" class="btn btn-primary mt-2 mb-2">
-				<a href="{{ path('add_post') }}" class="aWithoutStyle">Nouvelle annonce</a>
-			</button>
+			{% if is_granted("ROLE_PROPRIO") %}
+				<button type="button" class="btn btn-primary mt-2 mb-2">
+					<a href="{{ path('add_post') }}" class="aWithoutStyle">Nouvelle annonce</a>
+				</button>
+			{% elseif is_granted("ROLE_EMPRUNT") and posts is null %}
+				<button type="button" class="btn btn-primary mt-2 mb-2">
+					<a href="{{ path('add_post') }}" class="aWithoutStyle">Nouvelle annonce emprunteur</a>
+				</button>
+			{% else %}
+				<p>Consultez les informations de votre annonce ci-dessous et modifiez la si nécessaire.</p>
+			{% endif %}
 
 			{% for post in posts %}
 
-				{% if post.equid is not null %}
-					<h4>
-						{{ post.equid.name |capitalize }}
-					</h4>
+				{% if post.category == "profil d'un cheval" and post.equid is not null %}
+					<h4>{{ post.equid.name |capitalize }}</h4>
+				{% else %}
+					<h4>{{ app.user.pseudo |capitalize }}</h4>
 				{% endif %}
-				<div class="d-lg-flex flex-row justify-content-between">
 
-					<table class="table border">
-						<tbody>
-							{% if post.equid is not null and post.equid is defined %}
+				<section class="shadow p-3 mb-5 bg-white rounded">
+					<div class="d-lg-flex flex-row justify-content-between">
+
+						<table class="table border">
+							<tbody>
 								<tr>
 									<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
 									<td>{{ post.category |capitalize }}</td>
 								</tr>
-								<tr>
-									<td scope="col" class="font-weight-bold">Cheval</td>
-									<td>{{ post.equid.name |capitalize}}</td>
-								</tr>
+								{% if post.category == "profil d'un cheval" and post.equid is not null %}
+									<tr>
+										<td scope="col" class="font-weight-bold">Cheval</td>
+										<td>{{ post.equid.name |capitalize}}</td>
+									</tr>
+								{% endif %}
 								<tr>
 									<td scope="col" class="font-weight-bold">Date de création</td>
 									<td>{{ post.createdAt |date("d/m/Y") }}</td>
@@ -65,35 +76,38 @@
 										</div>
 									</td>
 								</tr>
-							{% endif %}
-						</tbody>
-					</table>
+							</tbody>
+						</table>
 
+						{% if post is not null and post is defined %}
+							<article class="ml-5">
+								{% include "post/postCard.html.twig" %}
+							</article>
+						{% endif %}
 
-					{% if post is not null and post is defined %}
-						<div class="ml-5">
-							{% include "post/postCard.html.twig" %}
-						</div>
-					{% endif %}
+					</div>
+				</section>
 
-				</div>
+				{% if post.equid is not null %}
 
+					{# post pictures #}
+					<section>
+						<h3>Photos</h3>
 
-				{# post pictures #}
-				<div>
-					<h3>Photos</h3>
+						{% for photo in post.photos %}
+							<div>
+								<figure>
+									<img src="{{ asset('/uploads/' ~ photo.name ) }}" alt="photo" style="width:350px">
+								</figure>
+								<a href="{{ path('delete_picture', {id: photo.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ photo.id) }}">
+									<i class="fas fa-times"></i>
+									supprimer la photo</a>
+							</div>
+						{% endfor %}
 
-					{% for photo in post.photos %}
-						<div>
-							<figure>
-								<img src="{{ asset('/uploads/' ~ photo.name ) }}" alt="photo" style="width:350px">
-							</figure>
-							<a href="{{ path('delete_picture', {id: photo.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ photo.id) }}">
-								<i class="fas fa-times"></i>
-								supprimer la photo</a>
-						</div>
-					{% endfor %}
-				</div>
+					</section>
+
+				{% endif %}
 
 				<button type="button" class="btn btn-primary mt-2 mb-2">
 					<a href="{{ path('edit_post', {id: post.id} )}}" class="aWithoutStyle">
@@ -102,15 +116,19 @@
 				</button>
 
 				<button type="button" class="btn btn-primary mt-2 mb-2">
-					<a href="{{ path('delete_post', {id: post.id} )}}" class="aWithoutStyle" onclick="return confirm('Êtes-vous sûr.e de vouloir supprimer votre annonce ? Attention cela supprimera également le cheval qui y est associé.')">
-						<i class="fas fa-times"></i>
-						Supprimer</a>
+					{% if post.category == "profil d'un cheval" and post.equid is not null %}
+						<a href="{{ path('delete_post', {id: post.id} )}}" class="aWithoutStyle" onclick="return confirm('Êtes-vous sûr.e de vouloir supprimer votre annonce ? Attention cela supprimera également le cheval qui y est associé.')">
+							<i class="fas fa-times"></i>
+							Supprimer</a>
+					{% else %}
+						<a href="{{ path('delete_post', {id: post.id} )}}" class="aWithoutStyle" onclick="return confirm('Êtes-vous sûr.e de vouloir supprimer votre annonce ?')">
+							<i class="fas fa-times"></i>
+							Supprimer</a>
+					{% endif %}
 				</button>
-
 				<hr>
 
 			{% endfor %}
-
 			{% if is_granted("ROLE_PROPRIO") and horses is null %}
 				<p class="alert alert-secondary">
 					<i class="fas fa-exclamation-triangle text-danger"></i>

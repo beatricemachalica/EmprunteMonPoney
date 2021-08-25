@@ -13,7 +13,7 @@
 
 		<div class="container-lg">
 
-			<h2 class="mt-2">Les annonces</h2>
+			<h2 class="mt-2">Annonces</h2>
 
 			{# flash message #}
 			{% for message in app.flashes('message') %}
@@ -22,16 +22,20 @@
 				</div>
 			{% endfor %}
 
-			<pre>
-				{{ dump(cards) }}
-			</pre>
+			{# cards #}
+			<div class="row row-cols-1 row-cols-md-3">
+				{% if posts is not null %}
+					{% for post in posts %}
 
-			{% for card in cards %}
-				{% include "post/postsCards.html.twig" %}
-			{% endfor %}
+						<div class="col mb-4">
+							{% include "post/postCard.html.twig" %}
+						</div>
+
+					{% endfor %}
+				{% endif %}
+			</div>
 
 		</div>
 
 	{% endblock %}
-
 {% endblock %}

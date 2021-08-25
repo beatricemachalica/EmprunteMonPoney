@@ -1,0 +1,256 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmprunteMonPoney - Annonces
+{% endblock %}
+
+{% block body %}
+
+	{% block header %}
+		{% include "smallHeader.html.twig" %}
+	{% endblock %}
+
+	{% block container %}
+
+		<div
+			class="container-lg">
+
+			{# flash message #}
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success" role="alert">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+			{# post "ROLE_PROPRIO" #}
+			{% if post.category == "profil d'un cheval" and post.equid is not null %}
+
+				<h3 class="mt-20">
+					{{ post.equid.name |capitalize }}
+				</h3>
+
+				{# post pictures #}
+				<div class="d-flex justify-content-center">
+
+					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
+						<ol class="carousel-indicators">
+							<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+							<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+							<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+						</ol>
+						<div class="carousel-inner">
+							{% for photo in post.photos %}
+								<div class="carousel-item active">
+									<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
+								</div>
+							{% endfor %}
+						</div>
+						<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="sr-only">Previous</span>
+						</a>
+						<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="sr-only">Next</span>
+						</a>
+					</div>
+
+				</div>
+
+
+				<div class="shadow p-3 mb-2 bg-white rounded">
+					<div class="d-lg-flex flex-row justify-content-between">
+
+						<div class="row">
+
+							<div class="col-sm">
+
+								<h4>À propos</h4>
+								<article>{{ post.text |raw }}</article>
+
+							</div>
+
+							<div class="col-sm">
+
+								<table class="table border">
+									<tbody>
+										{% if post.equid is not null and post.equid is defined %}
+											<tr>
+												<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
+												<td>{{ post.category |capitalize }}
+												</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Prix / mois</td>
+												<td>{{ post.price }}
+													€</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Race</td>
+												<td>{{ post.equid.breed |capitalize }}
+												</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Taille
+												</td>
+												<td>{{ post.equid.size }}
+												</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Sexe</td>
+												<td>{{ post.equid.sex |capitalize }}
+												</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Age</td>
+												<td>{% set difference = date(post.equid.birthDate).diff(date()) %}
+													{% set leftYears = difference.y %}{{leftYears}}
+													ans</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Propriétaire</td>
+												<td>{{ post.equid.user |capitalize }}
+												</td>
+											</tr>
+										{% endif %}
+									</tbody>
+								</table>
+
+							</div>
+
+						</div>
+
+					</div>
+					<div>
+						<h4>Localisation</h4>
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">Département</th>
+									<th scope="col">Code Postal</th>
+									<th scope="col">Ville</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>{{ post.equid.departement |capitalize }}</td>
+									<td>{{ post.equid.cp |capitalize }}</td>
+									<td>{{ post.equid.city |capitalize }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					{# post date createdAt #}
+					<small class="form-text text-muted">Annonce créée le
+						{{ post.createdAt |date("d/m/Y") }}</small>
+
+				</div>
+
+			{% endif %}
+
+			{# post "ROLE_EMPRUNT" #}
+			{% if post.category == "profil d'emprunteur" and post.user is not null %}
+
+				<h3 class="mt-20">
+					{{ post.user.pseudo |capitalize }}
+				</h3>
+
+				{# post pictures #}
+				{# <div class="d-flex justify-content-center">
+																																																																																																																								
+																																																																																																																													<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
+																																																																																																																														<ol class="carousel-indicators">
+																																																																																																																															<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+																																																																																																																															<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+																																																																																																																															<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+																																																																																																																														</ol>
+																																																																																																																														<div class="carousel-inner">
+																																																																																																																															{% for photo in post.photos %}
+																																																																																																																																<div class="carousel-item active">
+																																																																																																																																	<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
+																																																																																																																																</div>
+																																																																																																																															{% endfor %}
+																																																																																																																														</div>
+																																																																																																																														<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+																																																																																																																															<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+																																																																																																																															<span class="sr-only">Previous</span>
+																																																																																																																														</a>
+																																																																																																																														<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+																																																																																																																															<span class="carousel-control-next-icon" aria-hidden="true"></span>
+																																																																																																																															<span class="sr-only">Next</span>
+																																																																																																																														</a>
+																																																																																																																													</div>
+																																																																																																																								
+																																																																																																																												</div> #}
+
+				<section class="shadow p-3 mb-2 bg-white rounded">
+
+					<section class="d-lg-flex flex-row justify-content-between row">
+
+						<div class="col-sm">
+							<h4>À propos</h4>
+							<article style="word-wrap: break-word;">{{ post.text |raw }}</article>
+						</div>
+
+						<div class="col-sm">
+							<table class="table border">
+								<tbody>
+									<tr>
+										<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
+										<td>{{ post.category |capitalize }}
+										</td>
+									</tr>
+									<tr>
+										<td scope="col" class="font-weight-bold">Prix / mois</td>
+										<td>{{ post.price }}
+											€</td>
+									</tr>
+									<tr>
+										<td scope="col" class="font-weight-bold">Auteur</td>
+										<td>{{ post.user.pseudo |capitalize }}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</section>
+
+					<section>
+						<h4>Localisation</h4>
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">Département</th>
+									<th scope="col">Code Postal</th>
+									<th scope="col">Ville</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>{{ post.user.departement |capitalize }}</td>
+									<td>{{ post.user.cp |capitalize }}</td>
+									<td>{{ post.user.city |capitalize }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+
+					{# post date createdAt #}
+					<small class="form-text text-muted">Annonce créée le
+						{{ post.createdAt |date("d/m/Y") }}</small>
+
+				</section>
+
+			{% endif %}
+
+			<button type="button" class="btn btn-primary mt-2 mb-2">
+				<a href="#" class="aWithoutStyle">
+					<i class="fas fa-pencil-alt"></i>
+					Commenter</a>
+			</button>
+
+		</div>
+
+	{% endblock %}
+{% endblock %}
