@@ -246,7 +246,7 @@ class PostController extends AbstractController
     /**
      * @Route("/favorite/add/{id}", name="add_favorite")
      */
-    public function addFavorite(Post $post): Response
+    public function addFavorite(Post $post)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
@@ -261,7 +261,32 @@ class PostController extends AbstractController
         $em->persist($post);
         $em->flush();
 
-        return $this->redirectToRoute('posts');
+        return $this->redirectToRoute('show_post', [
+            'id' => $post->getId()
+        ]);
+    }
+
+    /**
+     * @Route("/favorite/remove/{id}", name="remove_favorite")
+     */
+    public function removeFavorite(Post $post)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
+        if (!$post) {
+            throw new NotFoundHttpException('L\'annonce n\'a pas été trouvée.');
+        }
+
+        $post->removeFavorite($this->getUser());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($post);
+        $em->flush();
+
+        return $this->redirectToRoute('show_post', [
+            'id' => $post->getId()
+        ]);
     }
 
     /**

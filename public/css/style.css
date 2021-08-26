@@ -561,3 +561,10 @@ form {
 .centerButton button {
   width: 40%;
 }
+
+.favLink {
+  position: absolute;
+  top: 75px;
+  font-size: 30px;
+  margin-left: 20px;
+}

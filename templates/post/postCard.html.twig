@@ -35,33 +35,6 @@
 
 		<div>
 			<a href="{{ path('show_post', {id: post.id}) }}" class="btn btn-primary">Détails</a>
-
-			{# favorite heart #}
-
-			{% if is_granted("ROLE_USER") %}
-				{# if the user has "ROLE_USER" #}
-
-				{% for fav in post.favorite %}
-
-					{% if fav.id == app.user.id %}
-						{# full heart #}
-						<i class="fas fa-heart text-danger" style="margin-left: 20px;" data-id="{{ post.id }}"></i>
-
-					{% else %}
-						{# empty heart if user is not logged in #}
-						<i class="far fa-heart text-danger" style="margin-left: 20px;" data-id="{{ post.id }}"></i>
-					{% endif %}
-
-				{% else %}
-					{# empty heart if not favorite #}
-					<i class="far fa-heart text-danger" style="margin-left: 20px;" data-id="{{ post.id }}"></i>
-				{% endfor %}
-
-			{% else %}
-				{# empty heart if user is not logged in #}
-				<i class="far fa-heart text-danger" style="margin-left: 20px;" data-id="{{ post.id }}"></i>
-			{% endif %}
-
 		</div>
 
 	</div>
