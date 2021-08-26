@@ -23,8 +23,20 @@ class AccountController extends AbstractController
      */
     public function showAccount(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
+        // get user id
+        $userId = $this->getUser()->getId();
+
+        // get user's horses
+        $horses = $this->getDoctrine()
+            ->getRepository(Equid::class)
+            ->findBy(array('user' => $userId), null);
+
         return $this->render('account/index.html.twig', [
             'user' => $this->getUser()->getUsername(),
+            'horses' => $horses,
         ]);
     }
 
@@ -79,27 +91,27 @@ class AccountController extends AbstractController
         return $this->redirectToRoute('home');
     }
 
-    /**
-     * @IsGranted("ROLE_PROPRIO")
-     * @Route("/account/equid", name="user_equid")
-     */
-    public function showEquid(): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        // deny the access if the user is not completely authenticated
+    // /**
+    //  * @IsGranted("ROLE_PROPRIO")
+    //  * @Route("/account/equid", name="user_equid")
+    //  */
+    // public function showEquid(): Response
+    // {
+    //     $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+    //     // deny the access if the user is not completely authenticated
 
-        // get user id
-        $userId = $this->getUser()->getId();
+    //     // get user id
+    //     $userId = $this->getUser()->getId();
 
-        // get user's horses
-        $horses = $this->getDoctrine()
-            ->getRepository(Equid::class)
-            ->findBy(array('user' => $userId), null);
+    //     // get user's horses
+    //     $horses = $this->getDoctrine()
+    //         ->getRepository(Equid::class)
+    //         ->findBy(array('user' => $userId), null);
 
-        return $this->render('account/equid/myEquid.html.twig', [
-            'horses' => $horses,
-        ]);
-    }
+    //     return $this->render('account/equid/myEquid.html.twig', [
+    //         'horses' => $horses,
+    //     ]);
+    // }
 
     /**
      * @IsGranted("ROLE_PROPRIO")
@@ -135,7 +147,7 @@ class AccountController extends AbstractController
             $entityManager->persist($equid);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_equid');
+            return $this->redirectToRoute('user_account');
         }
 
         return $this->render('account/equid/newEquid.html.twig', [
@@ -156,6 +168,6 @@ class AccountController extends AbstractController
         $entityManager->remove($equid);
         $entityManager->flush();
 
-        return $this->redirectToRoute('user_equid');
+        return $this->redirectToRoute('user_account');
     }
 }

@@ -4,390 +4,392 @@
 {% endblock %}
 
 {% block body %}
+	<main class="backgroundBlue">
 
-	{% block header %}
-		{% include "smallHeader.html.twig" %}
-	{% endblock %}
+		{% block header %}
+			{% include "smallHeader.html.twig" %}
+		{% endblock %}
 
-	{% block container %}
+		{% block container %}
 
-		<div
-			class="container-lg">
+			<div
+				class="container-lg">
 
-			{# flash message #}
-			{% for message in app.flashes('message') %}
-				<div class="alert alert-success" role="alert">
-					{{ message }}
-				</div>
-			{% endfor %}
-
-			{# post "ROLE_PROPRIO" #}
-			{% if post.category == "profil d'un cheval" and post.equid is not null %}
-
-				<div class="shadow p-3 mb-2 bg-white rounded">
-
-					<h3 class="mt-20 text-center">
-						{{ post.equid.name |capitalize }}
-					</h3>
-
-					{# post pictures carousel #}
-					<section class="d-flex justify-content-center">
-
-						<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
-							<ol class="carousel-indicators">
-								<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-								<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-								<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-							</ol>
-							<div class="carousel-inner">
-								{% for photo in post.photos %}
-									{% if photo.name is not null %}
-										<div class="carousel-item active">
-											<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
-										</div>
-									{% endif %}
-								{% endfor %}
-							</div>
-							<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="sr-only">Previous</span>
-							</a>
-							<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="sr-only">Next</span>
-							</a>
-						</div>
-
-					</section>
-
-					<div>
-						{# favorite heart #}
-
-						{% if is_granted("ROLE_USER") %}
-							{# if the user is connected and has "ROLE_USER" #}
-
-							{% for fav in post.favorite %}
-
-								{% if fav.id == app.user.id %}
-
-									{# full heart #}
-									<a href="{{ path('remove_favorite', {id : post.id }) }}" class="favLink">
-										<i class="fas fa-heart text-danger" data-id="{{ post.id }}"></i>
-									</a>
-
-								{% else %}
-									{# empty heart if user is not logged in #}
-									<a href="{{ path('add_favorite', {id : post.id }) }}" class="favLink">
-										<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
-									</a>
-								{% endif %}
-
-							{% else %}
-								{# empty heart if not favorite #}
-								<a href="{{ path('add_favorite', {id : post.id }) }}" class="favLink">
-									<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
-								</a>
-							{% endfor %}
-
-						{% else %}
-							{# empty heart if user is not logged in #}
-							<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
-						{% endif %}
+				{# flash message #}
+				{% for message in app.flashes('message') %}
+					<div class="alert alert-success" role="alert">
+						{{ message }}
 					</div>
+				{% endfor %}
 
-					<section class="d-lg-flex flex-row justify-content-between mt-20">
+				{# post "ROLE_PROPRIO" #}
+				{% if post.category == "profil d'un cheval" and post.equid is not null %}
 
-						<div class="row">
+					<div class="shadow p-3 mb-2 bg-white rounded">
 
-							<div class="col-sm">
+						<h3 class="mt-20 text-center">
+							{{ post.equid.name |capitalize }}
+						</h3>
 
-								<h4>À propos</h4>
-								<article>{{ post.text |raw }}</article>
+						{# post pictures carousel #}
+						<section class="d-flex justify-content-center">
 
-							</div>
-
-							<div class="col-sm">
-
-								<table class="table border">
-									<tbody>
-										{% if post.equid is not null and post.equid is defined %}
-											<tr>
-												<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
-												<td>{{ post.category |capitalize }}
-												</td>
-											</tr>
-											<tr>
-												<td scope="col" class="font-weight-bold">Prix / mois</td>
-												<td>{{ post.price }}
-													€</td>
-											</tr>
-											<tr>
-												<td scope="col" class="font-weight-bold">Race</td>
-												<td>{{ post.equid.breed |capitalize }}
-												</td>
-											</tr>
-											<tr>
-												<td scope="col" class="font-weight-bold">Taille
-												</td>
-												<td>{{ post.equid.size }}
-												</td>
-											</tr>
-											<tr>
-												<td scope="col" class="font-weight-bold">Sexe</td>
-												<td>{{ post.equid.sex |capitalize }}
-												</td>
-											</tr>
-											<tr>
-												<td scope="col" class="font-weight-bold">Age</td>
-												<td>{% set difference = date(post.equid.birthDate).diff(date()) %}
-													{% set leftYears = difference.y %}{{leftYears}}
-													ans</td>
-											</tr>
-											<tr>
-												<td scope="col" class="font-weight-bold">Propriétaire</td>
-												<td>{{ post.equid.user |capitalize }}
-												</td>
-											</tr>
-										{% endif %}
-									</tbody>
-								</table>
-
-							</div>
-
-						</div>
-
-					</section>
-
-					{# address #}
-					<div>
-						<h4>Localisation</h4>
-						<table class="table">
-							<thead>
-								<tr>
-									<th scope="col">Département</th>
-									<th scope="col">Code Postal</th>
-									<th scope="col">Ville</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>{{ post.equid.departement |capitalize }}</td>
-									<td>{{ post.equid.cp |capitalize }}</td>
-									<td>{{ post.equid.city |capitalize }}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-
-					{# post date createdAt #}
-					<small class="text-muted">Annonce créée le
-						{{ post.createdAt |date("d/m/Y") }}</small>
-
-				</div>
-
-			{% endif %}
-
-			{# post "ROLE_EMPRUNT" #}
-			{% if post.category == "profil d'emprunteur" and post.user is not null %}
-
-				<section class="shadow p-3 mb-2 bg-white rounded ">
-
-					<h3 class="mt-20 text-center">
-						{{ post.user.pseudo |capitalize }}
-					</h3>
-
-					{# post pictures #}
-					<section class="d-flex justify-content-center">
-
-						<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
-							<ol class="carousel-indicators">
-								<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-								<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-								<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-							</ol>
-							<div class="carousel-inner">
-								<div class="carousel-item active">
+							<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
+								<ol class="carousel-indicators">
+									<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+									<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+									<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+								</ol>
+								<div class="carousel-inner">
 									{% for photo in post.photos %}
 										{% if photo.name is not null %}
-											<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
+											<div class="carousel-item active">
+												<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
+											</div>
 										{% endif %}
 									{% endfor %}
 								</div>
+								<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
 							</div>
-							<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="sr-only">Previous</span>
-							</a>
-							<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="sr-only">Next</span>
-							</a>
-						</div>
 
-					</section>
+						</section>
 
-					<div>
-						{# favorite heart #}
+						<div>
+							{# favorite heart #}
 
-						{% if is_granted("ROLE_USER") %}
-							{# if the user is connected and has "ROLE_USER" #}
+							{% if is_granted("ROLE_USER") %}
+								{# if the user is connected and has "ROLE_USER" #}
 
-							{% for fav in post.favorite %}
+								{% for fav in post.favorite %}
 
-								{% if fav.id == app.user.id %}
+									{% if fav.id == app.user.id %}
 
-									{# full heart #}
-									<a href="{{ path('remove_favorite', {id : post.id }) }}" class="favLink">
-										<i class="fas fa-heart text-danger" data-id="{{ post.id }}"></i>
-									</a>
+										{# full heart #}
+										<a href="{{ path('remove_favorite', {id : post.id }) }}" class="favLink">
+											<i class="fas fa-heart text-danger" data-id="{{ post.id }}"></i>
+										</a>
+
+									{% else %}
+										{# empty heart if user is not logged in #}
+										<a href="{{ path('add_favorite', {id : post.id }) }}" class="favLink">
+											<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
+										</a>
+									{% endif %}
 
 								{% else %}
-									{# empty heart if user is not logged in #}
+									{# empty heart if not favorite #}
 									<a href="{{ path('add_favorite', {id : post.id }) }}" class="favLink">
 										<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
 									</a>
-								{% endif %}
+								{% endfor %}
 
 							{% else %}
-								{# empty heart if not favorite #}
-								<a href="{{ path('add_favorite', {id : post.id }) }}" class="favLink">
-									<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
-								</a>
-							{% endfor %}
-
-						{% else %}
-							{# empty heart if user is not logged in #}
-							<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
-						{% endif %}
-					</div>
-
-					<section class="d-lg-flex flex-row justify-content-between row">
-
-						<div class="col-sm">
-							<h4>À propos</h4>
-							<article style="word-wrap: break-word;">{{ post.text |raw }}</article>
+								{# empty heart if user is not logged in #}
+								<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
+							{% endif %}
 						</div>
 
-						<div class="col-sm">
-							<table class="table border">
+						<section class="d-lg-flex flex-row justify-content-between mt-20">
+
+							<div class="row">
+
+								<div class="col-sm">
+
+									<h4>À propos</h4>
+									<article>{{ post.text |raw }}</article>
+
+								</div>
+
+								<div class="col-sm">
+
+									<table class="table border">
+										<tbody>
+											{% if post.equid is not null and post.equid is defined %}
+												<tr>
+													<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
+													<td>{{ post.category |capitalize }}
+													</td>
+												</tr>
+												<tr>
+													<td scope="col" class="font-weight-bold">Prix / mois</td>
+													<td>{{ post.price }}
+														€</td>
+												</tr>
+												<tr>
+													<td scope="col" class="font-weight-bold">Race</td>
+													<td>{{ post.equid.breed |capitalize }}
+													</td>
+												</tr>
+												<tr>
+													<td scope="col" class="font-weight-bold">Taille
+													</td>
+													<td>{{ post.equid.size }}
+													</td>
+												</tr>
+												<tr>
+													<td scope="col" class="font-weight-bold">Sexe</td>
+													<td>{{ post.equid.sex |capitalize }}
+													</td>
+												</tr>
+												<tr>
+													<td scope="col" class="font-weight-bold">Age</td>
+													<td>{% set difference = date(post.equid.birthDate).diff(date()) %}
+														{% set leftYears = difference.y %}{{leftYears}}
+														ans</td>
+												</tr>
+												<tr>
+													<td scope="col" class="font-weight-bold">Propriétaire</td>
+													<td>{{ post.equid.user |capitalize }}
+													</td>
+												</tr>
+											{% endif %}
+										</tbody>
+									</table>
+
+								</div>
+
+							</div>
+
+						</section>
+
+						{# address #}
+						<div>
+							<h4>Localisation</h4>
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Département</th>
+										<th scope="col">Code Postal</th>
+										<th scope="col">Ville</th>
+									</tr>
+								</thead>
 								<tbody>
 									<tr>
-										<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
-										<td>{{ post.category |capitalize }}
-										</td>
-									</tr>
-									<tr>
-										<td scope="col" class="font-weight-bold">Prix / mois</td>
-										<td>{{ post.price }}
-											€</td>
-									</tr>
-									<tr>
-										<td scope="col" class="font-weight-bold">Auteur</td>
-										<td>{{ post.user.pseudo |capitalize }}
-										</td>
+										<td>{{ post.equid.departement |capitalize }}</td>
+										<td>{{ post.equid.cp |capitalize }}</td>
+										<td>{{ post.equid.city |capitalize }}</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 
+						{# post date createdAt #}
+						<small class="text-muted">Annonce créée le
+							{{ post.createdAt |date("d/m/Y") }}</small>
+
+					</div>
+
+				{% endif %}
+
+				{# post "ROLE_EMPRUNT" #}
+				{% if post.category == "profil d'emprunteur" and post.user is not null %}
+
+					<section class="shadow p-3 mb-2 bg-white rounded ">
+
+						<h3 class="mt-20 text-center">
+							{{ post.user.pseudo |capitalize }}
+						</h3>
+
+						{# post pictures #}
+						<section class="d-flex justify-content-center">
+
+							<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
+								<ol class="carousel-indicators">
+									<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+									<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+									<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+								</ol>
+								<div class="carousel-inner">
+									<div class="carousel-item active">
+										{% for photo in post.photos %}
+											{% if photo.name is not null %}
+												<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
+											{% endif %}
+										{% endfor %}
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+
+						</section>
+
+						<div>
+							{# favorite heart #}
+
+							{% if is_granted("ROLE_USER") %}
+								{# if the user is connected and has "ROLE_USER" #}
+
+								{% for fav in post.favorite %}
+
+									{% if fav.id == app.user.id %}
+
+										{# full heart #}
+										<a href="{{ path('remove_favorite', {id : post.id }) }}" class="favLink">
+											<i class="fas fa-heart text-danger" data-id="{{ post.id }}"></i>
+										</a>
+
+									{% else %}
+										{# empty heart if user is not logged in #}
+										<a href="{{ path('add_favorite', {id : post.id }) }}" class="favLink">
+											<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
+										</a>
+									{% endif %}
+
+								{% else %}
+									{# empty heart if not favorite #}
+									<a href="{{ path('add_favorite', {id : post.id }) }}" class="favLink">
+										<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
+									</a>
+								{% endfor %}
+
+							{% else %}
+								{# empty heart if user is not logged in #}
+								<i class="far fa-heart text-danger" data-id="{{ post.id }}"></i>
+							{% endif %}
+						</div>
+
+						<section class="d-lg-flex flex-row justify-content-between row">
+
+							<div class="col-sm">
+								<h4>À propos</h4>
+								<article style="word-wrap: break-word;">{{ post.text |raw }}</article>
+							</div>
+
+							<div class="col-sm">
+								<table class="table border">
+									<tbody>
+										<tr>
+											<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
+											<td>{{ post.category |capitalize }}
+											</td>
+										</tr>
+										<tr>
+											<td scope="col" class="font-weight-bold">Prix / mois</td>
+											<td>{{ post.price }}
+												€</td>
+										</tr>
+										<tr>
+											<td scope="col" class="font-weight-bold">Auteur</td>
+											<td>{{ post.user.pseudo |capitalize }}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+						</section>
+
+						<section>
+							<h4>Localisation</h4>
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Département</th>
+										<th scope="col">Code Postal</th>
+										<th scope="col">Ville</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>{{ post.user.departement |capitalize }}</td>
+										<td>{{ post.user.cp |capitalize }}</td>
+										<td>{{ post.user.city |capitalize }}</td>
+									</tr>
+								</tbody>
+							</table>
+						</section>
+
+						{# post date createdAt #}
+						<small class="form-text text-muted">Annonce créée le
+							{{ post.createdAt |date("d/m/Y") }}</small>
+
 					</section>
 
-					<section>
-						<h4>Localisation</h4>
-						<table class="table">
-							<thead>
-								<tr>
-									<th scope="col">Département</th>
-									<th scope="col">Code Postal</th>
-									<th scope="col">Ville</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>{{ post.user.departement |capitalize }}</td>
-									<td>{{ post.user.cp |capitalize }}</td>
-									<td>{{ post.user.city |capitalize }}</td>
-								</tr>
-							</tbody>
-						</table>
-					</section>
+				{% endif %}
 
-					{# post date createdAt #}
-					<small class="form-text text-muted">Annonce créée le
-						{{ post.createdAt |date("d/m/Y") }}</small>
+				{# comments #}
+				<section
+					class="shadow p-3 mb-2 bg-white rounded d-flex flex-column">
+
+
+					{# form add comment #}
+					<p>
+						<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+							Commenter
+						</a>
+					</p>
+					<div class="collapse" id="collapseExample">
+						<div class="card card-body">
+							{{ form_start(form) }}
+
+							{{ form_row(form.text) }}
+
+							<div class="centerButton">
+								<button type="submit" class="btn btn-primary mt-20" style="width:15%">
+									Ajouter</button>
+							</div>
+
+							{{ form_end(form) }}
+						</div>
+					</div>
+
+					<div>
+						{# all comments #}
+
+						{% for comment in post.comments %}
+
+							<article
+								class="border p-2 m-2">
+								{# author and date #}
+								<p class="form-text text-muted">
+									{{ comment.user.pseudo |capitalize }}
+									le
+									{{ comment.createdAt |date("d/m/Y") }}
+
+
+									{% if app.user.id is same as comment.user.id  %}
+										<span class="badge badge-light">
+											<a href="{{ path('comment_edit', {id: comment.id}) }}" style="color:black;">
+												<i class="fas fa-pencil-alt"></i>
+											</a>
+										</span>
+										<span class="badge badge-dark">
+											<a href="{{ path('delete_comment', {id: comment.id}) }}" style="color:white;">
+												<i class="fas fa-times"></i>
+											</a>
+										</span>
+									{% endif %}
+
+								</p>
+
+								{# content #}
+								<div>{{ comment.text|raw }}</div>
+
+							</article>
+
+						{% endfor %}
+
+					</div>
 
 				</section>
 
-			{% endif %}
+			</div>
+			{# end div container #}
 
-			{# comments #}
-			<section
-				class="shadow p-3 mb-2 bg-white rounded d-flex flex-column">
-
-
-				{# form add comment #}
-				<p>
-					<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-						Commenter
-					</a>
-				</p>
-				<div class="collapse" id="collapseExample">
-					<div class="card card-body">
-						{{ form_start(form) }}
-
-						{{ form_row(form.text) }}
-
-						<div class="centerButton">
-							<button type="submit" class="btn btn-primary mt-20" style="width:15%">
-								Ajouter</button>
-						</div>
-
-						{{ form_end(form) }}
-					</div>
-				</div>
-
-				<div>
-					{# all comments #}
-
-					{% for comment in post.comments %}
-
-						<article
-							class="border p-2 m-2">
-							{# author and date #}
-							<p class="form-text text-muted">
-								{{ comment.user.pseudo |capitalize }}
-								le
-								{{ comment.createdAt |date("d/m/Y") }}
-
-
-								{% if app.user.id is same as comment.user.id  %}
-									<span class="badge badge-light">
-										<a href="{{ path('comment_edit', {id: comment.id}) }}" style="color:black;">
-											<i class="fas fa-pencil-alt"></i>
-										</a>
-									</span>
-									<span class="badge badge-dark">
-										<a href="{{ path('delete_comment', {id: comment.id}) }}" style="color:white;">
-											<i class="fas fa-times"></i>
-										</a>
-									</span>
-								{% endif %}
-
-							</p>
-
-							{# content #}
-							<div>{{ comment.text|raw }}</div>
-
-						</article>
-
-					{% endfor %}
-
-				</div>
-
-			</section>
-
-		</div>
-		{# end div container #}
-
-	{% endblock %}
+		{% endblock %}
+	</main>
 {% endblock %}

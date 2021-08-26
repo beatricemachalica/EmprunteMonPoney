@@ -19,11 +19,14 @@
 				<a href="{{path('my_post')}}">
 					Mes annonces
 				</a>
-				<a href="{{path('user_equid')}}">
-					Mes chevaux
+				{# <a href="{{path('user_equid')}}">
+									Mes chevaux
+								</a> #}
+				<a href="{{path('messages')}}">
+					<i class="fas fa-envelope"></i>
 				</a>
 				<a href="{{path('user_account')}}">
-					Compte
+					<i class="fas fa-user-cog"></i>
 				</a>
 				<a href="{{path('app_logout')}}">Déconnexion</a>
 			{% elseif is_granted("ROLE_PROPRIO") %}
@@ -33,11 +36,14 @@
 				<a href="{{path('my_post')}}">
 					Mes annonces
 				</a>
-				<a href="{{path('user_equid')}}">
-					Mes chevaux
+				{# <a href="{{path('user_equid')}}">
+									Mes chevaux
+								</a> #}
+				<a href="{{path('messages')}}">
+					<i class="fas fa-envelope"></i>
 				</a>
 				<a href="{{path('user_account')}}">
-					Compte
+					<i class="fas fa-user-cog"></i>
 				</a>
 				<a href="{{path('app_logout')}}">Déconnexion</a>
 			{% elseif is_granted("ROLE_EMPRUNT") %}
@@ -47,8 +53,11 @@
 				<a href="{{path('my_post')}}">
 					Mon annonce
 				</a>
+				<a href="{{path('messages')}}">
+					<i class="fas fa-envelope"></i>
+				</a>
 				<a href="{{path('user_account')}}">
-					Compte
+					<i class="fas fa-user-cog"></i>
 				</a>
 				<a href="{{path('app_logout')}}">Déconnexion</a>
 			{% else %}

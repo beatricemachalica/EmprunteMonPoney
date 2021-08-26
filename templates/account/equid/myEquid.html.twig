@@ -5,31 +5,19 @@
 
 {% block body %}
 
-	{% block header %}
+{# {% block header %}
 		{% include "smallHeader.html.twig" %}
-	{% endblock %}
+	{% endblock %} #}
 
 	{% block container %}
 
-		<div
-			class="container-lg">
-			{# flash message #}
-			{% for message in app.flashes('message') %}
-				<div class="alert alert-success" role="alert">
-					{{ message }}
-				</div>
-			{% endfor %}
+		<div>
 
-
-			<h2 class="mt-2">Mes chevaux</h2>
-
-			<button type="button" class="btn btn-primary mt-2 mb-2">
-				<a href="{{ path('add_equid') }}" class="aWithoutStyle">Inscrire un cheval</a>
-			</button>
+			<h2 class="mt-2 text-center">Mes chevaux</h2>
 
 			{% for horse in horses %}
 
-				<div class="shadow p-3 mb-2 bg-white rounded">
+				<div class="shadow p-3 mb-2 bg-white rounded mb-4">
 					<h3 class="text-center">{{ horse.name }}</h3>
 					<h4>Informations générales</h4>
 
@@ -84,19 +72,20 @@
 						</tbody>
 					</table>
 
-				</div>
 
-				<button type="button" class="btn btn-primary mt-2 mb-2">
-					<a href="{{ path('edit_equid', {id: horse.id} )}}" class="aWithoutStyle">
-						<i class="fas fa-pencil-alt"></i>
-						Modifier
-					</a>
-				</button>
-				<button type="button" class="btn btn-primary mt-2 mb-2">
-					<a href="{{ path('delete_equid', {id: horse.id}) }}" class="aWithoutStyle">
-						<i class="fas fa-times"></i>
-						Supprimer</a>
-				</button>
+					<button type="button" class="btn btn-primary mt-2 mb-2">
+						<a href="{{ path('edit_equid', {id: horse.id} )}}" class="aWithoutStyle">
+							<i class="fas fa-pencil-alt"></i>
+							Modifier
+						</a>
+					</button>
+					<button type="button" class="btn btn-primary mt-2 mb-2">
+						<a href="{{ path('delete_equid', {id: horse.id}) }}" class="aWithoutStyle">
+							<i class="fas fa-times"></i>
+							Supprimer</a>
+					</button>
+
+				</div>
 
 			{% endfor %}
 

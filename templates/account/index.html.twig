@@ -4,118 +4,138 @@
 {% endblock %}
 
 {% block body %}
+	<div class="backgroundBlue">
 
-	{% block header %}
-		{% include "smallHeader.html.twig" %}
-	{% endblock %}
+		{% block header %}
+			{% include "smallHeader.html.twig" %}
+		{% endblock %}
 
-	{% block container %}
+		{% block container %}
 
-		<div
-			class="container-lg">
+			<main
+				class="container-lg">
 
-			{# flash message #}
-			{% for message in app.flashes('message') %}
-				<div class="alert alert-success" role="alert">
-					{{ message }}
-				</div>
-			{% endfor %}
+				{# flash message #}
+				{% for message in app.flashes('message') %}
+					<div class="alert alert-success" role="alert">
+						{{ message }}
+					</div>
+				{% endfor %}
 
-			<h2 class="mt-2">Bienvenue
-				{{app.user.pseudo |capitalize }}
-			</h2>
+				<h2 class="mt-2">Bienvenue
+					{{app.user.pseudo |capitalize }}
+				</h2>
 
-			<div>
-				{# photo de profil ici #}
 				<div>
-					<p>Nom d'utilisateur :
-						{{ app.user.pseudo |capitalize }}</p>
-					<p>Date d'inscription :
-						{{ app.user.registerDate |date("d/m/Y") }}</p>
+					{# photo de profil ici #}
+					<div>
+						<p>Nom d'utilisateur :
+							{{ app.user.pseudo |capitalize }}</p>
+						<p>Date d'inscription :
+							{{ app.user.registerDate |date("d/m/Y") }}</p>
+					</div>
 				</div>
-			</div>
 
-			<section
-				class="shadow p-3 mb-4 bg-white rounded">
+				<div class="d-lg-flex flex-row justify-content-around mb-3">
+					{% if is_granted("ROLE_PROPRIO") %}
+						<button type="button" class="btn btn-primary mr-3">
+							<a href="{{ path('add_equid') }}" class="aWithoutStyle">
+								<i class="fas fa-plus"></i>
+								Inscrire un cheval</a>
+						</button>
+					{% endif %}
 
-				{# pseudo and email #}
-				<h3>Contact</h3>
-				<table class="table border">
-					<thead>
-						<tr>
-							<th scope="col">Adresse mail</th>
-							<th scope="col">Téléphone</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{{ app.user.email }}</td>
-							<td>{{ app.user.phoneNumber }}</td>
-						</tr>
-					</tbody>
-				</table>
+					<button type="button" class="btn btn-primary mr-3">
+						<a href="{{ path('user_edit', {id: app.user.id} )}}" class="aWithoutStyle">
+							<i class="fas fa-pencil-alt"></i>
+							Modifier le profil</a>
+					</button>
+					<button type="button" class="btn btn-primary mr-3">
+						<a href="{{ path('update_password') }}" class="aWithoutStyle">
+							<i class="fas fa-pencil-alt"></i>
+							Modifier le mot de passe</a>
+					</button>
+					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModal">
+						<i class="fas fa-times"></i>
+						Supprimer le compte
+					</button>
+				</div>
 
 
-				{# address #}
-				<h3>Adresse</h3>
-				<table class="table border">
-					<thead>
-						<tr>
-							<th scope="col">Département</th>
-							<th scope="col">Code postal</th>
-							<th scope="col">Ville</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{{ app.user.departement |capitalize}}</td>
-							<td>{{ app.user.cp}}</td>
-							<td>{{ app.user.city |capitalize}}</td>
-						</tr>
-					</tbody>
-				</table>
+				<section
+					class="shadow p-3 mb-4 bg-white rounded">
 
-			</section>
+					{# pseudo and email #}
+					<h3>Contact</h3>
+					<table class="table border">
+						<thead>
+							<tr>
+								<th scope="col">Adresse mail</th>
+								<th scope="col">Téléphone</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{ app.user.email }}</td>
+								<td>{{ app.user.phoneNumber }}</td>
+							</tr>
+						</tbody>
+					</table>
 
-			<button type="button" class="btn btn-primary mt-2 mb-2">
-				<a href="{{ path('user_edit', {id: app.user.id} )}}" class="aWithoutStyle">Modifier le profil</a>
-			</button>
 
-			<button type="button" class="btn btn-primary mt-2 mb-2">
-				<a href="{{ path('update_password') }}" class="aWithoutStyle">Modifier le mot de passe</a>
-			</button>
+					{# address #}
+					<h3>Adresse</h3>
+					<table class="table border">
+						<thead>
+							<tr>
+								<th scope="col">Département</th>
+								<th scope="col">Code postal</th>
+								<th scope="col">Ville</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{ app.user.departement |capitalize}}</td>
+								<td>{{ app.user.cp}}</td>
+								<td>{{ app.user.city |capitalize}}</td>
+							</tr>
+						</tbody>
+					</table>
 
-			<!-- Button trigger modal -->
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-				Supprimer le compte
-			</button>
+				</section>
 
-			<!-- Modal -->
-			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Supprimer le compte</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							Êtes-vous sûr.e de vouloir supprimer votre compte ?
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary">
-								<a href="{{ path('user_delete', {id: app.user.id}) }}" class="aWithoutStyle">Supprimer</a>
-							</button>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Supprimer le compte</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								Êtes-vous sûr.e de vouloir supprimer votre compte ?
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary">
+									<a href="{{ path('user_delete', {id: app.user.id}) }}" class="aWithoutStyle">Supprimer</a>
+								</button>
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-		</div>
+				{% if is_granted("ROLE_PROPRIO") %}
+					{% include "account/equid/myEquid.html.twig" %}
+				{% endif %}
 
-	{% endblock %}
+			</main>
 
+		{% endblock %}
+
+	</div>
 {% endblock %}
