@@ -8,6 +8,9 @@ use App\Entity\Photo;
 use App\Form\PostType;
 use PHPUnit\Util\Json;
 use App\Entity\Category;
+use App\Entity\Comment;
+use App\Form\CommentType;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,7 +64,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/post/activate/{id}", name="activate_post")
+     * @Route("/activate/{id}", name="activate_post")
      * this method allow to activate or not a post
      */
     public function activatePost(Post $post)
@@ -117,6 +120,9 @@ class PostController extends AbstractController
             // by default the post will be activated and will appear on the website
             $post->setActive(true);
 
+            // set automatically a category
+            // this will no longer be useful if several categories will be implemented to the website
+
             // get the categories
             $categoryEmprunt = $this->getDoctrine()
                 ->getRepository(Category::class)
@@ -143,12 +149,13 @@ class PostController extends AbstractController
                 // if the owner has fogotten to register at least one horse
                 $this->addFlash('error', "Veuillez inscrire au moins un cheval avant de créer une annonce.");
             }
+            // end set automatically a category
 
             // pictures
             $pictures = $form->get('photo')->getData();
             // for each new picture added by the user
             foreach ($pictures as $picture) {
-                // create a new name file and set the right extension
+                // create a new name file with md5 & uniquid and set the right extension
                 $file = md5(uniqid()) . '.' . $picture->guessExtension();
 
                 // copy this file into uploads
@@ -173,6 +180,7 @@ class PostController extends AbstractController
                 $this->addFlash('message', 'Votre annonce a bien été modifiée.');
             }
 
+            // flush data
             $post = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
@@ -189,9 +197,9 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/showPost/{id}", name="show_post", methods="GET")
+     * @Route("/showPost/{id}", name="show_post")
      */
-    public function showPost(Post $post): Response
+    public function showPost(Post $post, Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
@@ -200,16 +208,60 @@ class PostController extends AbstractController
             throw new NotFoundHttpException('L\'annonce n\'a pas été trouvée.');
         }
 
-        // $postCategory = $post->getCategory();
-        // $horsePost = false;
-        // if ($postCategory == "profil cheval") {
-        //     $horsePost = true;
-        // }
+        // Comments
+        // create a comment object
+        $com = new Comment;
+
+        // create comments form
+        $form = $this->createForm(CommentType::class, $com);
+
+        // get information from $request
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // set the right post
+            $com->setPost($post);
+
+            // set the current user
+            $com->setUser($this->getUser());
+
+            // flush data
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($com);
+            $entityManager->flush();
+
+            $this->addFlash('message', 'Votre commentaire a bien été enregistré.');
+            return $this->redirectToRoute('show_post', [
+                'id' => $post->getId()
+            ]);
+        }
 
         return $this->render('post/showPost.html.twig', [
             'post' => $post,
-            // 'horsePost' => $horsePost
+            'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/favorite/add/{id}", name="add_favorite")
+     */
+    public function addFavorite(Post $post): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
+        if (!$post) {
+            throw new NotFoundHttpException('L\'annonce n\'a pas été trouvée.');
+        }
+
+        $post->addFavorite($this->getUser());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($post);
+        $em->flush();
+
+        return $this->redirectToRoute('posts');
     }
 
     /**

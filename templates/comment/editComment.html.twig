@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmprunteMonPoney - Commentaire
+{% endblock %}
+
+{% block body %}
+
+	<div class="backgroundForm">
+
+		{% block header %}
+			{% include "smallHeader.html.twig" %}
+		{% endblock %}
+
+		{% block container %}
+
+			{# flash message #}
+			{% for flashError in app.flashes('verify_email_error') %}
+				<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+			{% endfor %}
+
+			<div class="littleForm">
+				<h1 class="text-center" style="color:white;">Modifier un commentaire</h1>
+
+				{{ form_start(form) }}
+
+				{{ form_row(form.text) }}
+
+				<div class="centerButton">
+					<button type="submit" class="btn btn-primary mt-20">
+						Modifier</button>
+				</div>
+
+				{{ form_end(form) }}
+
+			</div>
+		{% endblock %}
+
+		{% block footer %}
+			{% include "smallFooter.html.twig" %}
+		{% endblock %}
+
+	</div>
+
+{% endblock %}

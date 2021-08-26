@@ -1,16 +1,16 @@
 // toggle button = activate post
 window.onload = () => {
-  let activate = document.querySelectorAll("[type=checkbox]");
-  for (let bouton of activate) {
-    bouton.addEventListener("click", function () {
+  let activateButtons = document.querySelectorAll("input[type='checkbox']");
+
+  for (let button of activateButtons) {
+    button.addEventListener("click", function () {
       let xmlhttp = new XMLHttpRequest();
 
       // xmlhttp.onreadystatechange = () => {
       //   // vérifier si 200 etc
       //   }
 
-      xmlhttp.open("get", `/post/activate/${this.dataset.id}`);
-
+      xmlhttp.open("get", `/activate/${this.dataset.id}`);
       xmlhttp.send();
     });
   }
@@ -25,11 +25,13 @@ window.onload = () => {
     // click on link
     link.addEventListener("click", function (e) {
       // prevent the link behavior
+
       e.preventDefault();
 
       // confirmation in case of user mistake
       if (confirm("Souhaitez-vous supprimer cette image ?")) {
         // fetch = ajax request with method DELETE (send URL json request with delete_token needed)
+
         fetch(this.getAttribute("href"), {
           method: "DELETE",
           headers: {

@@ -37,13 +37,14 @@
 
 			{% for post in posts %}
 
-				{% if post.category == "profil d'un cheval" and post.equid is not null %}
-					<h4>{{ post.equid.name |capitalize }}</h4>
-				{% else %}
-					<h4>{{ app.user.pseudo |capitalize }}</h4>
-				{% endif %}
+				<section class="shadow p-3 mb-4 bg-white rounded">
 
-				<section class="shadow p-3 mb-5 bg-white rounded">
+					{% if post.category == "profil d'un cheval" and post.equid is not null %}
+						<h3 class="text-center">{{ post.equid.name |capitalize }}</h3>
+					{% else %}
+						<h3 class="text-center">{{ app.user.pseudo |capitalize }}</h3>
+					{% endif %}
+
 					<div class="d-lg-flex flex-row justify-content-between">
 
 						<table class="table border">
@@ -71,8 +72,8 @@
 									<td scope="col" class="font-weight-bold">Active</td>
 									<td>
 										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input" id="customSwitch1" {{ (post.active) ? 'checked' : '' }} data-id="{{ post.id }}">
-											<label class="custom-control-label" for="customSwitch1"></label>
+											<input type="checkbox" class="custom-control-input" id="customSwitch{{post.id}}" {{ (post.active) ? 'checked' : '' }} data-id="{{ post.id }}">
+											<label class="custom-control-label" for="customSwitch{{post.id}}"></label>
 										</div>
 									</td>
 								</tr>

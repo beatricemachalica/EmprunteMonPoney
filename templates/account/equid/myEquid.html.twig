@@ -29,58 +29,62 @@
 
 			{% for horse in horses %}
 
-				<h3>{{ horse.name }}</h3>
-				<h4>Informations générales</h4>
-				<table class="table border">
-					<tbody>
-						<tr>
-							<td scope="col" class="font-weight-bold">Nom</td>
-							<td>{{ horse.name |capitalize }}</td>
-						</tr>
-						<tr>
-							<td scope="col" class="font-weight-bold">Race</td>
-							<td>{{ horse.breed |capitalize }}</td>
-						</tr>
-						<tr>
-							<td scope="col" class="font-weight-bold">Sexe</td>
-							<td>{{ horse.sex |capitalize }}</td>
-						</tr>
-						<tr>
-							<td scope="col" class="font-weight-bold">Hauteur au garrot (cm)</td>
-							<td>{{ horse.size |capitalize }}</td>
-						</tr>
-						<tr>
-							<td scope="col" class="font-weight-bold">Date de naissance</td>
-							<td>{{ horse.birthDate |date("d/m/Y") }}</td>
-						</tr>
-						<tr>
-							<td scope="col" class="font-weight-bold">Age</td>
-							<td>{% set difference = date(horse.birthDate).diff(date()) %}
-								{% set leftYears = difference.y %}{{leftYears}}
-								ans</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="shadow p-3 mb-2 bg-white rounded">
+					<h3 class="text-center">{{ horse.name }}</h3>
+					<h4>Informations générales</h4>
+
+					<table class="table border">
+						<tbody>
+							<tr>
+								<td scope="col" class="font-weight-bold">Nom</td>
+								<td>{{ horse.name |capitalize }}</td>
+							</tr>
+							<tr>
+								<td scope="col" class="font-weight-bold">Race</td>
+								<td>{{ horse.breed |capitalize }}</td>
+							</tr>
+							<tr>
+								<td scope="col" class="font-weight-bold">Sexe</td>
+								<td>{{ horse.sex |capitalize }}</td>
+							</tr>
+							<tr>
+								<td scope="col" class="font-weight-bold">Hauteur au garrot (cm)</td>
+								<td>{{ horse.size |capitalize }}</td>
+							</tr>
+							<tr>
+								<td scope="col" class="font-weight-bold">Date de naissance</td>
+								<td>{{ horse.birthDate |date("d/m/Y") }}</td>
+							</tr>
+							<tr>
+								<td scope="col" class="font-weight-bold">Age</td>
+								<td>{% set difference = date(horse.birthDate).diff(date()) %}
+									{% set leftYears = difference.y %}{{leftYears}}
+									ans</td>
+							</tr>
+						</tbody>
+					</table>
 
 
-				{# address #}
-				<h4>Adresse</h4>
-				<table class="table border">
-					<thead>
-						<tr>
-							<th scope="col">Département</th>
-							<th scope="col">Code postal</th>
-							<th scope="col">Ville</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{{ horse.departement |capitalize}}</td>
-							<td>{{ horse.cp}}</td>
-							<td>{{ horse.city |capitalize}}</td>
-						</tr>
-					</tbody>
-				</table>
+					{# address #}
+					<h4>Adresse</h4>
+					<table class="table border">
+						<thead>
+							<tr>
+								<th scope="col">Département</th>
+								<th scope="col">Code postal</th>
+								<th scope="col">Ville</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{ horse.departement |capitalize}}</td>
+								<td>{{ horse.cp}}</td>
+								<td>{{ horse.city |capitalize}}</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
 
 				<button type="button" class="btn btn-primary mt-2 mb-2">
 					<a href="{{ path('edit_equid', {id: horse.id} )}}" class="aWithoutStyle">
@@ -93,8 +97,6 @@
 						<i class="fas fa-times"></i>
 						Supprimer</a>
 				</button>
-
-				<hr class="">
 
 			{% endfor %}
 

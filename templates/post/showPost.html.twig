@@ -24,40 +24,42 @@
 			{# post "ROLE_PROPRIO" #}
 			{% if post.category == "profil d'un cheval" and post.equid is not null %}
 
-				<h3 class="mt-20">
-					{{ post.equid.name |capitalize }}
-				</h3>
+				<div class="shadow p-3 mb-2 bg-white rounded">
 
-				{# post pictures #}
-				<div class="d-flex justify-content-center">
+					<h3 class="mt-20 text-center">
+						{{ post.equid.name |capitalize }}
+					</h3>
 
-					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
-						<ol class="carousel-indicators">
-							<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-							<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-							<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-						</ol>
-						<div class="carousel-inner">
-							{% for photo in post.photos %}
-								<div class="carousel-item active">
-									<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
+					{# post pictures #}
+					<div class="d-flex justify-content-center">
+
+						{% for photo in post.photos %}
+							{% if photo.name is not null %}
+								<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
+									<ol class="carousel-indicators">
+										<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+										<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+										<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+									</ol>
+									<div class="carousel-inner">
+										<div class="carousel-item active">
+											<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
+										</div>
+									</div>
+									<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="sr-only">Previous</span>
+									</a>
+									<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+										<span class="carousel-control-next-icon" aria-hidden="true"></span>
+										<span class="sr-only">Next</span>
+									</a>
 								</div>
-							{% endfor %}
-						</div>
-						<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-							<span class="sr-only">Previous</span>
-						</a>
-						<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-							<span class="carousel-control-next-icon" aria-hidden="true"></span>
-							<span class="sr-only">Next</span>
-						</a>
+							{% endif %}
+						{% endfor %}
+
 					</div>
 
-				</div>
-
-
-				<div class="shadow p-3 mb-2 bg-white rounded">
 					<div class="d-lg-flex flex-row justify-content-between">
 
 						<div class="row">
@@ -141,7 +143,7 @@
 					</div>
 
 					{# post date createdAt #}
-					<small class="form-text text-muted">Annonce créée le
+					<small class="text-muted">Annonce créée le
 						{{ post.createdAt |date("d/m/Y") }}</small>
 
 				</div>
@@ -151,39 +153,42 @@
 			{# post "ROLE_EMPRUNT" #}
 			{% if post.category == "profil d'emprunteur" and post.user is not null %}
 
-				<h3 class="mt-20">
-					{{ post.user.pseudo |capitalize }}
-				</h3>
+				<section class="shadow p-3 mb-2 bg-white rounded ">
 
-				{# post pictures #}
-				{# <div class="d-flex justify-content-center">
-																																																																																																																								
-																																																																																																																													<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
-																																																																																																																														<ol class="carousel-indicators">
-																																																																																																																															<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-																																																																																																																															<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-																																																																																																																															<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-																																																																																																																														</ol>
-																																																																																																																														<div class="carousel-inner">
-																																																																																																																															{% for photo in post.photos %}
-																																																																																																																																<div class="carousel-item active">
-																																																																																																																																	<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
-																																																																																																																																</div>
-																																																																																																																															{% endfor %}
-																																																																																																																														</div>
-																																																																																																																														<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-																																																																																																																															<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-																																																																																																																															<span class="sr-only">Previous</span>
-																																																																																																																														</a>
-																																																																																																																														<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-																																																																																																																															<span class="carousel-control-next-icon" aria-hidden="true"></span>
-																																																																																																																															<span class="sr-only">Next</span>
-																																																																																																																														</a>
-																																																																																																																													</div>
-																																																																																																																								
-																																																																																																																												</div> #}
+					<h3 class="mt-20 text-center">
+						{{ post.user.pseudo |capitalize }}
+					</h3>
 
-				<section class="shadow p-3 mb-2 bg-white rounded">
+					{# post pictures #}
+					<div class="d-flex justify-content-center">
+
+						{% for photo in post.photos %}
+							{% if photo.name is not null %}
+								<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
+									<ol class="carousel-indicators">
+										<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+										<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+										<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+									</ol>
+									<div class="carousel-inner">
+										<div class="carousel-item active">
+											<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
+										</div>
+									</div>
+									<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="sr-only">Previous</span>
+									</a>
+									<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+										<span class="carousel-control-next-icon" aria-hidden="true"></span>
+										<span class="sr-only">Next</span>
+									</a>
+								</div>
+							{% endif %}
+						{% endfor %}
+
+					</div>
+
 
 					<section class="d-lg-flex flex-row justify-content-between row">
 
@@ -244,13 +249,74 @@
 
 			{% endif %}
 
-			<button type="button" class="btn btn-primary mt-2 mb-2">
-				<a href="#" class="aWithoutStyle">
-					<i class="fas fa-pencil-alt"></i>
-					Commenter</a>
-			</button>
+			{# comments #}
+			<section
+				class="shadow p-3 mb-2 bg-white rounded d-flex flex-column">
+
+
+				{# form add comment #}
+				<p>
+					<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+						Commenter
+					</a>
+				</p>
+				<div class="collapse" id="collapseExample">
+					<div class="card card-body">
+						{{ form_start(form) }}
+
+						{{ form_row(form.text) }}
+
+						<div class="centerButton">
+							<button type="submit" class="btn btn-primary mt-20" style="width:15%">
+								Ajouter</button>
+						</div>
+
+						{{ form_end(form) }}
+					</div>
+				</div>
+
+				<div>
+					{# all comments #}
+
+					{% for comment in post.comments %}
+
+						<article
+							class="border p-2 m-2">
+							{# author and date #}
+							<p class="form-text text-muted">
+								{{ comment.user.pseudo |capitalize }}
+								le
+								{{ comment.createdAt |date("d/m/Y") }}
+
+
+								{% if app.user.id is same as comment.user.id  %}
+									<span class="badge badge-light">
+										<a href="{{ path('comment_edit', {id: comment.id}) }}" style="color:black;">
+											<i class="fas fa-pencil-alt"></i>
+										</a>
+									</span>
+									<span class="badge badge-dark">
+										<a href="{{ path('delete_comment', {id: comment.id}) }}" style="color:white;">
+											<i class="fas fa-times"></i>
+										</a>
+									</span>
+								{% endif %}
+
+							</p>
+
+							{# content #}
+							<div>{{ comment.text|raw }}</div>
+
+						</article>
+
+					{% endfor %}
+
+				</div>
+
+			</section>
 
 		</div>
+		{# end div container #}
 
 	{% endblock %}
 {% endblock %}
