@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\MessageRepository;
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MessageRepository;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
@@ -48,6 +49,16 @@ class Message
      * @ORM\JoinColumn(nullable=false)
      */
     private $recipient;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $deleted_sender = 0;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $deleted_recipient = 0;
 
     public function __construct()
     {
@@ -127,6 +138,30 @@ class Message
     public function setRecipient(?User $recipient): self
     {
         $this->recipient = $recipient;
+
+        return $this;
+    }
+
+    public function getDeletedSender(): ?bool
+    {
+        return $this->deleted_sender;
+    }
+
+    public function setDeletedSender(bool $deleted_sender): self
+    {
+        $this->deleted_sender = $deleted_sender;
+
+        return $this;
+    }
+
+    public function getDeletedRecipient(): ?bool
+    {
+        return $this->deleted_recipient;
+    }
+
+    public function setDeletedRecipient(bool $deleted_recipient): self
+    {
+        $this->deleted_recipient = $deleted_recipient;
 
         return $this;
     }

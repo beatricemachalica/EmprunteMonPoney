@@ -7,23 +7,20 @@ use App\Form\MessageType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MessageController extends AbstractController
 {
     /**
-     * @Route("/messages", name="messages")
-     */
-    public function index(): Response
-    {
-        return $this->render('message/index.html.twig', []);
-    }
-
-    /**
+     * @IsGranted("ROLE_USER")
      * @Route("/send", name="send_message")
      */
     public function sendMessage(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
         // create a new message object
         $message = new Message;
 
@@ -53,27 +50,39 @@ class MessageController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/received", name="received")
      */
     public function received(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
         return $this->render('message/received.html.twig');
     }
 
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/sent", name="sent")
      */
     public function sent(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
         return $this->render('message/sent.html.twig');
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/read/{id}", name="read")
      */
     public function readMessage(Message $message): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
         // set "is read" to this message
         $message->setIsRead(true);
 
@@ -85,13 +94,41 @@ class MessageController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/delete/{id}", name="delete")
      */
     public function deleteMessage(Message $message): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($message);
-        $em->flush();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
+        // get the current user
+        $user = $this->getUser()->getId();
+
+        // if the current user want to delete a sent message
+        if ($user == $message->getSender()->getId()) {
+
+            // set "deleted_sender"
+            $message->setDeletedSender(true);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($message);
+            $em->flush();
+        } elseif ($user == $message->getRecipient()->getId()) {
+            // if the current user want to delete a received message
+
+            // set "deleted_recipient"       
+            $message->setDeletedRecipient(true);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($message);
+            $em->flush();
+        }
+
+        if (($message->getDeletedSender() == true) && ($message->getDeletedRecipient() == true)) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($message);
+            $em->flush();
+        }
 
         return $this->redirectToRoute("received");
     }

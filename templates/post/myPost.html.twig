@@ -22,17 +22,19 @@
 					</div>
 				{% endfor %}
 
-				<h2 class="mt-20">Mes annonces</h2>
 
 				{% if is_granted("ROLE_PROPRIO") %}
+					<h2 class="mt-20">Mes annonces</h2>
 					<button type="button" class="btn btn-primary mt-2 mb-2">
 						<a href="{{ path('add_post') }}" class="aWithoutStyle">Nouvelle annonce</a>
 					</button>
 				{% elseif is_granted("ROLE_EMPRUNT") and posts is null %}
+					<h2 class="mt-20">Mon annonce</h2>
 					<button type="button" class="btn btn-primary mt-2 mb-2">
 						<a href="{{ path('add_post') }}" class="aWithoutStyle">Nouvelle annonce emprunteur</a>
 					</button>
 				{% else %}
+					<h2 class="mt-20">Mon annonce</h2>
 					<p>Consultez les informations de votre annonce ci-dessous et modifiez la si nécessaire.</p>
 				{% endif %}
 

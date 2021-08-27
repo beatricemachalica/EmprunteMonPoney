@@ -4,73 +4,79 @@
 {% endblock %}
 
 {% block body %}
+	<div class="backgroundBlue">
 
-	{% block header %}
-		{% include "smallHeader.html.twig" %}
-	{% endblock %}
+		{% block header %}
+			{% include "smallHeader.html.twig" %}
+		{% endblock %}
 
-	{% block container %}
+		{% block container %}
 
-		<section class="container">
-			<div class="row">
-				<div class="col-12">
-					<h1>Messagerie</h1>
-					<h2>Boîte de réception</h2>
-					<p>Vous avez reçu
-						{{ app.user.received|length }}
-						messages</p>
+			<section class="container">
+
+				<h1 class="mt-20 text-center">Messagerie</h1>
+
+				{# buttons menu #}
+				<div class="d-lg-flex flex-row justify-content-around mb-3 mt-20">
+					<button type="button" class="btn btn-primary mr-3">
+						<i class="far fa-envelope"></i>
+						<a href="{{path("send_message")}}" class="aWithoutStyle">Envoyer un message</a>
+					</button>
+
+					<button type="button" class="btn btn-primary mr-3">
+						<a href="{{ path("received") }}" class="aWithoutStyle">Boîte de réception</a>
+					</button>
+
+					<button type="button" class="btn btn-primary mr-3">
+						<a href="{{ path("sent") }}" class="aWithoutStyle">Boite d'envoi</a>
+					</button>
 				</div>
-				<div class="col-3">De</div>
-				<div class="col-3">Sujet</div>
-				<div class="col-3">Date</div>
-				<div class="col-3">Actions</div>
-				{% for message in app.user.received %}
 
-					{# if the message has not yet been read it appears in bold #}
-					{% set bold = "" %}
-					{% if message.isRead == 0 %}
-						{% set bold = "fw-bold" %}
-					{% endif %}
+				<article class="shadow p-3 mb-4 bg-white rounded row">
+					<div class="col-12">
 
-					<div class="col-3 {{bold}}">{{ message.sender.email }}</div>
-					<div class="col-3 {{bold}}">
-						<a href="{{ path("read", {id: message.id}) }}">{{ message.title }}</a>
+
+						<h2 class="text-center mb-4">Boite de réception</h2>
+
 					</div>
-					<div class="col-3 {{bold}}">{{ message.createdAt|date }}</div>
-					<div class="col-3">
-						<a href="{{ path("delete", {id: message.id}) }}">
-							<i class="fas fa-times"></i>
-						</a>
-					</div>
-				{% endfor %}
+
+					<div class="col-3">De</div>
+					<div class="col-3">Sujet</div>
+					<div class="col-3">Date</div>
+					<div class="col-3"></div>
+
+					<hr>
+
+					{% for message in app.user.received %}
+						{# hide messages deleted by the recipient (so if deletedRecipient == true) #}
+						{% if message.deletedRecipient == false %}
+
+							{# if the message has not yet been read it appears in bold #}
+							{% set bold = "" %}
+							{% if message.isRead == 0 %}
+								{% set bold = "font-weight-bold" %}
+							{% endif %}
+
+							<div class="col-3 {{bold}}">{{ message.sender.email }}</div>
+							<div class="col-3 {{bold}}">
+								<a href="{{ path("read", {id: message.id}) }}">{{ message.title }}</a>
+							</div>
+							<div class="col-3 {{bold}}">{{ message.createdAt|date }}</div>
+							<div class="col-3">
+								<a href="{{ path("delete", {id: message.id}) }}">
+									<i class="fas fa-times text-danger"></i>
+								</a>
+							</div>
+
+						{% endif %}
+					{% endfor %}
 
 
-				<div class="col">
-					<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-						Voir mes dossiers
-					</a>
-					<a href="{{path("send_message")}}" class="btn btn-primary">Envoyer un message</a>
-				</div>
-			</div>
-		</section>
-		<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-			<div class="offcanvas-header">
-				<h2 class="offcanvas-title" id="offcanvasExampleLabel">Mes dossiers</h2>
-				<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-			</div>
-			<div class="offcanvas-body">
-				<div class="list-group">
-					<a href="{{ path("messages") }}" class="list-group-item list-group-item-action">Accueil</a>
-				</div>
-				<div class="list-group">
-					<a href="{{ path("received") }}" class="list-group-item list-group-item-action active">Boîte de réception</a>
-				</div>
-				<div class="list-group">
-					<a href="{{ path("messages") }}" class="list-group-item list-group-item-action">Eléments envoyés</a>
-				</div>
-			</div>
-		</div>
+				</article>
+			</section>
 
-	{% endblock %}
 
+		{% endblock %}
+
+	</div>
 {% endblock %}
