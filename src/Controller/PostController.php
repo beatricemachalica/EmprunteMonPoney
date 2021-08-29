@@ -37,22 +37,22 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/post", name="my_post")
+     * @Route("/posts", name="my_post")
      */
     public function myPost(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        // get user id
+        // get current user id
         $userId = $this->getUser()->getId();
 
-        // get user's posts
+        // get all user's posts
         $posts = $this->getDoctrine()
             ->getRepository(Post::class)
             ->findBy(array('user' => $userId), null);
 
-        // get user's horses
+        // get all user's horses
         $horses = $this->getDoctrine()
             ->getRepository(Equid::class)
             ->findBy(array('user' => $userId), null);
