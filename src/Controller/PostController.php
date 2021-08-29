@@ -313,6 +313,64 @@ class PostController extends AbstractController
     }
 
     /**
+     * @Route("/editComment/{id}", name="comment_edit")
+     */
+    public function editComment(Request $request, Comment $com): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // create form
+        $form = $this->createForm(CommentType::class, $com);
+
+        // get information from $request
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($com);
+            $entityManager->flush();
+
+            // flash message
+            $this->addFlash('message', 'Votre commentaire a bien été mis à jour.');
+            return $this->redirectToRoute('show_post', [
+                'id' => $com->getPost()->getId()
+            ]);
+        }
+
+        return $this->render('comment/editComment.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/deleteComment/{id}", name="delete_comment")
+     */
+    public function deleteComment(Comment $com): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // get current user
+        $currentUserId = $this->getUser()->getId();
+        // get post Id
+        $postId = $com->getPost()->getId();
+
+        if ($currentUserId == $com->getUser()->getId()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($com);
+            $entityManager->flush();
+        } else {
+            $this->addFlash('message', 'Vous n\'êtes pas autorisé.e à supprimer ce commentaire.');
+        }
+
+        $this->addFlash('message', 'Votre commentaire a bien été supprimé.');
+        return $this->redirectToRoute('show_post', [
+            'id' => $postId
+        ]);
+    }
+
+    /**
      * @Route("/deletePicture/{id}", name="delete_picture", methods={"DELETE"})
      */
     public function deletePicture(Photo $photo, Request $request)
