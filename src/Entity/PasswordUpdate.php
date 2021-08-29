@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PasswordUpdate
@@ -10,7 +11,6 @@ class PasswordUpdate
   private $oldPassword;
 
   /**
-   * @Assert\Length(min=8, minMessage="Votre mot de passe doit faire au moins 8 caractères.")
    * @Assert\Regex(
    * pattern = "/^(?=.*\d)(?=.*[A-Z])(?=.*[@#$%-?+])(?!.*(.)\1{2}).*[a-z]/m",
    * match=true,

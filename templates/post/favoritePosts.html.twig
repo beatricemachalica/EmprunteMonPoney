@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmprunteMonPoney - Annonces
+{% endblock %}
+
+{% block body %}
+
+	<div class="backgroundBlue">
+		{% block header %}
+			{% include "smallHeader.html.twig" %}
+		{% endblock %}
+
+		{% block container %}
+
+			<div class="container-lg">
+
+				<h2 class="mt-2 text-center">Annonces favorites</h2>
+
+				{# flash message #}
+				{% for message in app.flashes('message') %}
+					<div class="alert alert-success" role="alert">
+						{{ message }}
+					</div>
+				{% endfor %}
+
+				{# cards #}
+				<div class="row row-cols-1 row-cols-md-3">
+					{% if posts is not null %}
+						{% for post in posts %}
+
+							<div class="col mb-4">
+								{% include "post/postCard.html.twig" %}
+							</div>
+
+						{% endfor %}
+					{% endif %}
+				</div>
+
+			</div>
+
+		{% endblock %}
+	</div>
+{% endblock %}

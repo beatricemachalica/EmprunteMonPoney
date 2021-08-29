@@ -43,6 +43,11 @@ class PasswordUpdateType extends AbstractType
             // max length allowed by Symfony for security reasons
             'max' => 32,
           ]),
+          new Regex([
+            'pattern' => "/^(?=.*\d)(?=.*[A-Z])(?=.*[@#$%-])(?!.*(.)\1{2}).*[a-z]/m",
+            'match' => true,
+            'message' => "Attention : Votre mot de passe doit comporter au moins huit caractères, dont des lettres majuscules et minuscules, un chiffre et un symbole."
+          ])
         ],
         'attr' => [
           'class' => 'form-control'
@@ -60,6 +65,11 @@ class PasswordUpdateType extends AbstractType
             // max length allowed by Symfony for security reasons
             'max' => 32,
           ]),
+          new Regex([
+            'pattern' => "/^(?=.*\d)(?=.*[A-Z])(?=.*[@#$%-])(?!.*(.)\1{2}).*[a-z]/m",
+            'match' => true,
+            'message' => "Attention : Votre mot de passe doit comporter au moins huit caractères, dont des lettres majuscules et minuscules, un chiffre et un symbole."
+          ])
         ],
         'attr' => [
           'class' => 'form-control'

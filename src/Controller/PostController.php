@@ -70,6 +70,7 @@ class PostController extends AbstractController
     public function activatePost(Post $post)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
 
         // if the post is already activated => false, if it is not activated => true
         $post->setActive(($post->getActive()) ? false : true);
@@ -88,6 +89,7 @@ class PostController extends AbstractController
     public function newPost(Request $request, Post $post = null): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
 
         if (!$post) {
             $post = new Post();
@@ -97,7 +99,7 @@ class PostController extends AbstractController
         $userId = $this->getUser()->getId();
 
         // get user's horses
-        // an exact collection of entities that I want to include in the choice element
+        // an exact collection of entities that I want to include in the "choice element"
         $horses = $this->getDoctrine()
             ->getRepository(Equid::class)
             ->findBy(array('user' => $userId), null);
@@ -121,9 +123,9 @@ class PostController extends AbstractController
             $post->setActive(true);
 
             // set automatically a category
-            // this will no longer be useful if several categories will be implemented to the website
+            // this may no longer be useful if several categories may be implemented to the website
 
-            // get the categories
+            // get the categories (borrower and owner)
             $categoryEmprunt = $this->getDoctrine()
                 ->getRepository(Category::class)
                 ->findOneBy(array('name' => 'profil d\'emprunteur'), null);
@@ -133,10 +135,13 @@ class PostController extends AbstractController
                 ->findOneBy(array('name' => 'profil d\'un cheval'), null);
 
             // if the user is a borrower ("ROLE_EMPRUNT")
-            if (in_array("ROLE_EMPRUNT", $userRolesArray)) {
+            if (in_array("ROLE_EMPRUNT", $userRolesArray) && ($this->getUser()->getPosts() == null)) {
 
                 // set the right category
                 $post->setCategory($categoryEmprunt);
+            } else {
+                $this->addFlash('message', 'Vous avez déjà créé une annonce pour trouver un cheval. Adin d\'éviter les doublons les emprunteurs ne peuvent créer qu\'une seule annonce.');
+                return $this->redirectToRoute('my_post');
             }
 
             // if the user is an owner ("ROLE_PROPRIO") and his horse(s) has been correctly registered
@@ -148,6 +153,7 @@ class PostController extends AbstractController
 
                 // if the owner has fogotten to register at least one horse
                 $this->addFlash('error', "Veuillez inscrire au moins un cheval avant de créer une annonce.");
+                return $this->redirectToRoute('my_post');
             }
             // end set automatically a category
 
@@ -244,6 +250,23 @@ class PostController extends AbstractController
     }
 
     /**
+     * @Route("/favoritePosts", name="favorite_post")
+     */
+    public function showFavorite(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
+        $posts = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->findBy(['active' => true], ['createdAt' => 'desc']);
+
+        return $this->render('post/favoritePosts.html.twig', [
+            'posts' => $posts,
+        ]);
+    }
+
+    /**
      * @Route("/favorite/add/{id}", name="add_favorite")
      */
     public function addFavorite(Post $post)
@@ -324,6 +347,7 @@ class PostController extends AbstractController
     public function deletePost(Post $post): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($post);
