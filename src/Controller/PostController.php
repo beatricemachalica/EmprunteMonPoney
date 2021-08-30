@@ -10,6 +10,7 @@ use PHPUnit\Util\Json;
 use App\Entity\Category;
 use App\Entity\Comment;
 use App\Form\CommentType;
+use App\Repository\PostRepository;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,16 +24,31 @@ class PostController extends AbstractController
     /**
      * @Route("/posts", name="posts")
      */
-    public function index(): Response
+    public function index(PostRepository $postRepository, Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
 
-        $posts = $this->getDoctrine()
-            ->getRepository(Post::class)
-            ->findBy(['active' => true], ['createdAt' => 'desc']);
+        // find all actived posts
+        // $posts = $postRepository->findBy(['active' => true], ['createdAt' => 'desc']);
+
+        // number of items per page
+        $limit = 6;
+
+        // get the current page number
+        $page = (int)$request->query->get("page", 1);
+
+        // get all posts per page
+        $posts = $postRepository->getPaginatedPost($page, $limit);
+
+        // get the amount of posts
+        $nbPosts = $postRepository->getAmountPosts();
 
         return $this->render('post/index.html.twig', [
             'posts' => $posts,
+            'nbPosts' => $nbPosts,
+            'limit' => $limit,
+            'page' => $page
         ]);
     }
 

@@ -19,6 +19,49 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    /**
+     * Returns all posts per page
+     * @return void 
+     */
+    public function getPaginatedPost($page, $limit, $filters = null)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.active = 1');
+
+        // On filtre les données
+        // if ($filters != null) {
+        //     $query->andWhere('p.category IN(:cats)')
+        //         ->setParameter(':cats', array_values($filters));
+        // }
+
+        $query->orderBy('p.createdAt', 'DESC')
+            ->setFirstResult(($page * $limit) - $limit)
+            // set nb of first item => $page(1) * $limit(10) = 10 - $limit(10) = 0 (nb of the first item of page 1)
+            ->setMaxResults($limit);
+
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Returns number of posts
+     * @return void 
+     */
+    public function getAmountPosts($filters = null)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('COUNT(p)')
+            ->where('p.active = 1');
+
+        // On filtre les données
+        // if ($filters != null) {
+        //     $query->andWhere('a.categories IN(:cats)')
+        //         ->setParameter(':cats', array_values($filters));
+        // }
+
+        // getSingleScalarResult() in order to avoid an array as a result
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Post[] Returns an array of Post objects
     //  */

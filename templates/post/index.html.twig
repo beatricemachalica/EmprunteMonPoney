@@ -6,6 +6,7 @@
 {% block body %}
 
 	<div class="backgroundBlue">
+
 		{% block header %}
 			{% include "smallHeader.html.twig" %}
 		{% endblock %}
@@ -14,7 +15,7 @@
 
 			<div class="container-lg">
 
-				<h2 class="mt-2">Annonces</h2>
+				<h2 class="mt-2 text-center">Annonces</h2>
 
 				{# flash message #}
 				{% for message in app.flashes('message') %}
@@ -24,8 +25,10 @@
 				{% endfor %}
 
 				{# cards #}
-				<div class="card-deck">
+				{# <div class="card-deck"> #}
+
 					<div class="row row-cols-1 row-cols-md-3">
+
 						{% if posts is not null %}
 							{% for post in posts %}
 
@@ -35,8 +38,42 @@
 
 							{% endfor %}
 						{% endif %}
+
 					</div>
-				</div>
+				{# </div> #}
+
+				{# paging #}
+
+					{% set totalPages = (nbPosts / limit)|round(0,'ceil') %}
+					{# set the amount of pages needed #}
+
+					<nav aria-label="..." class="d-flex justify-content-center">
+						<ul class="pagination">
+
+						{# previous page #}
+							<li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
+								<a class="page-link" href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}" tabindex="-1" aria-disabled="true">
+									<i class="fas fa-chevron-left"></i>
+								</a>
+							</li>
+
+						{% for item in 1.. totalPages %}
+							<li class="page-item {{ (page == item) ? 'active' : '' }}">
+								<a class="page-link" href="?page={{ item }}">{{ item }}</a>
+							</li>
+						{% endfor %}
+
+						{# next page #}
+							<li class="page-item {{ (page == totalPages) ? 'disabled' : '' }}">
+								<a class="page-link" href="{{ (page < totalPages) ? '?page=' ~ (page + 1) : '' }}">
+									<i class="fas fa-chevron-right"></i>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+				
+				{# end paging #}
 
 			</div>
 
