@@ -426,6 +426,22 @@ class PostController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
+        // get all pictures
+        $pictures = $post->getPhotos();
+
+        if ($pictures) {
+
+            foreach ($pictures as $picture) {
+                // get the picture path
+                $pictureName = $this->getParameter("images_directory") . '/' . $picture->getName();
+
+                // delete this picture if this file exists
+                if (file_exists($pictureName)) {
+                    unlink($pictureName);
+                }
+            }
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($post);
         $entityManager->flush();
