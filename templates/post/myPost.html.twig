@@ -23,18 +23,18 @@
 				{% endfor %}
 
 
-				{% if is_granted("ROLE_PROPRIO") %}
-					<h2 class="mt-20">Mes annonces</h2>
+				{% if is_granted("ROLE_PROPRIO") and horses is not empty %}
+					<h2 class="mt-20 text-center">Mes annonces</h2>
 					<button type="button" class="btn btn-primary mt-2 mb-2">
 						<a href="{{ path('add_post') }}" class="aWithoutStyle">Nouvelle annonce</a>
 					</button>
-				{% elseif is_granted("ROLE_EMPRUNT") and posts is null %}
-					<h2 class="mt-20">Mon annonce</h2>
+				{% elseif is_granted("ROLE_EMPRUNT") and posts is empty %}
+					<h2 class="mt-20 text-center">Mon annonce</h2>
 					<button type="button" class="btn btn-primary mt-2 mb-2">
 						<a href="{{ path('add_post') }}" class="aWithoutStyle">Nouvelle annonce emprunteur</a>
 					</button>
-				{% else %}
-					<h2 class="mt-20">Mon annonce</h2>
+				{% elseif is_granted("ROLE_EMPRUNT") and posts is not empty %}
+					<h2 class="mt-20 text-center">Mon annonce</h2>
 					<p>Consultez les informations de votre annonce ci-dessous.</p>
 				{% endif %}
 
@@ -120,7 +120,7 @@
 					</button>
 
 					<button type="button" class="btn btn-primary mt-2 mb-2">
-						{% if post.category == "profil d'un cheval" and post.equid is not null %}
+						{% if post.category == "profil d'un cheval" and post.equid is not empty %}
 							<a href="{{ path('delete_post', {id: post.id} )}}" class="aWithoutStyle" onclick="return confirm('Êtes-vous sûr.e de vouloir supprimer votre annonce ? Attention cela supprimera également le cheval qui y est associé.')">
 								<i class="fas fa-times"></i>
 								Supprimer</a>
@@ -133,10 +133,13 @@
 					<hr>
 
 				{% endfor %}
-				{% if is_granted("ROLE_PROPRIO") and horses is null %}
-					<p class="alert alert-secondary">
+
+				{% if is_granted("ROLE_PROPRIO") and horses is empty %}
+					<p class="alert alert-secondary mt-20">
 						<i class="fas fa-exclamation-triangle text-danger"></i>
-						Veuillez inscrire au moins un cheval avant de créer une annonce
+						Veuillez inscrire au moins un cheval dans votre
+						<a href="{{path('user_account')}}">compte</a>
+						avant de créer une annonce.
 					</p>
 				{% endif %}
 

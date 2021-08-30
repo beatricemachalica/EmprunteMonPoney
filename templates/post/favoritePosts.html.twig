@@ -24,16 +24,18 @@
 				{% endfor %}
 
 				{# cards #}
-				<div class="row row-cols-1 row-cols-md-3">
-					{% if posts is not null %}
-						{% for post in posts %}
+				<div class="card-deck">
+					<div class="row row-cols-1 row-cols-md-3">
+						{% if posts is not null %}
+							{% for post in posts %}
 
-							<div class="col mb-4">
-								{% include "post/postCard.html.twig" %}
-							</div>
+								<div class="col mb-4">
+									{% include "post/postCard.html.twig" %}
+								</div>
 
-						{% endfor %}
-					{% endif %}
+							{% endfor %}
+						{% endif %}
+					</div>
 				</div>
 
 			</div>

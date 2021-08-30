@@ -37,7 +37,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/posts", name="my_post")
+     * @Route("/myPosts", name="my_posts")
      */
     public function myPost(): Response
     {
@@ -139,9 +139,12 @@ class PostController extends AbstractController
 
                 // set the right category
                 $post->setCategory($categoryEmprunt);
-            } else {
-                $this->addFlash('message', 'Vous avez déjà créé une annonce pour trouver un cheval. Adin d\'éviter les doublons les emprunteurs ne peuvent créer qu\'une seule annonce.');
-                return $this->redirectToRoute('my_post');
+            } elseif (in_array("ROLE_EMPRUNT", $userRolesArray) && ($this->getUser()->getPosts() != null)) {
+
+                // if the user is a borrower ("ROLE_EMPRUNT") and already has one post
+
+                $this->addFlash('message', 'Vous avez déjà créé une annonce pour trouver un cheval. Afin d\'éviter les doublons les emprunteurs ne peuvent créer qu\'une seule annonce.');
+                return $this->redirectToRoute('my_posts');
             }
 
             // if the user is an owner ("ROLE_PROPRIO") and his horse(s) has been correctly registered
@@ -153,7 +156,7 @@ class PostController extends AbstractController
 
                 // if the owner has fogotten to register at least one horse
                 $this->addFlash('error', "Veuillez inscrire au moins un cheval avant de créer une annonce.");
-                return $this->redirectToRoute('my_post');
+                return $this->redirectToRoute('my_posts');
             }
             // end set automatically a category
 
@@ -192,7 +195,7 @@ class PostController extends AbstractController
             $entityManager->persist($post);
             $entityManager->flush();
 
-            return $this->redirectToRoute('my_post');
+            return $this->redirectToRoute('my_posts');
         }
 
         return $this->render('post/newPost.html.twig', [
@@ -413,6 +416,6 @@ class PostController extends AbstractController
 
         // flash message
         $this->addFlash('message', 'Votre annonce a bien été supprimée.');
-        return $this->redirectToRoute('my_post');
+        return $this->redirectToRoute('my_posts');
     }
 }
