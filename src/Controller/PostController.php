@@ -10,6 +10,7 @@ use PHPUnit\Util\Json;
 use App\Entity\Category;
 use App\Entity\Comment;
 use App\Form\CommentType;
+use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,13 +25,13 @@ class PostController extends AbstractController
     /**
      * @Route("/posts", name="posts")
      */
-    public function index(PostRepository $postRepository, Request $request): Response
+    public function index(PostRepository $postRepository, CategoryRepository $categoryRepo, Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        // find all actived posts
-        // $posts = $postRepository->findBy(['active' => true], ['createdAt' => 'desc']);
+        // find all categories
+        $categories = $categoryRepo->findAll();
 
         // number of items per page
         $limit = 6;
@@ -38,17 +39,34 @@ class PostController extends AbstractController
         // get the current page number
         $page = (int)$request->query->get("page", 1);
 
-        // get all posts per page
-        $posts = $postRepository->getPaginatedPost($page, $limit);
+        // get filters
+        $filters = $request->get("categories");
+
+        // get all posts per page & according to filters
+        $posts = $postRepository->getPaginatedPost($page, $limit, $filters);
 
         // get the amount of posts
-        $nbPosts = $postRepository->getAmountPosts();
+        $nbPosts = $postRepository->getAmountPosts($filters);
+
+        // if ajax request return a JSON response
+        if ($request->get('ajax')) {
+            return new JsonResponse([
+                'content' => $this->renderView('post/index.html.twig', [
+                    'posts' => $posts,
+                    'nbPosts' => $nbPosts,
+                    'limit' => $limit,
+                    'page' => $page,
+                    'categories' => $categories
+                ])
+            ]);
+        }
 
         return $this->render('post/index.html.twig', [
             'posts' => $posts,
             'nbPosts' => $nbPosts,
             'limit' => $limit,
-            'page' => $page
+            'page' => $page,
+            'categories' => $categories
         ]);
     }
 
@@ -141,19 +159,24 @@ class PostController extends AbstractController
             // set automatically a category
             // this may no longer be useful if several categories may be implemented to the website
 
-            // get the categories (borrower and owner)
+            // get the category borrower
+
             $categoryEmprunt = $this->getDoctrine()
                 ->getRepository(Category::class)
                 ->findOneBy(array('name' => 'profil d\'emprunteur'), null);
+
+            // get the category owner
 
             $categoryProprio = $this->getDoctrine()
                 ->getRepository(Category::class)
                 ->findOneBy(array('name' => 'profil d\'un cheval'), null);
 
             // if the user is a borrower ("ROLE_EMPRUNT")
+
             if (in_array("ROLE_EMPRUNT", $userRolesArray) && ($this->getUser()->getPosts() == null)) {
 
                 // set the right category
+
                 $post->setCategory($categoryEmprunt);
             } elseif (in_array("ROLE_EMPRUNT", $userRolesArray) && ($this->getUser()->getPosts() != null)) {
 
@@ -164,22 +187,30 @@ class PostController extends AbstractController
             }
 
             // if the user is an owner ("ROLE_PROPRIO") and his horse(s) has been correctly registered
+
             if ((in_array("ROLE_PROPRIO", $userRolesArray)) && (!empty($horses))) {
 
                 // set the right category
+
                 $post->setCategory($categoryProprio);
             } elseif (empty($horses)) {
 
                 // if the owner has fogotten to register at least one horse
+
                 $this->addFlash('error', "Veuillez inscrire au moins un cheval avant de créer une annonce.");
                 return $this->redirectToRoute('my_posts');
             }
+
             // end set automatically a category
 
             // pictures
+
             $pictures = $form->get('photo')->getData();
+
             // for each new picture added by the user
+
             foreach ($pictures as $picture) {
+
                 // create a new name file with md5 & uniquid and set the right extension
                 $file = md5(uniqid()) . '.' . $picture->guessExtension();
 
@@ -192,12 +223,14 @@ class PostController extends AbstractController
                 );
 
                 // save the name on DB
+
                 $img = new Photo();
                 $img->setName($file);
                 $post->addPhoto($img);
             }
 
             // flash message in case of edit or a new post
+
             $idPost = $post->getId();
             if ($idPost == null) {
                 $this->addFlash('message', 'L\'annonce a bien été enregistrée.');

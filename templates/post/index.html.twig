@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% set queryParameters = app.request.query.all %}
+{# filter queryParameters in order to only keep the categories #}
+{% set queryString = queryParameters|filter((v, k) => k != "page")|url_encode %}
+
+{# mettre sur index_content pour la pagination #}
+{% set queryString = queryParameters|filter((v, k) => k != "page" and k != "ajax")|url_encode %}
+
 {% block title %}EmprunteMonPoney - Annonces
 {% endblock %}
 
@@ -13,7 +20,7 @@
 
 		{% block container %}
 
-			<div class="container-lg">
+			<main class="container-lg">
 
 				<h2 class="mt-2 text-center">Annonces</h2>
 
@@ -24,26 +31,53 @@
 					</div>
 				{% endfor %}
 
-				{# cards #}
-				{# <div class="card-deck"> #}
+
+				{# filter #}
+
+				<form action="" id="filters" class="row border w-100 p-3">
+				
+				{% for category in categories %}
+
+					{# checking if category is in parameters #}
+					{% if queryParameters is not empty and queryParameters.categories is defined %}
+							{% set checked = (category.id in queryParameters.categories) ? "checked" ; "" %}
+						{% else %}
+							{% set checked = "" %}
+					{% endif %}
+
+					<div class="col">
+						<p>
+							<input type="checkbox" name="categories[]" id="cat{{category.id}}" value="{{category.id}}" {{ checked }}>
+							<label for="cat{{category.id}}">{{ category.name }}</label>
+						</p>
+					</div>
+
+				{% endfor %}
+				<input type="hidden" name="page" value="{{ page }}">
+
+				</form>
+
+				<section id="content">
+				
+				
+					{# cards container #}
 
 					<div class="row row-cols-1 row-cols-md-3">
+							{# cards #}
+							{% if posts is not null %}
+								{% for post in posts %}
 
-						{% if posts is not null %}
-							{% for post in posts %}
+									<div class="col mb-3">
+										{% include "post/postCard.html.twig" %}
+									</div>
 
-								<div class="col mb-3">
-									{% include "post/postCard.html.twig" %}
-								</div>
-
-							{% endfor %}
-						{% endif %}
+								{% endfor %}
+							{% endif %}
 
 					</div>
-				{# </div> #}
 
-				{# paging #}
-
+				
+					{# paging #}
 					{% set totalPages = (nbPosts / limit)|round(0,'ceil') %}
 					{# set the amount of pages needed #}
 
@@ -52,31 +86,39 @@
 
 						{# previous page #}
 							<li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
-								<a class="page-link" href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}" tabindex="-1" aria-disabled="true">
+								<a class="page-link" href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}&{{ queryString }}" tabindex="-1" aria-disabled="true">
 									<i class="fas fa-chevron-left"></i>
 								</a>
 							</li>
 
 						{% for item in 1.. totalPages %}
 							<li class="page-item {{ (page == item) ? 'active' : '' }}">
-								<a class="page-link" href="?page={{ item }}">{{ item }}</a>
+								<a class="page-link" href="?page={{ item }}&{{ queryString }}">{{ item }}</a>
 							</li>
 						{% endfor %}
 
 						{# next page #}
 							<li class="page-item {{ (page == totalPages) ? 'disabled' : '' }}">
-								<a class="page-link" href="{{ (page < totalPages) ? '?page=' ~ (page + 1) : '' }}">
+								<a class="page-link" href="{{ (page < totalPages) ? '?page=' ~ (page + 1) : '' }}&{{ queryString }}">
 									<i class="fas fa-chevron-right"></i>
 								</a>
 							</li>
 
 						</ul>
 					</nav>
-				
-				{# end paging #}
+					{# end paging #}
 
-			</div>
+				
+				</section>
+
+			</main>
 
 		{% endblock %}
+
 	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('js/filter.js') }}"></script>
 {% endblock %}

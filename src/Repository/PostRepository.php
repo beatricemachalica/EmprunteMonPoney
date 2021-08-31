@@ -28,11 +28,11 @@ class PostRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('p')
             ->where('p.active = 1');
 
-        // On filtre les données
-        // if ($filters != null) {
-        //     $query->andWhere('p.category IN(:cats)')
-        //         ->setParameter(':cats', array_values($filters));
-        // }
+        // filter
+        if ($filters != null) {
+            $query->andWhere('p.category IN(:categories)')
+                ->setParameter(':categories', array_values($filters));
+        }
 
         $query->orderBy('p.createdAt', 'DESC')
             ->setFirstResult(($page * $limit) - $limit)
@@ -52,11 +52,11 @@ class PostRepository extends ServiceEntityRepository
             ->select('COUNT(p)')
             ->where('p.active = 1');
 
-        // On filtre les données
-        // if ($filters != null) {
-        //     $query->andWhere('a.categories IN(:cats)')
-        //         ->setParameter(':cats', array_values($filters));
-        // }
+        // filter
+        if ($filters != null) {
+            $query->andWhere('p.category IN(:categories)')
+                ->setParameter(':categories', array_values($filters));
+        }
 
         // getSingleScalarResult() in order to avoid an array as a result
         return $query->getQuery()->getSingleScalarResult();
