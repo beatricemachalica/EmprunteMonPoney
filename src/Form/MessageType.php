@@ -38,15 +38,6 @@ class MessageType extends AbstractType
                     'placeholder' => 'Ajoutez votre message ici',
                 ]
             ])
-            ->add('recipient', EntityType::class, [
-                "class" => User::class,
-                "label" => "Destinataire",
-                'required' => true,
-                "choice_label" => "pseudo",
-                "attr" => [
-                    "class" => "form-control",
-                ]
-            ])
             ->add('envoyer', SubmitType::class, [
                 "attr" => [
                     "class" => "btn btn-primary mt-20"

@@ -50,8 +50,8 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // redirection une fois que l'utilisateur est connecté
-        return new RedirectResponse($this->urlGenerator->generate('user_account'));
+        // redirect to all posts page once the user is authentificated 
+        return new RedirectResponse($this->urlGenerator->generate('posts'));
         // throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
     }
 

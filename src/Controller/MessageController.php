@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use App\Entity\Message;
 use App\Form\MessageType;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,9 +15,9 @@ class MessageController extends AbstractController
 {
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/send", name="send_message")
+     * @Route("/send/{id}", name="send_message")
      */
-    public function sendMessage(Request $request): Response
+    public function sendMessage(Request $request, Post $post): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
@@ -30,10 +31,16 @@ class MessageController extends AbstractController
         // get the form from request
         $form->handleRequest($request);
 
+        // get the recipient (post author)
+        $recipient = $post->getUser()->getPseudo();
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             // set automatically the sender (current user) of this message
             $message->setSender($this->getUser());
+
+            // set automatically the recipient
+            $message->setRecipient($post->getUser());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($message);
@@ -41,11 +48,14 @@ class MessageController extends AbstractController
 
             // add flash message
             $this->addFlash("message", "Votre message a bien été envoyé.");
-            return $this->redirectToRoute("messages");
+            return $this->redirectToRoute('show_post', [
+                'id' => $post->getId()
+            ]);
         }
 
         return $this->render("message/sendNewMessage.html.twig", [
-            "form" => $form->createView()
+            "form" => $form->createView(),
+            "recipient" => $recipient
         ]);
     }
 
