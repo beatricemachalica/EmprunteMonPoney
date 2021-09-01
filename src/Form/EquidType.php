@@ -58,7 +58,7 @@ class EquidType extends AbstractType
                 ],
                 'format' => 'ddMMyyyy',
                 'widget' => 'choice',
-                 'years' => range(date('Y')-40, date('Y')+30),
+                 'years' => range(date('Y')-40, date('Y')),
                 'constraints' => [
                     new NotBlank()
                 ],

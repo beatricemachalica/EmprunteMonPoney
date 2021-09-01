@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EquidRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,6 +30,11 @@ class Equid
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Range(
+     *      min = 70,
+     *      max = 220,
+     *      notInRangeMessage = "Veuillez entrer la taille au garrot de votre cheval entre {{ 70 }}cm et {{ 220 }}cm",
+     * )
      */
     private $size;
 
