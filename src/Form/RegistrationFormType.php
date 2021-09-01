@@ -27,8 +27,16 @@ class RegistrationFormType extends AbstractType
             ->add('pseudo', TextType::class, [
                 'required' => true,
                 'label' => 'Nom d\'utilisateur',
+                'constraints' =>[
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'Le nom d\'utilisateur doit comporter au moins 2 caractères.'
+                    ]),
+                    new NotBlank()
+                ],
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'placeholder' => 'Jean',
                 ]
             ])
             ->add('email', EmailType::class, [
@@ -40,28 +48,32 @@ class RegistrationFormType extends AbstractType
                 ],
                 'label' => 'Email',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'placeholder' => 'Votre email',
                 ]
             ])
             ->add('city', TextType::class, [
                 'required' => true,
                 'label' => 'Ville',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'placeholder' => 'Strasbourg',
                 ]
             ])
             ->add('cp', IntegerType::class, [
                 'required' => true,
                 'label' => 'Code postal',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'placeholder' => '67000',
                 ]
             ])
             ->add('departement', TextType::class, [
                 'required' => true,
                 'label' => 'Département',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'placeholder' => 'Bas-rhin',
                 ]
             ])
             ->add('phoneNumber', TelType::class, [

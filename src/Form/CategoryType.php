@@ -17,7 +17,8 @@ class CategoryType extends AbstractType
                 'required' => true,
                 'label' => 'Nom de la catégorie',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'placeholder' => 'Catégorie',
                 ]
             ]);
     }

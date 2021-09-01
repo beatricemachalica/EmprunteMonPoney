@@ -23,7 +23,8 @@ class PostType extends AbstractType
                 'required' => true,
                 'label' => 'Description de l\'annonce',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'placeholder' => 'Ajoutez votre description de l\'annonce ici',
                 ]
             ])
             // ->add('category', EntityType::class, [

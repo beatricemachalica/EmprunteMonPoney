@@ -17,9 +17,10 @@ class ContactType extends AbstractType
     $builder
       ->add('pseudo', TextType::class, [
         'required' => true,
-        'label' => 'Nom d\'utilisateur',
+        'label' => 'Nom',
         'attr' => [
-          'class' => 'form-control'
+          'class' => 'form-control',
+          'placeholder' => 'Jean',
         ]
       ])
       ->add('email', EmailType::class, [
@@ -31,7 +32,8 @@ class ContactType extends AbstractType
         ],
         'label' => 'Email',
         'attr' => [
-          'class' => 'form-control'
+          'class' => 'form-control',
+          'placeholder' => 'Votre adresse mail',
         ]
       ])
       ->add('message', CKEditorType::class, [
@@ -39,7 +41,8 @@ class ContactType extends AbstractType
         'label' => 'Message',
         'attr' => [
           'class' => 'form-control',
-          'rows' => 5
+          'rows' => 5,
+          'placeholder' => 'Ajoutez votre message ici.'
         ]
       ]);
   }

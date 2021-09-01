@@ -22,7 +22,8 @@ class MessageType extends AbstractType
                 "label" => "Titre du message",
                 'required' => true,
                 "attr" => [
-                    "class" => "form-control"
+                    "class" => "form-control",
+                    'placeholder' => 'Titre du message',
                 ]
             ])
             ->add('message', TextareaType::class, [
@@ -33,7 +34,8 @@ class MessageType extends AbstractType
                     ]),
                 ],
                 "attr" => [
-                    "class" => "form-control"
+                    "class" => "form-control",
+                    'placeholder' => 'Ajoutez votre message ici',
                 ]
             ])
             ->add('recipient', EntityType::class, [
@@ -42,7 +44,7 @@ class MessageType extends AbstractType
                 'required' => true,
                 "choice_label" => "pseudo",
                 "attr" => [
-                    "class" => "form-control"
+                    "class" => "form-control",
                 ]
             ])
             ->add('envoyer', SubmitType::class, [
