@@ -4,9 +4,6 @@
 {# filter queryParameters in order to only keep the categories #}
 {% set queryString = queryParameters|filter((v, k) => k != "page")|url_encode %}
 
-{# mettre sur index_content pour la pagination #}
-{% set queryString = queryParameters|filter((v, k) => k != "page" and k != "ajax")|url_encode %}
-
 {% block title %}EmprunteMonPoney - Annonces
 {% endblock %}
 
@@ -40,7 +37,7 @@
 
 					{# checking if category is in parameters #}
 					{% if queryParameters is not empty and queryParameters.categories is defined %}
-							{% set checked = (category.id in queryParameters.categories) ? "checked" ; "" %}
+							{% set checked = (category.id in queryParameters.categories) ? "checked" : "" %}
 						{% else %}
 							{% set checked = "" %}
 					{% endif %}
@@ -58,57 +55,9 @@
 				</form>
 
 				<section id="content">
-				
-				
-					{# cards container #}
 
-					<div class="row row-cols-1 row-cols-md-3">
-							{# cards #}
-							{% if posts is not null %}
-								{% for post in posts %}
-
-									<div class="col mb-3">
-										{% include "post/postCard.html.twig" %}
-									</div>
-
-								{% endfor %}
-							{% endif %}
-
-					</div>
-
-				
-					{# paging #}
-					{% set totalPages = (nbPosts / limit)|round(0,'ceil') %}
-					{# set the amount of pages needed #}
-
-					<nav aria-label="..." class="d-flex justify-content-center">
-						<ul class="pagination">
-
-						{# previous page #}
-							<li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
-								<a class="page-link" href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}&{{ queryString }}" tabindex="-1" aria-disabled="true">
-									<i class="fas fa-chevron-left"></i>
-								</a>
-							</li>
-
-						{% for item in 1.. totalPages %}
-							<li class="page-item {{ (page == item) ? 'active' : '' }}">
-								<a class="page-link" href="?page={{ item }}&{{ queryString }}">{{ item }}</a>
-							</li>
-						{% endfor %}
-
-						{# next page #}
-							<li class="page-item {{ (page == totalPages) ? 'disabled' : '' }}">
-								<a class="page-link" href="{{ (page < totalPages) ? '?page=' ~ (page + 1) : '' }}&{{ queryString }}">
-									<i class="fas fa-chevron-right"></i>
-								</a>
-							</li>
-
-						</ul>
-					</nav>
-					{# end paging #}
-
-				
+					{% include "post/index_content.html.twig" %}
+					
 				</section>
 
 			</main>

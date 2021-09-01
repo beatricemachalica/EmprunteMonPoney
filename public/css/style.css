@@ -572,7 +572,7 @@ form {
   margin-left: 20px;
 }
 .backgroundBlue {
-  background-color: rgba(243, 247, 249);
+  background-color: rgb(231, 238, 241);
   min-height: 100vh;
 }
 .backgroundHorses {

@@ -1,0 +1,51 @@
+
+    {# cards container #}
+    <div class="row row-cols-1 row-cols-md-3">
+            {# cards #}
+            {% if posts is not null %}
+                {% for post in posts %}
+
+                    <div class="col mb-3">
+                        {% include "post/postCard.html.twig" %}
+                    </div>
+
+                {% endfor %}
+            {% endif %}
+
+    </div>
+
+    {% set queryParameters = app.request.query.all %}
+
+    {% set queryString = queryParameters|filter((v, k) => k != "page" and k != "ajax")|url_encode %}
+
+
+    {# paging #}
+    {% set totalPages = (nbPosts / limit)|round(0,'ceil') %}
+    {# set the amount of pages needed #}
+
+    <nav aria-label="..." class="d-flex justify-content-center">
+        <ul class="pagination">
+
+        {# previous page #}
+            <li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}&{{ queryString }}" tabindex="-1" aria-disabled="true">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            </li>
+
+        {% for item in 1.. totalPages %}
+            <li class="page-item {{ (page == item) ? 'active' : '' }}">
+                <a class="page-link" href="?page={{ item }}&{{ queryString }}">{{ item }}</a>
+            </li>
+        {% endfor %}
+
+        {# next page #}
+            <li class="page-item {{ (page == totalPages) ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ (page < totalPages) ? '?page=' ~ (page + 1) : '' }}&{{ queryString }}">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+    {# end paging #}

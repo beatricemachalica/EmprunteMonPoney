@@ -51,7 +51,7 @@ class PostController extends AbstractController
         // if ajax request return a JSON response
         if ($request->get('ajax')) {
             return new JsonResponse([
-                'content' => $this->renderView('post/index.html.twig', [
+                'content' => $this->renderView('post/index_content.html.twig', [
                     'posts' => $posts,
                     'nbPosts' => $nbPosts,
                     'limit' => $limit,
@@ -172,13 +172,15 @@ class PostController extends AbstractController
                 ->findOneBy(array('name' => 'profil d\'un cheval'), null);
 
             // if the user is a borrower ("ROLE_EMPRUNT")
+            
+            // dd($this->getUser()->getPosts());
 
-            if (in_array("ROLE_EMPRUNT", $userRolesArray) && ($this->getUser()->getPosts() == null)) {
+            if (in_array("ROLE_EMPRUNT", $userRolesArray) && (!empty($this->getUser()->getPosts()))) {
 
                 // set the right category
 
                 $post->setCategory($categoryEmprunt);
-            } elseif (in_array("ROLE_EMPRUNT", $userRolesArray) && ($this->getUser()->getPosts() != null)) {
+            } elseif (in_array("ROLE_EMPRUNT", $userRolesArray) && (empty($this->getUser()->getPosts()))) {
 
                 // if the user is a borrower ("ROLE_EMPRUNT") and already has one post
 
