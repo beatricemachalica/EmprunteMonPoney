@@ -55,7 +55,6 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_login');
         }
@@ -83,9 +82,32 @@ class RegistrationController extends AbstractController
         }
 
         // success flash message
-        $this->addFlash('success', 'Votre email a bien été vérifié, vous pouvez désormais vous connecter.');
+        $this->addFlash('message', 'Votre email a bien été vérifié.');
 
         // redirect the user to the login page
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('user_account');
+    }
+
+    /**
+     * @Route("/verifyEmailLink/{id}", name="verify_email_link")
+     */
+    public function verifyUserEmailLink(User $user)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // send email validation link
+        // generate a signed url and email it to the user
+        $this->emailVerifier->sendEmailConfirmation(
+            'app_verify_email',
+            $user,
+            (new TemplatedEmail())
+                ->from(new Address('empuntemonponey@gmail.com', 'EmprunteMonPoney'))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
+        // flash message
+        $this->addFlash('message', 'Un mail vous a été envoyé.');
+        return $this->redirectToRoute('user_account');
     }
 }

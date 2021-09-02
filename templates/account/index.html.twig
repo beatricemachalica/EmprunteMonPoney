@@ -22,7 +22,18 @@
 					</div>
 				{% endfor %}
 
-				<h2 class="mt-2">Bienvenue
+				{# email is valide or not message #}
+				{% if app.user.isVerified == false %}
+					<div class="alert alert-secondary" role="alert">
+						<i class="fas fa-exclamation-triangle text-danger"></i>
+						Votre mail n'a pas été vérifié, veuillez cliquer
+						<a href="{{ path('verify_email_link', {id:app.user.id}) }}">ici</a>
+						pour receçoir un nouveau mail de validation.
+					</div>
+				{% endif %}
+
+				<h2 class="mt-2">
+					Bienvenue
 					{{app.user.pseudo |capitalize }}
 				</h2>
 
