@@ -14,7 +14,7 @@
 
 			<div class="container-lg">
 
-				<h2 class="mt-2 text-center">Annonces favorites</h2>
+				<h2 class="mt-20 text-center">Mes favoris</h2>
 
 				{# flash message #}
 				{% for message in app.flashes('message') %}
@@ -24,18 +24,16 @@
 				{% endfor %}
 
 				{# cards #}
-				<div class="card-deck">
-					<div class="row row-cols-1 row-cols-md-3">
-						{% if posts is not null %}
-							{% for post in posts %}
+				<div class="row row-cols-1 row-cols-md-3">
+					{% if posts is not null %}
+						{% for post in posts %}
 
-								<div class="col mb-4">
-									{% include "post/postCard.html.twig" %}
-								</div>
+							<div class="col mb-4">
+								{% include "post/postCard.html.twig" %}
+							</div>
 
-							{% endfor %}
-						{% endif %}
-					</div>
+						{% endfor %}
+					{% endif %}
 				</div>
 
 			</div>

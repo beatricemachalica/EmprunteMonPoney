@@ -2,17 +2,18 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Post;
+use App\Entity\User;
 use App\Entity\Equid;
 use App\Entity\Photo;
 use App\Form\PostType;
 use PHPUnit\Util\Json;
-use App\Entity\Category;
 use App\Entity\Comment;
+use App\Entity\Category;
 use App\Form\CommentType;
-use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
-use DateTime;
+use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -310,16 +311,18 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/favoritePosts", name="favorite_post")
+     * @Route("/favoritePosts/{id}", name="favorite_post")
      */
-    public function showFavorite(): Response
+    public function showFavorite(PostRepository $postRepository, User $user): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        $posts = $this->getDoctrine()
-            ->getRepository(Post::class)
-            ->findBy(['active' => true], ['createdAt' => 'desc']);
+        // $posts = $this->getDoctrine()
+        //     ->getRepository(Post::class)
+        //     ->findBy(['active' => true], ['createdAt' => 'desc']);
+
+        $posts = $user->getFavorites();
 
         return $this->render('post/favoritePosts.html.twig', [
             'posts' => $posts,

@@ -15,7 +15,7 @@
     </div>
 
     {% set queryParameters = app.request.query.all %}
-
+    {# filter queryParameters in order to only keep the filters without "page" and "ajax" #}
     {% set queryString = queryParameters|filter((v, k) => k != "page" and k != "ajax")|url_encode %}
 
 
@@ -23,8 +23,9 @@
     {% set totalPages = (nbPosts / limit)|round(0,'ceil') %}
     {# set the amount of pages needed #}
 
-    {% if nbPosts is same as "0" %}
     {# if no posts matches the search filters #}
+    {% if nbPosts is same as "0" %}
+    
         <div class="alert alert-primary" role="alert">
             <i class="far fa-frown" style="width:2rem; font-size: 1.5rem;"></i> 
             Oups ! Aucune annonce ne correspond à votre recherche...
@@ -57,6 +58,6 @@
 
             </ul>
         </nav>
-    {# end paging #}
 
     {% endif %}
+    {# end paging #}

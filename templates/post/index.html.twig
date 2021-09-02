@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% set queryParameters = app.request.query.all %}
-{# filter queryParameters in order to only keep the filters #}
+{# filter queryParameters in order to only keep the filters without "page" #}
 {% set queryString = queryParameters|filter((v, k) => k != "page")|url_encode %}
 
 {% block title %}EmprunteMonPoney - Annonces
@@ -62,19 +62,18 @@
 							{% if queryParameters is not empty and queryParameters.minPrice is defined and queryParameters.minPrice is not null %}
 								{% set valueMinPrice = queryParameters.minPrice %}
 							{% else %}
-								{% set valueMinPrice = "0" %}
+								{% set valueMinPrice = 'prix mini' %}
 							{% endif %}
 							{% if queryParameters is not empty and queryParameters.maxPrice is defined and queryParameters.maxPrice is not null %}
 								{% set valueMaxPrice = queryParameters.maxPrice %}
 							{% else %}
-								{% set valueMaxPrice = "1000" %}
+								{% set valueMaxPrice = 'prix max' %}
 							{% endif %}
 
 							<div>
-								<input type="number" name="minPrice" id="minPrice" value="{{ valueMinPrice }}">
-							</div>
-							<div>
-								<input type="number" name="maxPrice" id="maxPrice" value="{{ valueMaxPrice }}">
+								<input type="number" name="minPrice" id="minPrice" placeholder="{{ valueMinPrice }}" style="width:100px">
+
+								<input type="number" name="maxPrice" id="maxPrice" placeholder="{{ valueMaxPrice }}" style="width:100px">
 							</div>
 						</div>
 					</div>
