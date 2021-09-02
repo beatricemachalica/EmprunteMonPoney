@@ -33,7 +33,7 @@ class Equid
      * @Assert\Range(
      *      min = 70,
      *      max = 220,
-     *      notInRangeMessage = "Veuillez entrer la taille au garrot de votre cheval entre {{ 70 }}cm et {{ 220 }}cm",
+     *      notInRangeMessage = "Veuillez entrer une taille au garrot de votre cheval entre {{ min }}cm et {{ max }}cm",
      * )
      */
     private $size;

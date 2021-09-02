@@ -27,10 +27,12 @@ class RegistrationFormType extends AbstractType
             ->add('pseudo', TextType::class, [
                 'required' => true,
                 'label' => 'Nom d\'utilisateur',
-                'constraints' =>[
+                'constraints' => [
                     new Length([
                         'min' => 3,
-                        'minMessage' => 'Le nom d\'utilisateur doit comporter au moins 2 caractères.'
+                        'max' => 35,
+                        'minMessage' => 'Le nom d\'utilisateur doit comporter au moins {{ limit }} caractères.',
+                        'maxMessage' => 'Le nom d\'utilisateur ne peut dépasser {{ limit }} caractères.',
                     ]),
                     new NotBlank()
                 ],
