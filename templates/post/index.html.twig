@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% set queryParameters = app.request.query.all %}
-{# filter queryParameters in order to only keep the categories #}
+{# filter queryParameters in order to only keep the filters #}
 {% set queryString = queryParameters|filter((v, k) => k != "page")|url_encode %}
 
 {% block title %}EmprunteMonPoney - Annonces
@@ -17,9 +17,8 @@
 
 		{% block container %}
 
-			<main class="container-lg">
-
-				<h2 class="mt-2 text-center">Annonces</h2>
+			<main
+				class="container-lg">
 
 				{# flash message #}
 				{% for message in app.flashes('message') %}
@@ -31,33 +30,65 @@
 
 				{# filter #}
 
-				<form action="" id="filters" class="row border w-100 p-3">
-				
-				{% for category in categories %}
+				<form
+					id="filters" class="row w-100 p-3">
 
-					{# checking if category is in parameters #}
-					{% if queryParameters is not empty and queryParameters.categories is defined %}
-							{% set checked = (category.id in queryParameters.categories) ? "checked" : "" %}
-						{% else %}
-							{% set checked = "" %}
-					{% endif %}
-
+					{# categories #}
 					<div class="col">
-						<p>
-							<input type="checkbox" name="categories[]" id="cat{{category.id}}" value="{{category.id}}" {{ checked }}>
-							<label for="cat{{category.id}}">{{ category.name }}</label>
-						</p>
+						<div>
+							<h4>Catégories</h4>
+							{% for category in categories %}
+
+								{# checking if category is in parameters #}
+								{% if queryParameters is not empty and queryParameters.categories is defined %}
+									{% set checked = (category.id in queryParameters.categories) ? "checked" : "" %}
+								{% else %}
+									{% set checked = "" %}
+								{% endif %}
+								<div>
+									<input type="checkbox" name="categories[]" id="cat{{category.id}}" value="{{category.id}}" {{ checked }}>
+									<label for="cat{{category.id}}">{{ category.name }}</label>
+								</div>
+
+							{% endfor %}
+						</div>
 					</div>
 
-				{% endfor %}
-				<input type="hidden" name="page" value="{{ page }}">
+					{# price #}
+					<div class="col">
+						<div>
+							<h4>Prix</h4>
+							{# checking if minPrice & maxPrice is in parameters #}
+							{% if queryParameters is not empty and queryParameters.minPrice is defined and queryParameters.minPrice is not null %}
+								{% set valueMinPrice = queryParameters.minPrice %}
+							{% else %}
+								{% set valueMinPrice = "0" %}
+							{% endif %}
+							{% if queryParameters is not empty and queryParameters.maxPrice is defined and queryParameters.maxPrice is not null %}
+								{% set valueMaxPrice = queryParameters.maxPrice %}
+							{% else %}
+								{% set valueMaxPrice = "1000" %}
+							{% endif %}
+
+							<div>
+								<input type="number" name="minPrice" id="minPrice" value="{{ valueMinPrice }}">
+							</div>
+							<div>
+								<input type="number" name="maxPrice" id="maxPrice" value="{{ valueMaxPrice }}">
+							</div>
+						</div>
+					</div>
+
+					{# number of the current page #}
+					<input type="hidden" name="page" value="{{ page }}">
 
 				</form>
+				{# end filters #}
 
 				<section id="content">
 
 					{% include "post/index_content.html.twig" %}
-					
+
 				</section>
 
 			</main>

@@ -23,15 +23,27 @@ class PostRepository extends ServiceEntityRepository
      * Returns all posts per page
      * @return void 
      */
-    public function getPaginatedPost($page, $limit, $filters = null)
+    public function getPaginatedPost($page, $limit, $categoriesFilter = null, $minPriceFilter = null, $maxPriceFilter = null)
     {
         $query = $this->createQueryBuilder('p')
             ->where('p.active = 1');
 
-        // filter
-        if ($filters != null) {
+        // categories filter
+        if ($categoriesFilter != null) {
             $query->andWhere('p.category IN(:categories)')
-                ->setParameter(':categories', array_values($filters));
+                ->setParameter(':categories', array_values($categoriesFilter));
+        }
+
+        // minimum price filter
+        if ($minPriceFilter != null) {
+            $query->andWhere('p.price >= (:minPrice)')
+                ->setParameter(':minPrice', $minPriceFilter);
+        }
+
+        // maximum price filter
+        if ($maxPriceFilter != null) {
+            $query->andWhere('p.price <= (:maxPrice)')
+                ->setParameter(':maxPrice', $maxPriceFilter);
         }
 
         $query->orderBy('p.createdAt', 'DESC')
@@ -46,16 +58,28 @@ class PostRepository extends ServiceEntityRepository
      * Returns number of posts
      * @return void 
      */
-    public function getAmountPosts($filters = null)
+    public function getAmountPosts($categoriesFilter = null, $minPriceFilter = null, $maxPriceFilter = null)
     {
         $query = $this->createQueryBuilder('p')
             ->select('COUNT(p)')
             ->where('p.active = 1');
 
-        // filter
-        if ($filters != null) {
+        // categories filter
+        if ($categoriesFilter != null) {
             $query->andWhere('p.category IN(:categories)')
-                ->setParameter(':categories', array_values($filters));
+                ->setParameter(':categories', array_values($categoriesFilter));
+        }
+
+        // minimum price filter
+        if ($minPriceFilter != null) {
+            $query->andWhere('p.price >= (:minPrice)')
+                ->setParameter(':minPrice', $minPriceFilter);
+        }
+
+        // maximum price filter
+        if ($maxPriceFilter != null) {
+            $query->andWhere('p.price <= (:maxPrice)')
+                ->setParameter(':maxPrice', $maxPriceFilter);
         }
 
         // getSingleScalarResult() in order to avoid an array as a result

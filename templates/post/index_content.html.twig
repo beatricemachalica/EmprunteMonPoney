@@ -23,29 +23,40 @@
     {% set totalPages = (nbPosts / limit)|round(0,'ceil') %}
     {# set the amount of pages needed #}
 
-    <nav aria-label="..." class="d-flex justify-content-center">
-        <ul class="pagination">
+    {% if nbPosts is same as "0" %}
+    {# if no posts matches the search filters #}
+        <div class="alert alert-primary" role="alert">
+            <i class="far fa-frown" style="width:2rem; font-size: 1.5rem;"></i> 
+            Oups ! Aucune annonce ne correspond à votre recherche...
+        </div>
 
-        {# previous page #}
-            <li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
-                <a class="page-link" href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}&{{ queryString }}" tabindex="-1" aria-disabled="true">
-                    <i class="fas fa-chevron-left"></i>
-                </a>
-            </li>
+        {% else %}
 
-        {% for item in 1.. totalPages %}
-            <li class="page-item {{ (page == item) ? 'active' : '' }}">
-                <a class="page-link" href="?page={{ item }}&{{ queryString }}">{{ item }}</a>
-            </li>
-        {% endfor %}
+        <nav aria-label="..." class="d-flex justify-content-center">
+            <ul class="pagination">
 
-        {# next page #}
-            <li class="page-item {{ (page == totalPages) ? 'disabled' : '' }}">
-                <a class="page-link" href="{{ (page < totalPages) ? '?page=' ~ (page + 1) : '' }}&{{ queryString }}">
-                    <i class="fas fa-chevron-right"></i>
-                </a>
-            </li>
+                {# previous page #}
+                <li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}&{{ queryString }}" tabindex="-1" aria-disabled="true">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
 
-        </ul>
-    </nav>
+                {% for item in 1.. totalPages %}
+                    <li class="page-item {{ (page == item) ? 'active' : '' }}">
+                        <a class="page-link" href="?page={{ item }}&{{ queryString }}">{{ item }}</a>
+                    </li>
+                {% endfor %}
+
+                {# next page #}
+                <li class="page-item {{ (page == totalPages) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ (page < totalPages) ? '?page=' ~ (page + 1) : '' }}&{{ queryString }}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
     {# end paging #}
+
+    {% endif %}

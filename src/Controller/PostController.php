@@ -40,13 +40,19 @@ class PostController extends AbstractController
         $page = (int)$request->query->get("page", 1);
 
         // get filters
-        $filters = $request->get("categories");
 
-        // get all posts per page & according to filters
-        $posts = $postRepository->getPaginatedPost($page, $limit, $filters);
+        // categories filter
+        $categoriesFilter = $request->get("categories");
 
-        // get the amount of posts
-        $nbPosts = $postRepository->getAmountPosts($filters);
+        // price range filters
+        $minPriceFilter = $request->get("minPrice");
+        $maxPriceFilter = $request->get("maxPrice");
+
+        // get all posts according to filters
+        $posts = $postRepository->getPaginatedPost($page, $limit, $categoriesFilter, $minPriceFilter, $maxPriceFilter);
+
+        // count the amount of posts & according to filters
+        $nbPosts = $postRepository->getAmountPosts($categoriesFilter, $minPriceFilter, $maxPriceFilter);
 
         // if ajax request return a JSON response
         if ($request->get('ajax')) {
@@ -172,7 +178,7 @@ class PostController extends AbstractController
                 ->findOneBy(array('name' => 'profil d\'un cheval'), null);
 
             // if the user is a borrower ("ROLE_EMPRUNT")
-            
+
             // dd($this->getUser()->getPosts());
 
             if (in_array("ROLE_EMPRUNT", $userRolesArray) && (!empty($this->getUser()->getPosts()))) {

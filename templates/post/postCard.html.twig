@@ -27,7 +27,7 @@
 		{% endif %}
 
 		{# price #}
-		<h6 class="card-subtitle mb-2 text-muted">{{ post.price }}
+		<h6 class="card-subtitle mb-2 text-muted">{{ post.price|number_format(2, ',', ' ') }}
 			€ / mois</h6>
 
 		{# text #}

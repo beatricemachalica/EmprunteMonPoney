@@ -68,7 +68,7 @@
 									</tr>
 									<tr>
 										<td scope="col" class="font-weight-bold">Prix / mois</td>
-										<td>{{ post.price }}
+										<td>{{ post.price|number_format(2, ',', ' ') }}
 											€</td>
 									</tr>
 									<tr>

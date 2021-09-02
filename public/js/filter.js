@@ -10,18 +10,22 @@ window.onload = () => {
       // get form data
       const DataForm = new FormData(FilterForm);
 
-      // queryString
+      // queryString (create a new URL with those filters parameters)
       const Params = new URLSearchParams();
 
       DataForm.forEach((value, key) => {
         Params.append(key, value);
+        // console.log(key, value);
+        // console.log(Params.toString());
       });
 
       // get the current page URL
       const Url = new URL(window.location.href);
 
       // AJAX request
-      // pathname = /posts/
+      // pathname = /posts/ + page
+      // params = all categories, prices, etc.
+      // ajax=1 param for PostController
       fetch(Url.pathname + "?" + Params.toString() + "&ajax=1", {
         headers: {
           "X-Requested-With": "XMLHttpRequest",
@@ -39,6 +43,7 @@ window.onload = () => {
           history.pushState({}, null, Url.pathname + "?" + Params.toString());
         })
         .catch((e) => alert(e));
+      // catch potential error
     });
   });
 };

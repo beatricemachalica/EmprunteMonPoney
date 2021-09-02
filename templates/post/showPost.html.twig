@@ -119,7 +119,7 @@
 												</tr>
 												<tr>
 													<td scope="col" class="font-weight-bold">Prix / mois</td>
-													<td>{{ post.price }}
+													<td>{{ post.price|number_format(2, ',', ' ') }}
 														€</td>
 												</tr>
 												<tr>
@@ -147,7 +147,7 @@
 												<tr>
 													<td scope="col" class="font-weight-bold">Propriétaire</td>
 													<td>
-															{{ post.equid.user |capitalize }}
+														{{ post.equid.user |capitalize }}
 														<a href="{{path("send_message", {id : post.id })}}">
 															<i class="fas fa-envelope ml-2"></i>
 														</a>
@@ -283,7 +283,7 @@
 										</tr>
 										<tr>
 											<td scope="col" class="font-weight-bold">Prix / mois</td>
-											<td>{{ post.price }}
+											<td>{{ post.price|number_format(2, ',', ' ') }}
 												€</td>
 										</tr>
 										<tr>
