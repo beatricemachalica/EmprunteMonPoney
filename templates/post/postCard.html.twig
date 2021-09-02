@@ -4,11 +4,11 @@
 	{# pictures #}
 	{% if post.category == "profil d'un cheval" %}
 
-		<img src="{{ asset('/uploads/' ~ post.photos[0].name ) }}" class="card-img-top" style="max-height:220px" alt="photo annonce">
+		<img src="{{ asset('/uploads/' ~ post.photos[0].name ) }}" class="card-img-top" style="max-height:220px" alt="photo cheval">
 
-	{% else %}
+		{% else %}
 
-		<img src="..." class="card-img-top" alt="photo annonce">
+		{# <img src="..." class="card-img-top" alt="photo emprunteur"> #}
 
 	{% endif %}
 

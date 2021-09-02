@@ -10,6 +10,8 @@ use Symfony\Component\Form\AbstractType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -27,15 +29,6 @@ class PostType extends AbstractType
                     'placeholder' => 'Ajoutez votre description de l\'annonce ici',
                 ]
             ])
-            // ->add('category', EntityType::class, [
-            //     'class' => Category::class,
-            //     'required' => true,
-            //     'label' => 'Catégorie de l\'annonce',
-            //     'attr' => [
-            //         'class' => 'form-control'
-            //     ]
-            // ])
-
             ->add('equid', EntityType::class, [
                 'class' => Equid::class,
                 // 'query_builder' => function (EntityRepository $er) {
@@ -49,7 +42,6 @@ class PostType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-
             // upload pictures, but will not be linked with DB (mapped=false)
             ->add('photo', FileType::class, [
                 'label' => false,

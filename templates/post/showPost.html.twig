@@ -96,68 +96,64 @@
 							{% endif %}
 						</div>
 
-						<section class="d-lg-flex flex-row justify-content-between mt-20">
+						<section class="d-lg-flex flex-row justify-content-between mt-20 row">
 
-							<div class="row">
+							<div class="col">
 
-								<div class="col-sm">
+								<h4>À propos</h4>
+								<article>{{ post.text |raw }}</article>
 
-									<h4>À propos</h4>
-									<article>{{ post.text |raw }}</article>
+							</div>
 
-								</div>
+							<div class="col">
 
-								<div class="col-sm">
-
-									<table class="table border">
-										<tbody>
-											{% if post.equid is not null and post.equid is defined %}
-												<tr>
-													<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
-													<td>{{ post.category |capitalize }}
-													</td>
-												</tr>
-												<tr>
-													<td scope="col" class="font-weight-bold">Prix / mois</td>
-													<td>{{ post.price|number_format(2, ',', ' ') }}
-														€</td>
-												</tr>
-												<tr>
-													<td scope="col" class="font-weight-bold">Race</td>
-													<td>{{ post.equid.breed |capitalize }}
-													</td>
-												</tr>
-												<tr>
-													<td scope="col" class="font-weight-bold">Taille
-													</td>
-													<td>{{ post.equid.size }}
-													</td>
-												</tr>
-												<tr>
-													<td scope="col" class="font-weight-bold">Sexe</td>
-													<td>{{ post.equid.sex |capitalize }}
-													</td>
-												</tr>
-												<tr>
-													<td scope="col" class="font-weight-bold">Age</td>
-													<td>{% set difference = date(post.equid.birthDate).diff(date()) %}
-														{% set leftYears = difference.y %}{{leftYears}}
-														ans</td>
-												</tr>
-												<tr>
-													<td scope="col" class="font-weight-bold">Propriétaire</td>
-													<td>
-														{{ post.equid.user |capitalize }}
-														<a href="{{path("send_message", {id : post.id })}}">
-															<i class="fas fa-envelope ml-2"></i>
-														</a>
-													</td>
-												</tr>
-											{% endif %}
-										</tbody>
-									</table>
-
-								</div>
+								<table class="table border">
+									<tbody>
+										{% if post.equid is not null and post.equid is defined %}
+											<tr>
+												<td scope="col" class="font-weight-bold">Catégorie de l'annonce</td>
+												<td>{{ post.category |capitalize }}
+												</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Prix / mois</td>
+												<td>{{ post.price|number_format(2, ',', ' ') }}
+													€</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Race</td>
+												<td>{{ post.equid.breed |capitalize }}
+												</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Taille
+												</td>
+												<td>{{ post.equid.size }}
+												</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Sexe</td>
+												<td>{{ post.equid.sex |capitalize }}
+												</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Age</td>
+												<td>{% set difference = date(post.equid.birthDate).diff(date()) %}
+													{% set leftYears = difference.y %}{{leftYears}}
+													ans</td>
+											</tr>
+											<tr>
+												<td scope="col" class="font-weight-bold">Propriétaire</td>
+												<td>
+													{{ post.equid.user |capitalize }}
+													<a href="{{path("send_message", {id : post.id })}}">
+														<i class="fas fa-envelope ml-2"></i>
+													</a>
+												</td>
+											</tr>
+										{% endif %}
+									</tbody>
+								</table>
 
 							</div>
 
@@ -200,36 +196,6 @@
 						<h3 class="mt-20 text-center">
 							{{ post.user.pseudo |capitalize }}
 						</h3>
-
-						{# post pictures #}
-						<section class="d-flex justify-content-center">
-
-							<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:65%">
-								<ol class="carousel-indicators">
-									<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-									<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-									<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-								</ol>
-								<div class="carousel-inner">
-									<div class="carousel-item active">
-										{% for photo in post.photos %}
-											{% if photo.name is not null %}
-												<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
-											{% endif %}
-										{% endfor %}
-									</div>
-								</div>
-								<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-									<span class="sr-only">Previous</span>
-								</a>
-								<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-									<span class="carousel-control-next-icon" aria-hidden="true"></span>
-									<span class="sr-only">Next</span>
-								</a>
-							</div>
-
-						</section>
 
 						<div>
 							{# favorite heart #}
