@@ -52,6 +52,22 @@
 						</tbody>
 					</table>
 
+					{# activities #}
+					<table class="table border">
+						<thead>
+							<tr>
+								<th scope="col">Activités pratiquées</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								{% for activity in horse.activities %}
+									<td>{{ activity.name }}</td>
+								{% endfor %}
+							</tr>
+						</tbody>
+					</table>
+
 
 					{# address #}
 					<h4>Adresse</h4>

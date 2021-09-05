@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Activity;
 use App\Entity\Category;
-use App\Entity\Post;
+use App\Form\ActivityType;
 use App\Form\CategoryType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -194,5 +196,77 @@ class AdminController extends AbstractController
         // flash message
         $this->addFlash('message', 'La catégorie a bien été supprimée.');
         return $this->redirectToRoute('admin_categories');
+    }
+
+    /**
+     * @Route("/admin/activities", name="admin_activities")
+     */
+    public function allActivities(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $activities = $this->getDoctrine()
+            ->getRepository(Activity::class)
+            ->findAll();
+
+        return $this->render('admin/activities/activities.html.twig', [
+            'activities' => $activities,
+        ]);
+    }
+
+    /** 
+     * @Route("/admin/activities/new", name="add_activity")
+     * @Route("/admin/activities/edit/{id}", name="edit_activity")
+     */
+    public function newActivity(Request $request, Activity $activity = null): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if (!$activity) {
+            $activity = new Activity();
+        }
+
+        $form = $this->createForm(ActivityType::class, $activity);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // flash message
+            $idActivity = $activity->getId();
+            if ($idActivity == null) {
+                $this->addFlash('message', 'La nouvelle activité a bien été enregistrée.');
+            } else {
+                $this->addFlash('message', 'La activité a bien été modifiée.');
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($activity);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('admin_activities');
+        }
+
+        return $this->render('admin/activities/newActivity.html.twig', [
+            'form' => $form->createView(),
+            'editMode' => $activity->getId() !== null
+        ]);
+    }
+
+
+    /**
+     * @Route("/admin/activities/delete/{id}", name="delete_activity")
+     */
+    public function deleteActivity(Activity $activity): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($activity);
+        $entityManager->flush();
+
+        // flash message
+        $this->addFlash('message', 'L\'activité a bien été supprimée.');
+        return $this->redirectToRoute('admin_activities');
     }
 }

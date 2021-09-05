@@ -3,13 +3,17 @@
 namespace App\Form;
 
 use App\Entity\Equid;
+use App\Entity\Activity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class EquidType extends AbstractType
 {
@@ -58,7 +62,7 @@ class EquidType extends AbstractType
                 ],
                 'format' => 'ddMMyyyy',
                 'widget' => 'choice',
-                 'years' => range(date('Y')-40, date('Y')),
+                'years' => range(date('Y') - 30, date('Y')),
                 'constraints' => [
                     new NotBlank()
                 ],
@@ -89,6 +93,18 @@ class EquidType extends AbstractType
                     'class' => 'form-control',
                     'placeholder' => 'Bas-rhin',
                 ]
+            ])
+            ->add('activities', CollectionType::class, [
+                'entry_type' => EntityType::class,
+                'entry_options' => [
+                    'label' => "Activité pratiquée :",
+                    'class' => Activity::class,
+                ],
+                'by_reference' => false,
+                'label' => false,
+                'required' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
             ]);
     }
 
@@ -96,6 +112,7 @@ class EquidType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Equid::class,
+            'activities' => null,
         ]);
     }
 }

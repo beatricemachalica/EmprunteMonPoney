@@ -26,14 +26,51 @@
 				{% endif %}
 
 				{{ form_start(form) }}
-				{{ form_row(form.name) }}
-				{{ form_row(form.breed) }}
-				{{ form_row(form.size) }}
-				{{ form_row(form.sex) }}
-				{{ form_row(form.birthDate) }}
-				{{ form_row(form.city) }}
-				{{ form_row(form.cp) }}
-				{{ form_row(form.departement) }}
+
+				<div class="form-row mt-2">
+					<div class="col">
+						{{ form_row(form.name) }}
+					</div>
+					<div class="col">
+						{{ form_row(form.breed) }}
+					</div>
+				</div>
+
+				<div class="form-row mt-2">
+					<div class="col">
+						{{ form_row(form.size) }}
+					</div>
+					<div class="col">
+						{{ form_row(form.sex) }}
+					</div>
+				</div>
+
+				<div class="mt-2">
+					{{ form_row(form.birthDate) }}
+				</div>
+
+
+				<div class="form-row mt-2">
+					<div class="col">
+						{{ form_row(form.city) }}
+					</div>
+					<div class="col">
+						{{ form_row(form.cp) }}
+					</div>
+					<div class="col">
+						{{ form_row(form.departement) }}
+					</div>
+				</div>
+
+				<ul id="activities" data-prototype="{{ form_row(form.activities.vars.prototype)|e }}" style="list-style-type:none;" class="mt-2 p-0">
+
+					{% for activity in form.activities %}
+						<li class="activity">
+							{{ form_row(activity) }}
+						</li>
+					{% endfor %}
+
+				</ul>
 
 				<div class="centerButton">
 					{% if editMode %}

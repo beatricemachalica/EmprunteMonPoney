@@ -150,6 +150,8 @@ class PostController extends AbstractController
         ]);
 
         $form->handleRequest($request);
+        // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
+        // based on the HTTP method configured on the form (POST is default).
 
         // get the array of user's roles
         $userRolesArray = $this->getUser()->getRoles();
@@ -284,6 +286,8 @@ class PostController extends AbstractController
 
         // get information from $request
         $form->handleRequest($request);
+        // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
+        // based on the HTTP method configured on the form (POST is default).
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -313,14 +317,10 @@ class PostController extends AbstractController
     /**
      * @Route("/favoritePosts/{id}", name="favorite_post")
      */
-    public function showFavorite(PostRepository $postRepository, User $user): Response
+    public function showFavorite(User $user): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
-
-        // $posts = $this->getDoctrine()
-        //     ->getRepository(Post::class)
-        //     ->findBy(['active' => true], ['createdAt' => 'desc']);
 
         $posts = $user->getFavorites();
 
@@ -387,6 +387,8 @@ class PostController extends AbstractController
 
         // get information from $request
         $form->handleRequest($request);
+        // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
+        // based on the HTTP method configured on the form (POST is default).
 
         if ($form->isSubmitted() && $form->isValid()) {
 

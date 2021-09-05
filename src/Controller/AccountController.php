@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Equid;
 use App\Form\EquidType;
 use App\Form\UserAccountType;
+use App\Repository\ActivityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -91,44 +92,31 @@ class AccountController extends AbstractController
         return $this->redirectToRoute('home');
     }
 
-    // /**
-    //  * @IsGranted("ROLE_PROPRIO")
-    //  * @Route("/account/equid", name="user_equid")
-    //  */
-    // public function showEquid(): Response
-    // {
-    //     $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-    //     // deny the access if the user is not completely authenticated
-
-    //     // get user id
-    //     $userId = $this->getUser()->getId();
-
-    //     // get user's horses
-    //     $horses = $this->getDoctrine()
-    //         ->getRepository(Equid::class)
-    //         ->findBy(array('user' => $userId), null);
-
-    //     return $this->render('account/equid/myEquid.html.twig', [
-    //         'horses' => $horses,
-    //     ]);
-    // }
-
     /**
      * @IsGranted("ROLE_PROPRIO")
      * @Route("/newEquid", name="add_equid")
      * @Route("/editEquid/{id}", name="edit_equid")
      */
-    public function new(Request $request, Equid $equid = null): Response
+    public function newEquid(ActivityRepository $activityRepository, Request $request, Equid $equid = null): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
 
         if (!$equid) {
             $equid = new Equid();
         }
 
-        $form = $this->createForm(EquidType::class, $equid);
+        // find all activities available
+        $activities = $activityRepository->findAll();
+
+        $form = $this->createForm(EquidType::class, $equid, [
+            'activities' => $activities
+        ]);
 
         $form->handleRequest($request);
+        // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
+        // based on the HTTP method configured on the form (POST is default).
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             // flash message
@@ -160,7 +148,7 @@ class AccountController extends AbstractController
      * @IsGranted("ROLE_PROPRIO")
      * @Route("/deleteEquid/{id}", name="delete_equid")
      */
-    public function delete(Equid $equid): Response
+    public function deleteEquid(Equid $equid): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 

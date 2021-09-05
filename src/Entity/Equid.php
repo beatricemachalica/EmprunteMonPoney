@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EquidRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -73,6 +75,16 @@ class Equid
      * @ORM\OneToOne(targetEntity=Post::class, mappedBy="equid", cascade={"persist", "remove"})
      */
     private $post;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Activity::class, mappedBy="Equid")
+     */
+    private $activities;
+
+    public function __construct()
+    {
+        $this->activities = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -213,5 +225,32 @@ class Equid
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities[] = $activity;
+            $activity->addEquid($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): self
+    {
+        if ($this->activities->removeElement($activity)) {
+            $activity->removeEquid($this);
+        }
+
+        return $this;
     }
 }
