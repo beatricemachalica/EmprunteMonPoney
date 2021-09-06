@@ -42,7 +42,7 @@
 								<a href="{{ path('edit_activity', {id: activity.id}) }}">Editer</a>
 							</td>
 							<td>
-								<a href="{{ path('delete_categoy', {id: activity.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette catégorie ?')">Supprimer</a>
+								<a href="{{ path('delete_activity', {id: activity.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette catégorie ?')">Supprimer</a>
 							</td>
 						</tr>
 					{% endfor %}
