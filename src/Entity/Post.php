@@ -71,12 +71,18 @@ class Post
      */
     private $favorite;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Activity::class, mappedBy="Post")
+     */
+    private $activities;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->setCreatedAt(new \DateTimeImmutable());
         $this->photos = new ArrayCollection();
         $this->favorite = new ArrayCollection();
+        $this->activities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -248,6 +254,33 @@ class Post
     public function removeFavorite(User $favorite): self
     {
         $this->favorite->removeElement($favorite);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities[] = $activity;
+            $activity->addPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): self
+    {
+        if ($this->activities->removeElement($activity)) {
+            $activity->removePost($this);
+        }
 
         return $this;
     }

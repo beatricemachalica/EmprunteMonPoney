@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Post;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Data\SearchData;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use ContainerWTfi0Qm\PaginatorInterface_82dac15;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Post|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,104 +18,60 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Post::class);
+        $this->paginator = $paginator;
     }
 
     /**
      * Returns all posts per page
-     * @return void 
+     * @return PaginationInterface
      */
-    public function getPaginatedPost($page, $limit, $categoriesFilter = null, $minPriceFilter = null, $maxPriceFilter = null)
+    public function findSearch(SearchData $search): PaginationInterface
     {
-        $query = $this->createQueryBuilder('p')
-            ->where('p.active = 1');
+        $query = $this
+            ->createQueryBuilder('p')
+            ->select('c', 'p', 'a')
+            ->join('p.category', 'c')
+            ->leftJoin('p.activities', 'a');
 
-        // categories filter
-        if ($categoriesFilter != null) {
-            $query->andWhere('p.category IN(:categories)')
-                ->setParameter(':categories', array_values($categoriesFilter));
+        if (!empty($search->q)) {
+            $query = $query
+                ->andWhere('p.text LIKE :q')
+                ->setParameter('q', "%{$search->q}%");
         }
 
-        // minimum price filter
-        if ($minPriceFilter != null) {
-            $query->andWhere('p.price >= (:minPrice)')
-                ->setParameter(':minPrice', $minPriceFilter);
+        if (!empty($search->min)) {
+            $query = $query
+                ->andWhere('p.price >= :minPrice')
+                ->setParameter(':minPrice', $search->min);
         }
 
-        // maximum price filter
-        if ($maxPriceFilter != null) {
-            $query->andWhere('p.price <= (:maxPrice)')
-                ->setParameter(':maxPrice', $maxPriceFilter);
+        if (!empty($search->max)) {
+            $query = $query
+                ->andWhere('p.price <= :maxPrice')
+                ->setParameter(':maxPrice', $search->max);
         }
 
-        $query->orderBy('p.createdAt', 'DESC')
-            ->setFirstResult(($page * $limit) - $limit)
-            // set nb of first item => $page(1) * $limit(10) = 10 - $limit(10) = 0 (nb of the first item of page 1)
-            ->setMaxResults($limit);
+        if (!empty($search->categories)) {
+            $query = $query
+                ->andWhere('c.id IN(:categories)')
+                ->setParameter(':categories', $search->categories);
+        }
 
-        return $query->getQuery()->getResult();
+        if (!empty($search->activities)) {
+            $query = $query
+                ->andWhere('a.id IN(:activities)')
+                ->setParameter(':activities', $search->activities);
+        }
+
+        $query = $query->getQuery();
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            21
+        );
     }
-
-    /**
-     * Returns number of posts
-     * @return void 
-     */
-    public function getAmountPosts($categoriesFilter = null, $minPriceFilter = null, $maxPriceFilter = null)
-    {
-        $query = $this->createQueryBuilder('p')
-            ->select('COUNT(p)')
-            ->where('p.active = 1');
-
-        // categories filter
-        if ($categoriesFilter != null) {
-            $query->andWhere('p.category IN(:categories)')
-                ->setParameter(':categories', array_values($categoriesFilter));
-        }
-
-        // minimum price filter
-        if ($minPriceFilter != null) {
-            $query->andWhere('p.price >= (:minPrice)')
-                ->setParameter(':minPrice', $minPriceFilter);
-        }
-
-        // maximum price filter
-        if ($maxPriceFilter != null) {
-            $query->andWhere('p.price <= (:maxPrice)')
-                ->setParameter(':maxPrice', $maxPriceFilter);
-        }
-
-        // getSingleScalarResult() in order to avoid an array as a result
-        return $query->getQuery()->getSingleScalarResult();
-    }
-
-    // /**
-    //  * @return Post[] Returns an array of Post objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Post
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

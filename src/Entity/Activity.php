@@ -25,13 +25,13 @@ class Activity
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Equid::class, inversedBy="activities")
+     * @ORM\ManyToMany(targetEntity=Post::class, inversedBy="activities")
      */
-    private $Equid;
+    private $Post;
 
     public function __construct()
     {
-        $this->Equid = new ArrayCollection();
+        $this->Post = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -51,34 +51,33 @@ class Activity
         return $this;
     }
 
-    /**
-     * @return Collection|Equid[]
-     */
-    public function getEquid(): Collection
-    {
-        return $this->Equid;
-    }
-
-    public function addEquid(Equid $equid): self
-    {
-        if (!$this->Equid->contains($equid)) {
-            $this->Equid[] = $equid;
-        }
-
-        return $this;
-    }
-
-    public function removeEquid(Equid $equid): self
-    {
-        $this->Equid->removeElement($equid);
-
-        return $this;
-    }
-
     // to string function
     public function __toString()
     {
         return $this->getName();
     }
 
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPost(): Collection
+    {
+        return $this->Post;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->Post->contains($post)) {
+            $this->Post[] = $post;
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        $this->Post->removeElement($post);
+
+        return $this;
+    }
 }

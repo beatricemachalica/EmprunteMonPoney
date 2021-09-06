@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Data\SearchData;
 use DateTime;
 use App\Entity\Post;
 use App\Entity\User;
@@ -12,7 +13,9 @@ use PHPUnit\Util\Json;
 use App\Entity\Comment;
 use App\Entity\Category;
 use App\Form\CommentType;
+use App\Form\SearchType;
 use App\Repository\PostRepository;
+use App\Repository\ActivityRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,54 +29,26 @@ class PostController extends AbstractController
     /**
      * @Route("/posts", name="posts")
      */
-    public function index(PostRepository $postRepository, CategoryRepository $categoryRepo, Request $request): Response
+    public function index(PostRepository $postRepository, Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        // find all categories
-        $categories = $categoryRepo->findAll();
+        // data initialization
+        $data = new SearchData();
 
-        // number of items per page
-        $limit = 6;
+        $data->page = $request->get('page', 1);
 
-        // get the current page number
-        $page = (int)$request->query->get("page", 1);
+        // form creation
+        $form = $this->createForm(SearchType::class, $data);
 
-        // get filters
+        $form->handleRequest($request);
 
-        // categories filter
-        $categoriesFilter = $request->get("categories");
-
-        // price range filters
-        $minPriceFilter = $request->get("minPrice");
-        $maxPriceFilter = $request->get("maxPrice");
-
-        // get all posts according to filters
-        $posts = $postRepository->getPaginatedPost($page, $limit, $categoriesFilter, $minPriceFilter, $maxPriceFilter);
-
-        // count the amount of posts & according to filters
-        $nbPosts = $postRepository->getAmountPosts($categoriesFilter, $minPriceFilter, $maxPriceFilter);
-
-        // if ajax request return a JSON response
-        if ($request->get('ajax')) {
-            return new JsonResponse([
-                'content' => $this->renderView('post/index_content.html.twig', [
-                    'posts' => $posts,
-                    'nbPosts' => $nbPosts,
-                    'limit' => $limit,
-                    'page' => $page,
-                    'categories' => $categories
-                ])
-            ]);
-        }
+        $posts = $postRepository->findSearch($data);
 
         return $this->render('post/index.html.twig', [
             'posts' => $posts,
-            'nbPosts' => $nbPosts,
-            'limit' => $limit,
-            'page' => $page,
-            'categories' => $categories
+            'form' => $form->createView()
         ]);
     }
 

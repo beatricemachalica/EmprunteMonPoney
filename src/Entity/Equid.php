@@ -76,16 +76,6 @@ class Equid
      */
     private $post;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Activity::class, mappedBy="Equid")
-     */
-    private $activities;
-
-    public function __construct()
-    {
-        $this->activities = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -225,32 +215,5 @@ class Equid
     public function __toString()
     {
         return $this->getName();
-    }
-
-    /**
-     * @return Collection|Activity[]
-     */
-    public function getActivities(): Collection
-    {
-        return $this->activities;
-    }
-
-    public function addActivity(Activity $activity): self
-    {
-        if (!$this->activities->contains($activity)) {
-            $this->activities[] = $activity;
-            $activity->addEquid($this);
-        }
-
-        return $this;
-    }
-
-    public function removeActivity(Activity $activity): self
-    {
-        if ($this->activities->removeElement($activity)) {
-            $activity->removeEquid($this);
-        }
-
-        return $this;
     }
 }
