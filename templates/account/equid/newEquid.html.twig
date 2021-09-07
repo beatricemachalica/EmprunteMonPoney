@@ -14,8 +14,10 @@
 		{% block container %}
 
 			{# flash message #}
-			{% for flashError in app.flashes('verify_email_error') %}
-				<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success" role="alert">
+					{{ message }}
+				</div>
 			{% endfor %}
 
 			<div class="littleForm">
@@ -61,16 +63,6 @@
 						{{ form_row(form.departement) }}
 					</div>
 				</div>
-
-				<ul id="activities" data-prototype="{{ form_row(form.activities.vars.prototype)|e }}" style="list-style-type:none;" class="mt-2 p-0">
-
-					{% for activity in form.activities %}
-						<li class="activity">
-							{{ form_row(activity) }}
-						</li>
-					{% endfor %}
-
-				</ul>
 
 				<div class="centerButton">
 					{% if editMode %}

@@ -2,7 +2,7 @@
 	class="card h-100" style="width: 18rem;">
 
 	{# pictures #}
-	{% if post.category == "profil d'un cheval" %}
+	{% if post.category == "profil d'un cheval" and post.photos is not empty %}
 
 		<img src="{{ asset('/uploads/' ~ post.photos[0].name ) }}" class="card-img-top" style="max-height:220px" alt="photo cheval">
 

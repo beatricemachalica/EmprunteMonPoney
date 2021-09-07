@@ -3,18 +3,18 @@
 namespace App\Form;
 
 use App\Entity\Post;
-use App\Entity\Equid;
-use App\Entity\Category;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\Activity;
 use Symfony\Component\Form\AbstractType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class PostType extends AbstractType
 {
@@ -29,28 +29,31 @@ class PostType extends AbstractType
                     'placeholder' => 'Ajoutez votre description de l\'annonce ici',
                 ]
             ])
-            ->add('equid', EntityType::class, [
-                'class' => Equid::class,
-                // 'query_builder' => function (EntityRepository $er) {
-                //     return $er->qbGetHorsesByUser($options);
-                // },
-                'choices' => $options['horses'],
-                'required' => true,
-                'mapped' => true,
-                'label' => 'Cheval',
-                'attr' => [
-                    'class' => 'form-control'
-                ]
-            ])
             // upload pictures, but will not be linked with DB (mapped=false)
             ->add('photo', FileType::class, [
                 'label' => false,
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
-                'attr' => [
-                    'class' => 'form-control-file mt-3'
-                ]
+                'constraints' => [
+                    new All([
+                        new Image([
+                            'maxSize' => '8M',
+                            'maxSizeMessage' => 'La taille de l\'image est trop grande. 
+                            La taille maximale autorisée est de {{ limit }} {{ suffix }}.',
+                        ]),
+                        new File([
+                            'mimeTypes' => [
+                                'image/png',
+                                'image/jpeg',
+                                'image/jpg',
+                                'image/webp',
+                            ],
+                            'mimeTypesMessage' => 'Format invalide ({{ type }}). 
+                            Les formats autorisés sont : {{ types }}.',
+                        ])
+                    ])
+                ],
             ])
             ->add('price', MoneyType::class, [
                 'required' => false,
@@ -59,14 +62,25 @@ class PostType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ]
+            ])
+            ->add('activities', CollectionType::class, [
+                'entry_type' => EntityType::class,
+                'entry_options' => [
+                    'label' => "Activité pratiquée :",
+                    'class' => Activity::class,
+                ],
+                'by_reference' => false,
+                'label' => false,
+                'required' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Post::class,
-            'horses' => null,
+            'data_class' => Post::class
         ]);
     }
 }

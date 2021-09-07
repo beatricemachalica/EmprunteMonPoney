@@ -14,17 +14,14 @@
 
 			{% if editMode %}
 				<h1 class="d-flex justify-content-center">Modifier mon annonce</h1>
+			{% elseif proprioPost %}
+				<h1 class="d-flex justify-content-center">Nouvelle annonce pour
+					{{ horse }}</h1>
 			{% else %}
-				<h1 class="d-flex justify-content-center">Ajouter une annonce</h1>
+				<h1 class="d-flex justify-content-center">Nouvelle annonce</h1>
 			{% endif %}
 
 			{{ form_start(form) }}
-
-			{% if proprioPost %}
-				{{ form_row(form.equid) }}
-			{% else %}
-				{% do form.equid.setRendered() %}
-			{% endif %}
 
 			{{ form_row(form.text) }}
 
@@ -35,6 +32,16 @@
 			{% else %}
 				{% do form.photo.setRendered() %}
 			{% endif %}
+
+			<ul id="activities" data-prototype="{{ form_row(form.activities.vars.prototype)|e }}" style="list-style-type:none;" class="mt-2 p-0">
+
+				{% for activity in form.activities %}
+					<li class="activity">
+						{{ form_row(activity) }}
+					</li>
+				{% endfor %}
+
+			</ul>
 
 			<div class="centerButton mt-20">
 				<button class="btn btn-primary">Valider</button>
