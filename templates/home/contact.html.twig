@@ -25,21 +25,36 @@
 				<h1 class="d-flex justify-content-center">Nous contacter</h1>
 
 				<div>
-					<p>
+					<p class="m-0 p-0">
 						Besoin d'aide ? N'hésitez pas à nous contacter en remplissant les champs nécessaires ci-dessous.
 					</p>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group m-0">
 					{{ form_start(form) }}
-					{{ form_row(form.pseudo) }}
-					{{ form_row(form.email) }}
+
+					<div class="form-row mt-2">
+						<div class="col">
+							{{ form_row(form.pseudo) }}
+						</div>
+						<div class="col">
+							{{ form_row(form.email) }}
+						</div>
+					</div>
+
 					{{ form_row(form.message) }}
 				</div>
 
 				<div class="centerButton">
-					<button class="btn btn-primary">Envoyer</button>
+
+					<button class="g-recaptcha btn btn-primary">
+						Envoyer
+					</button>
+
 				</div>
+
+				<input type="hidden" id="recaptchaResponse" name="recaptcha-response">
+
 				{{ form_end(form) }}
 
 			</div>
@@ -53,4 +68,15 @@
 
 	</div>
 
+
+{# Google reCaptcha #}
+
+ <script src="https://www.google.com/recaptcha/api.js?render=6LcBG1IcAAAAAAyFLAdwNcsUTcQ4bFw-_Ra2aRK4"></script>
+ <script>
+        grecaptcha.ready(function() {
+          grecaptcha.execute('6LcBG1IcAAAAAAyFLAdwNcsUTcQ4bFw-_Ra2aRK4', {action: 'submit'}).then(function(token) {
+              document.getElementById("recaptchaResponse").value = token
+          });
+        });
+  </script>
 {% endblock %}

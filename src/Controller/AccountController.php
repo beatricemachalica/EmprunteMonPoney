@@ -106,12 +106,7 @@ class AccountController extends AbstractController
             $equid = new Equid();
         }
 
-        // find all activities available
-        $activities = $activityRepository->findAll();
-
-        $form = $this->createForm(EquidType::class, $equid, [
-            'activities' => $activities
-        ]);
+        $form = $this->createForm(EquidType::class, $equid);
 
         $form->handleRequest($request);
         // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 

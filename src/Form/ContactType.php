@@ -40,7 +40,7 @@ class ContactType extends AbstractType
         'required' => true,
         'label' => 'Message',
         'attr' => [
-          'class' => 'form-control',
+          'class' => 'form-control m-0',
           'rows' => 5,
           'placeholder' => 'Ajoutez votre message ici.'
         ]

@@ -522,7 +522,7 @@ footer {
 
 /* forms */
 form {
-  padding: 10px 0 10px 0;
+  padding: 5px 0 5px 0;
 }
 .backgroundForm {
   background-image: url("../img/horseForm.jpg");
@@ -538,7 +538,7 @@ form {
   width: 45%;
   margin: auto;
   position: relative;
-  top: 20px;
+  top: 10px;
   color: rgb(255, 255, 255);
   background: rgba(0, 0, 0, 0.4);
   padding: 15px;
