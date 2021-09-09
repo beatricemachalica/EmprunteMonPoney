@@ -121,7 +121,7 @@ header .burger {
   font-size: 1.4rem;
 }
 .mainNav div {
-  width: 60%;
+  width: 65%;
   justify-content: space-around;
 }
 .mainNav a {
@@ -157,22 +157,14 @@ header .burger {
 .mainWrapper {
   width: 100%;
   position: relative;
-  top: 550px;
+  /* top: 750px; */
   background: #fff;
 }
 
 /* banner */
 .banner-container {
   width: 100%;
-  height: 500px;
-  position: fixed;
-  top: -260px;
-  /* background-image: linear-gradient(
-      to bottom,
-      rgba(245, 246, 252, 0.52),
-      rgba(65, 19, 117, 0.73)
-    ),
-    url(img/horseForm.jpg); */
+  height: 100vh;
   -webkit-background-size: cover;
   background-size: cover;
   background-position: center center;
@@ -189,20 +181,28 @@ header .burger {
 }
 /* content of the video */
 .videoContent {
-  position: fixed;
+  position: absolute;
   top: 180px;
   left: 215px;
   color: white;
   text-shadow: 1px 1px black;
-  position: fixed;
 }
 .videoContent h1 {
-  font-size: 2.8rem;
+  font-size: 3.8rem;
   font-family: "Oswald", sans-serif;
 }
 .videoContent p {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   margin: 0;
+}
+.secondVideoContent {
+  position: fixed;
+  top: 180px;
+  left: 215px;
+  color: white;
+  background-color: rgb(184, 27, 27);
+  text-shadow: 1px 1px black;
+  position: fixed;
 }
 
 /* button pause/play video */
@@ -266,6 +266,26 @@ header .burger {
 }
 .fgrIndication :hover {
   opacity: 1;
+}
+
+/* new posts */
+.newPostsContainer {
+  justify-content: space-between;
+}
+.articleNewPosts {
+  box-shadow: 5px 5px 5px rgb(180, 180, 180);
+}
+.articleNewPosts h3 {
+  text-align: center;
+}
+.articleNewPosts p {
+  padding: 15px;
+  margin: 0;
+}
+.figureNewPosts {
+  margin: 0;
+  width: 315px;
+  height: auto;
 }
 
 /* slider */
@@ -425,19 +445,19 @@ header .burger {
 .secondPromotingSection p {
   text-align: center;
   font-size: 1.3rem;
-  color: rgba(15, 31, 173, 0.8);
-  /* padding: 0px 150px; */
   text-align: justify;
 }
+.secondPromotingSection .thanks {
+  color: rgba(15, 31, 173, 0.8);
+}
+.thanks .fa-heart {
+  margin-left: 5px;
+}
 .layout figure {
-  width: 130%;
+  width: 90%;
 }
 .layout img {
-  border-radius: 25px;
   filter: drop-shadow(0 0 0.25rem rgb(66, 64, 64));
-}
-.layout {
-  width: 75%;
 }
 
 /* footer */
@@ -445,16 +465,15 @@ footer {
   font-size: 1.3rem;
   justify-content: center;
   flex-direction: column;
-  background: rgb(57, 105, 199);
-  background: linear-gradient(
-    343deg,
-    rgba(57, 105, 199, 1) 15%,
-    rgba(29, 176, 253, 1) 42%,
-    rgba(74, 218, 242, 1) 73%
-  );
-  color: white;
+  background-image: url("../img/horses_bg_body.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #09192b9c;
+  background-blend-mode: darken;
+  color: rgb(241, 241, 241);
   align-items: center;
-  height: 35vh;
+  height: 55vh;
 }
 /* wrappers */
 .footerDivWraper {
@@ -462,9 +481,11 @@ footer {
   height: 100%;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
 }
 .evenlyDiv {
   justify-content: space-evenly;
+  width: 100%;
 }
 
 /* footer articles width */
@@ -476,17 +497,19 @@ footer {
 }
 .fab {
   font-size: 2.5rem;
-  transition: 0.2s ease-in;
+  transition: 0.1s ease-in;
 }
 .fab:hover {
-  color: #294baa;
+  color: #ffffff;
+  text-decoration: none !important;
+  font-size: 2.7rem;
 }
 
 /* footer icons */
 .fa-instagram,
 .fa-youtube,
 .fa-facebook {
-  color: white;
+  color: #ffffff;
 }
 .divHelpQuestions {
   flex-direction: column;
@@ -495,15 +518,16 @@ footer {
   padding: 0;
 }
 .linksList a {
-  color: white;
-  transition: 0.2s ease-in;
+  color: #ffffff;
 }
 .linksList a:hover {
-  color: #294baa;
-  text-decoration: underline;
+  color: #1cbdfd;
+  text-decoration: none !important;
 }
 .allRights {
   justify-content: center;
+  position: absolute;
+  bottom: 5px;
 }
 
 /* small footer */
@@ -571,8 +595,8 @@ form {
   font-size: 30px;
   margin-left: 20px;
 }
-.backgroundBlue {
-  background-color: rgb(231, 238, 241);
+.backgroundColor {
+  background-color: #f9f7f7;
   min-height: 100vh;
 }
 .backgroundHorses {

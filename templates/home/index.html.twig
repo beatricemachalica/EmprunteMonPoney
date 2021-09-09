@@ -20,7 +20,7 @@
 		<nav class="mainNav flex visible" id="mainNav">
 			<a href="{{path('home')}}" class="logo">
 				<span>
-					Emprunte mon Poney
+					EmprunteMonPoney
 					<i class="fas fa-horse-head"></i>
 				</span>
 			</a>
@@ -139,6 +139,11 @@
 			<!-- button to pause/play the video with JavaScript -->
 			<!-- <button id="myBtn" onclick="myFunction()">Pause</button> -->
 		</div>
+
+		{# <div class="secondVideoContent">
+																																																																																																							<p>Poursuivez votre exploration ici</p>
+																																																																																																						</div> #}
+
 	</header>
 
 	<!-- main wrapper = slide effect on the banner -->
@@ -219,47 +224,26 @@
 		<div class="marginContainer">
 			<section class="recentPosts">
 				<h2 class="bigTitle">Nos nouveaux arrivants :</h2>
-				<div class="flex">
+				<div class="flex newPostsContainer">
 
-					<article>
-						<h3>Lorem, ipsum.</h3>
-						<figure>
-							<img src="https://via.placeholder.com/150" alt=""/>
-						</figure>
-						<figcaption>
-							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit, dolore.
-						</figcaption>
-					</article>
+					{% for post in posts %}
+						<article class="articleNewPosts">
 
-					<article>
-						<h3>Lorem, ipsum.</h3>
-						<figure>
-							<img src="https://via.placeholder.com/150" alt=""/>
-						</figure>
-						<figcaption>
-							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit, dolore.
-						</figcaption>
-					</article>
+							<figure class="figureNewPosts">
+								{% for photo in post.photos %}
+									<img src="{{ asset('/uploads/' ~ photo.name ) }}" alt="photo {{ post.equid.breed }}"/>
+								{% endfor %}
+							</figure>
 
-					<article>
-						<h3>Lorem, ipsum.</h3>
-						<figure>
-							<img src="https://via.placeholder.com/150" alt=""/>
-						</figure>
-						<figcaption>
-							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit, dolore.
-						</figcaption>
-					</article>
+							<h3>{{ post.equid.name }}</h3>
+							<p>
+								Un
+								{{ post.equid.breed |capitalize }}, proposé par
+								{{ post.user.pseudo |capitalize }}.
+							</p>
 
-					<article>
-						<h3>Lorem, ipsum.</h3>
-						<figure>
-							<img src="https://via.placeholder.com/150" alt=""/>
-						</figure>
-						<figcaption>
-							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit, dolore.
-						</figcaption>
-					</article>
+						</article>
+					{% endfor %}
 
 				</div>
 			</section>
@@ -343,46 +327,52 @@
 				class="marginContainer">
 				<!-- second promoting -->
 				<section class="secondPromotingSection flex">
-					<h2 class="bigTitle">On part au galop ?</h2>
 
-					<div class="flex layout">
-						<figure><img src="{{ asset('img/concours.jpg') }}" alt="cheval concours"></figure>
-						<p>
-							Lorem ipsum dolor sit,
-							<strong>chevaux</strong>
-							amet consectetur adipisicing elit. Unde tempore quia est aliquam eaque officiis dolorum nostrum
-							<strong>poney</strong>
-							veritatis, beatae quas. Lorem ipsum
-							<em>EmprunteMonPoney</em>
-							dolor sit, amet consectetur adipisicing elit. Possimus magni
-							<strong>emprunteurs</strong>
-							ou
-							<strong>propriétaires</strong>
-							voluptatem unde ratione totam.Dolore, consequatur
-							<em>demi pension</em>.
-						</p>
-					</div>
+					<article style="box-shadow: 5px 5px 5px 5px rgb(180, 180, 180); padding: 25px;">
+						<h2 class="bigTitle">On part au galop ?</h2>
 
-					<div class="flex layout">
-						<p>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, asperiores ?
-							<strong>Concours, randonnées, dressage, TREC, equifeel</strong>
-							et plus encore Lorem ipsum dolor sit amet
-							<em>demi pension</em>.Lorem ipsum dolor sit
-							<em>demi pension</em>
-							amet
-							<strong>simple d'utilisation</strong>
-							consectetur adipisicing elit. Pariatur dolor praesentium, maiores nulla nostrum necessitatibus!
-						</p>
-					</div>
+						<div class="flex layout">
+							<figure><img src="{{ asset('img/concours.jpg') }}" alt="cheval concours"></figure>
+							<div>
+								<p>
+									Lorem ipsum dolor sit,
+									<strong>chevaux</strong>
+									amet consectetur adipisicing elit. Unde tempore quia est aliquam eaque officiis dolorum nostrum
+									<strong>poney</strong>
+									veritatis, beatae quas. Lorem ipsum
+									<em>EmprunteMonPoney</em>
+									dolor sit, amet consectetur adipisicing elit. Possimus magni
+									<strong>emprunteurs</strong>
+									ou
+									<strong>propriétaires</strong>
+									voluptatem unde ratione totam. Dolore, consequatur
+									<em>demi pension</em>. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia quisquam doloribus iure, molestias possimus eius.
+								</p>
 
-					{% if app.user is not null %}
-						<p>Merci d'utiliser EmprunteMonPoney
-							<i class="fas fa-heart"></i>
-						</p>
-					{% else %}
-						<a class="button" href="{{path('app_register')}}">Nous rejoindre</a>
-					{% endif %}
+								<p>
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, asperiores ?
+									<strong>Concours, randonnées, dressage, TREC, equifeel</strong>
+									et plus encore Lorem ipsum dolor sit amet
+									<em>demi pension</em>.Lorem ipsum dolor sit
+									<em>demi pension</em>
+									amet
+									<strong>simple d'utilisation</strong>
+									consectetur adipisicing elit. Pariatur dolor praesentium, maiores nulla nostrum necessitatibus!
+								</p>
+							</div>
+						</div>
+
+						{% if app.user is not null %}
+							<p class="centerButton thanks">Merci d'utiliser EmprunteMonPoney
+								<i class="fas fa-heart"></i>
+							</p>
+						{% else %}
+							<div class="centerButton">
+								<a class="button" href="{{path('app_register')}}">Nous rejoindre</a>
+							</div>
+						{% endif %}
+
+					</article>
 
 				</section>
 			</div>

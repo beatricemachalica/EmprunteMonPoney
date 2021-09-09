@@ -1,14 +1,10 @@
 <article
-	class="card h-100" style="width: 18rem;">
+	class="card h-100 shadow p-3 mb-5 bg-white rounded">
 
 	{# pictures #}
-	{% if post.category == "profil d'un cheval" and post.photos is not empty %}
+	{% if post.photos is not empty %}
 
 		<img src="{{ asset('/uploads/' ~ post.photos[0].name ) }}" class="card-img-top" style="max-height:220px" alt="photo cheval">
-
-		{% else %}
-
-		{# <img src="..." class="card-img-top" alt="photo emprunteur"> #}
 
 	{% endif %}
 

@@ -66,7 +66,9 @@ class PostRepository extends ServiceEntityRepository
                 ->setParameter(':activities', $search->activities);
         }
 
-        $query = $query->getQuery();
+        $query = $query
+            ->addOrderBy('p.createdAt', 'DESC')
+            ->getQuery();
 
         return $this->paginator->paginate(
             $query,

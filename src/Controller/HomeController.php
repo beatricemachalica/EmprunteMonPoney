@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use App\Form\ContactType;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,8 +18,12 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
+        $newPosts = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->findBy(array('category' => '2'), ['createdAt' => 'DESC'], $limite = 4, null);
+
         return $this->render('home/index.html.twig', [
-            // 'controller_name' => 'HomeController',
+            'posts' => $newPosts,
         ]);
     }
 
@@ -38,23 +43,23 @@ class HomeController extends AbstractController
         $form = $this->createForm(ContactType::class);
 
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $contactFormData = $form->getData();
 
             // checking the captcha
-            if(empty($_POST['recaptcha-response'])){
-                
+            if (empty($_POST['recaptcha-response'])) {
+
                 // if recaptcha token is empty redirect to the home page
                 // first protection against bots
                 return $this->redirectToRoute('home');
             } else {
 
-                // if a special kind of bots manage to file these form inputs, we have to check the response
+                // if a special kind of bot manage to fill these form inputs, we have to check the response
                 $url = "https://www.google.com/recaptcha/api/siteverify?secret=6LcBG1IcAAAAAFYSBJ69tsvnXaNO4KXD6sHCMGDX&response={$_POST['recaptcha-response']}";
 
-                if(function_exists('curl_version')){
+                if (function_exists('curl_version')) {
                     $curl = curl_init($url);
                     curl_setopt($curl, CURLOPT_HEADER, false);
                     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -62,19 +67,19 @@ class HomeController extends AbstractController
                     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
                     $response = curl_exec($curl);
                 } else {
-                    $response = file_get_contents($url); 
+                    $response = file_get_contents($url);
                 }
                 // dd(json_decode($response)); // gives an object
-                
+
                 // check the response
-                if(empty($response) || is_null($response)){
+                if (empty($response) || is_null($response)) {
                     // if the response is empty or is null
                     return $this->redirectToRoute('home');
                 } else {
                     $data = json_decode($response);
 
-                    if($data->success){
-                      
+                    if ($data->success) {
+
                         $message = (new Email())
                             ->from($contactFormData['email'])
                             ->to('empruntemonponey@gmail.com')
@@ -84,15 +89,14 @@ class HomeController extends AbstractController
                                     $contactFormData['message'],
                                 'text/plain'
                             );
-            
+
                         $mailer->send($message);
-            
+
                         // flash message
                         $this->addFlash('message', 'Votre message a bien été envoyé');
                         return $this->redirectToRoute('contact');
-                    
                     } else {
-                        // if the response is empty os is null
+                        // if the response is empty or is null
                         return $this->redirectToRoute('home');
                     }
                 }

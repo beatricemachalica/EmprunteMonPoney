@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	<main class="backgroundBlue">
+	<main class="backgroundGrey">
 
 		{% block header %}
 			{% include "smallHeader.html.twig" %}
@@ -182,7 +182,29 @@
 				{# post "ROLE_EMPRUNT" #}
 				{% if post.category == "profil d'emprunteur" and post.user is not null %}
 
-					<section class="shadow p-3 mb-2 bg-white rounded position-relative">
+					<section
+						class="shadow p-3 mb-2 bg-white rounded position-relative">
+
+						{# post pictures carousel #}
+						<section class="d-flex justify-content-center">
+
+							<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" style="width:65%">
+								<div class="carousel-inner">
+
+									{% for photo in post.photos %}
+										{% if photo.name is not null %}
+
+											<div class="carousel-item active">
+												<img src="{{ asset('/uploads/' ~ photo.name ) }}" class="d-block w-100" alt="photo annonce">
+											</div>
+
+										{% endif %}
+									{% endfor %}
+
+								</div>
+							</div>
+
+						</section>
 
 						<h3 class="mt-20 text-center">
 							{{ post.user.pseudo |capitalize }}

@@ -48,9 +48,8 @@
 					<div class="col">
 						{{ form_row(registrationForm.email) }}
 					</div>
-					<div class="col">
-						{{ form_row(registrationForm.phoneNumber) }}
-					</div>
+					{# <div class="col">{{ form_row(registrationForm.phoneNumber) }}</div> #}
+					{% do registrationForm.phoneNumber.setRendered() %}
 
 				</div>
 				<div class="mt-3">

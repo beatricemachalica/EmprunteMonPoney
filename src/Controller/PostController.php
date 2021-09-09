@@ -144,7 +144,7 @@ class PostController extends AbstractController
                 ->getRepository(Category::class)
                 ->findOneBy(array('name' => 'profil d\'emprunteur'), null);
 
-            // if the user is a borrower ("ROLE_EMPRUNT")
+            // if the user is a borrower ("ROLE_EMPRUNT") AND the user want to add a new post
 
             if (in_array("ROLE_EMPRUNT", $userRolesArray) && (empty($userPosts)) && ($addPostMode)) {
 
@@ -156,15 +156,38 @@ class PostController extends AbstractController
                 $this->addFlash('message', 'Vous avez déjà créé une annonce pour trouver un cheval. Afin d\'éviter les doublons les emprunteurs ne peuvent créer qu\'une seule annonce.');
                 return $this->redirectToRoute('my_posts');
             }
-            // end set automatically a category
 
             // flash message in case of edit or a new post
-
             $idPost = $post->getId();
             if ($idPost == null) {
                 $this->addFlash('message', 'L\'annonce a bien été enregistrée.');
             } else {
                 $this->addFlash('message', 'Votre annonce a bien été modifiée.');
+            }
+
+            // pictures
+            $pictures = $form->get('photo')->getData();
+
+            // for each new picture added by the user
+
+            foreach ($pictures as $picture) {
+
+                // create a new name file with md5 & uniquid and set the right extension
+                $file = md5(uniqid()) . '.' . $picture->guessExtension();
+
+                // copy this file into uploads
+                // move() : first param : destination
+                // move() : second param : file
+                $picture->move(
+                    $this->getParameter('images_directory'),
+                    $file
+                );
+
+                // save the name on DB
+
+                $img = new Photo();
+                $img->setName($file);
+                $post->addPhoto($img);
             }
 
             // flush data
@@ -174,6 +197,8 @@ class PostController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('my_posts');
+            // end set automatically a category
+
         }
 
         return $this->render('post/newPost.html.twig', [

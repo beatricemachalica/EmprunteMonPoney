@@ -27,11 +27,11 @@
 
 			{{ form_row(form.price) }}
 
-			{% if proprioPost %}
-				{{ form_row(form.photo) }}
-			{% else %}
-				{% do form.photo.setRendered() %}
-			{% endif %}
+			{{ form_row(form.photo) }}
+			{# {% if proprioPost %}
+										{% else %}
+											{% do form.photo.setRendered() %}
+									{% endif %} #}
 
 			<ul id="activities" data-prototype="{{ form_row(form.activities.vars.prototype)|e }}" style="list-style-type:none;" class="mt-2 p-0">
 
