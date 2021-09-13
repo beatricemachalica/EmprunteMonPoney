@@ -52,6 +52,11 @@ class Equid
 
     /**
      * @ORM\Column(type="string", length=55, nullable=true)
+     * @Assert\Range(
+     *      min = 1000,
+     *      max = 98890,
+     *      notInRangeMessage = "Veuillez entrer un code postal valable.",
+     * )
      */
     private $cp;
 

@@ -17,14 +17,15 @@
 	{# Home Header #}
 	<header>
 		<!-- navigation -->
-		<nav class="mainNav flex visible" id="mainNav">
+		<nav class="mainNav flex" id="mainNav">
+
 			<a href="{{path('home')}}" class="logo">
 				<span>
 					EmprunteMonPoney
 					<i class="fas fa-horse-head"></i>
 				</span>
 			</a>
-			<div class="flex">
+			<div class="flex mainMenu" id="mainMenu">
 
 				{% if is_granted("ROLE_ADMIN") %}
 
@@ -111,23 +112,22 @@
 				{% endif %}
 
 			</div>
-		</nav>
 
-		<!-- menu burger -->
-		<div class="burger">
-			<span></span>
-			<span></span>
-			<span></span>
-		</div>
+			<!-- menu burger -->
+			<div class="burger">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+
+		</nav>
 
 
 		<!-- banner -->
 
-		{# banner without video #}
-		{# <div class="banner-container"><p>L’air du paradis est celui qui souffle entre les oreilles d’un cheval.</p></div> #}
-
 		{# video banner #}
-			<div class="banner-container"> <video autoplay muted loop id="videoChevaux">
+		<div class="banner-container">
+			<video autoplay muted loop id="videoChevaux">
 				<source src="{{ asset('img/cheval_home.mp4') }}" type="video/mp4">
 			</video>
 		</div>
@@ -136,13 +136,9 @@
 		<div class="videoContent">
 			<h1>EmprunteMonPoney</h1>
 			<p>Le monde équestre s'ouvre à vous</p>
-			<!-- button to pause/play the video with JavaScript -->
-			<!-- <button id="myBtn" onclick="myFunction()">Pause</button> -->
 		</div>
 
-		{# <div class="secondVideoContent">
-																																																																																																							<p>Poursuivez votre exploration ici</p>
-																																																																																																						</div> #}
+		{# <div class="secondVideoContent"><p>Poursuivez votre exploration ici</p></div> #}
 
 	</header>
 
@@ -165,7 +161,7 @@
 				<div class="flex indicationContainer">
 					<article>
 						<h3>
-							<strong>Propriétaire ?</strong>
+							<span class="brownSpan">Propriétaire ?</span>
 							<br>
 							Trouvez un emprunteur pour votre cheval.</h3>
 						<p>
@@ -186,7 +182,7 @@
 					</article>
 					<article>
 						<h3>
-							<strong>Emprunteur ?</strong>
+							<span class="brownSpan">Emprunteur ?</span>
 							<br>
 							Trouvez un cheval qui vous correspond.</h3>
 						<p>
@@ -208,15 +204,16 @@
 		</div>
 
 		<!-- first promoting -->
-		<figure class="promoting">
-			<img src="{{ asset('img/promoting_Stallion.jpg') }}" alt="cheval de concours"/>
+		<figure
+			class="promoting">
+			{# <img src="{{ asset('img/promoting_Stallion.jpg') }}" alt="cheval de concours"/> #}
+			<img src="{{ asset('img/promoting_Stallion_blue.png') }}" alt="cheval de concours"/>
 			<figcaption class="promotingFigcaption">
-				Un
-				<strong>cheval</strong>
+				<span class="brownSpan">
+					Un cheval</span>
 				c'est ipsum dolor sit amet
-				<em>EmprunteMonPoney</em>
-				consectetur adipisicing elit. Labore voluptatibus explicabo eaque voluptate mollitia possimus dolore esse vero ! Car, une
-				<strong>demi pension</strong>, psum lorem obcaecati.
+				<em>EmprunteMonPoney</em>.consectetur adipisicing elit. Labore voluptatibus explicabo eaque voluptate mollitia possimus dolore esse vero ! Car, une
+				<span class="brownSpan">demi pension</span>, psum lorem obcaecati.
 			</figcaption>
 		</figure>
 
@@ -274,33 +271,32 @@
 					<div class="first slide">
 						<img src="{{ asset('img/slider1.jpg') }}" alt="Poney demi pension"/>
 						<figcaption>
-							Juliette :
 							<span class="slideQuote">
-								"Je peux enfin m'occuper d'un poney comme si c'était le mien"
+								Juliette : "Je peux enfin m'occuper d'un poney comme si c'était le mien"
 							</span>
 						</figcaption>
 					</div>
 					<div class="slide">
 						<img src="{{ asset('img/slider2.jpg') }}" alt="Concours complet"/>
-						<figcaption>Marc :
+						<figcaption>
 							<span class="slideQuote">
-								"Grâce au site j'ai trouvé Kenzo, un cheval qui me permet de faire du complet."
+								Marc : "Grâce au site j'ai trouvé Kenzo, un cheval qui me permet de faire du complet."
 							</span>
 						</figcaption>
 					</div>
 					<div class="slide">
 						<img src="{{ asset('img/slider3.jpg') }}" alt="Ethologie"/>
-						<figcaption>Virginie :
+						<figcaption>
 							<span class="slideQuote">
-								"J'ai trouvé une personne qui s'occupe de mon vieux cheval tout en douceur."
+								Virginie : "J'ai trouvé une personne qui s'occupe de mon vieux cheval tout en douceur."
 							</span>
 						</figcaption>
 					</div>
 					<div class="slide">
 						<img src="{{ asset('img/slider4.jpg') }}" alt="Cheval demi pension"/>
-						<figcaption>Maeva :
+						<figcaption>
 							<span class="slideQuote">
-								"EmprunteMonPoney m'a aidé à trouver une demi-pension qui me correspondait !"
+								Maeva : "EmprunteMonPoney m'a aidé à trouver une demi-pension qui me correspondait !"
 							</span>
 						</figcaption>
 					</div>
@@ -323,59 +319,58 @@
 				</div>
 			</section>
 
-			<div
-				class="marginContainer">
-				<!-- second promoting -->
-				<section class="secondPromotingSection flex">
 
-					<article style="box-shadow: 5px 5px 5px 5px rgb(180, 180, 180); padding: 25px;">
-						<h2 class="bigTitle">On part au galop ?</h2>
+			<!-- second promoting -->
+			<section class="secondPromotingSection flex">
 
-						<div class="flex layout">
-							<figure><img src="{{ asset('img/concours.jpg') }}" alt="cheval concours"></figure>
-							<div>
-								<p>
-									Lorem ipsum dolor sit,
-									<strong>chevaux</strong>
-									amet consectetur adipisicing elit. Unde tempore quia est aliquam eaque officiis dolorum nostrum
-									<strong>poney</strong>
-									veritatis, beatae quas. Lorem ipsum
-									<em>EmprunteMonPoney</em>
-									dolor sit, amet consectetur adipisicing elit. Possimus magni
-									<strong>emprunteurs</strong>
-									ou
-									<strong>propriétaires</strong>
-									voluptatem unde ratione totam. Dolore, consequatur
-									<em>demi pension</em>. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia quisquam doloribus iure, molestias possimus eius.
-								</p>
+				<article>
+					<h2 class="bigTitle">On part au galop ?</h2>
 
-								<p>
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, asperiores ?
-									<strong>Concours, randonnées, dressage, TREC, equifeel</strong>
-									et plus encore Lorem ipsum dolor sit amet
-									<em>demi pension</em>.Lorem ipsum dolor sit
-									<em>demi pension</em>
-									amet
-									<strong>simple d'utilisation</strong>
-									consectetur adipisicing elit. Pariatur dolor praesentium, maiores nulla nostrum necessitatibus!
-								</p>
-							</div>
-						</div>
-
-						{% if app.user is not null %}
-							<p class="centerButton thanks">Merci d'utiliser EmprunteMonPoney
-								<i class="fas fa-heart"></i>
+					<div
+						class="flex layout">
+						{# <figure><img src="{{ asset('img/concours.jpg') }}" alt="cheval concours"></figure> #}
+						<div>
+							<p>
+								Lorem ipsum dolor sit,
+								<strong>chevaux</strong>
+								amet consectetur adipisicing elit. Unde tempore quia est aliquam eaque officiis dolorum nostrum
+								<strong>poney</strong>
+								veritatis, beatae quas. Lorem ipsum
+								<em>EmprunteMonPoney</em>
+								dolor sit, amet consectetur adipisicing elit. Possimus magni
+								<strong>emprunteurs</strong>
+								ou
+								<strong>propriétaires</strong>
+								voluptatem unde ratione totam. Dolore, consequatur
+								<em>demi pension</em>. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia quisquam doloribus iure, molestias possimus eius.
 							</p>
-						{% else %}
-							<div class="centerButton">
-								<a class="button" href="{{path('app_register')}}">Nous rejoindre</a>
-							</div>
-						{% endif %}
 
-					</article>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, asperiores ?
+								<strong>Concours, randonnées, dressage, TREC, equifeel</strong>
+								et plus encore Lorem ipsum dolor sit amet
+								<em>demi pension</em>.Lorem ipsum dolor sit
+								<em>demi pension</em>
+								amet
+								<strong>simple d'utilisation</strong>
+								consectetur adipisicing elit. Pariatur dolor praesentium, maiores nulla nostrum necessitatibus!
+							</p>
+						</div>
+					</div>
 
-				</section>
-			</div>
+					{% if app.user is not null %}
+						<p class="centerButton thanks">Merci d'utiliser EmprunteMonPoney
+							<i class="fas fa-heart"></i>
+						</p>
+					{% else %}
+						<div class="centerButton">
+							<a class="myButton" href="{{path('app_register')}}">Nous rejoindre</a>
+						</div>
+					{% endif %}
+
+				</article>
+
+			</section>
 
 			<!-- footer with links -->
 			<footer class="flex">
@@ -414,7 +409,7 @@
 
 					<article class="flex allRights">
 						<p class="whiteFt">
-							© 2021 Tous droits réservés | EmprunteMonPoney - Béatrice Machalica | All rights reserved
+							© 2021 Tous droits réservés | EmprunteMonPoney - Béatrice Machalica
 						</p>
 					</article>
 

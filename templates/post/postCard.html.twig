@@ -23,8 +23,17 @@
 		{% endif %}
 
 		{# price #}
-		<h6 class="card-subtitle mb-2 text-muted">{{ post.price|number_format(2, ',', ' ') }}
-			€ / mois</h6>
+		<h6 class="card-subtitle mb-2 text-muted">
+			{% if post.category == "profil d'emprunteur" %}
+				Budget :
+				{{ post.price|number_format(2, ',', ' ') }}
+				€ / mois
+			{% else %}
+				Prix :
+				{{ post.price|number_format(2, ',', ' ') }}
+				€ / mois
+			{% endif %}
+		</h6>
 
 		{# text #}
 		<p class="card-text">{{ post.text |u.truncate(50,'...') |raw }}</p>

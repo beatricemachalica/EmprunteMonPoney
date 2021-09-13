@@ -1,16 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,100;1,300;1,400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 
 * {
   box-sizing: border-box;
 }
 html {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
 }
 body {
   margin: 0;
   padding: 0;
+  min-height: 100%;
+  width: 100%;
   font-family: "Roboto", sans-serif;
+  background-color: #f9f7f7;
 }
 img {
   width: 100%;
@@ -27,7 +34,13 @@ a {
 }
 strong {
   font-weight: bold;
-  color: rgba(51, 133, 255);
+  /* color: #95550a; */
+  /* color: #5f3503; */
+  /* color: #5f3503; */
+  /* color: #cd7309; */
+}
+.brownSpan {
+  color: #95550a;
 }
 .whiteFt {
   color: white;
@@ -56,9 +69,9 @@ strong {
 }
 
 /* button(s) */
-.button {
-  background-color: rgb(51, 112, 211);
-  border: 1px solid rgba(174, 174, 248, 0.8);
+.myButton {
+  background-color: rgb(24, 58, 112);
+  border: 1px solid rgba(25, 25, 107, 0.63);
   display: inline-block;
   cursor: pointer;
   color: white;
@@ -66,11 +79,12 @@ strong {
   font-weight: bold;
   padding: 15px 35px;
   text-decoration: none;
+  margin: 20px 0 20px 0;
 }
-.button:hover {
-  background-color: rgba(71, 134, 235);
+.myButton:hover {
+  background-color: rgb(34, 71, 131);
 }
-.button:active {
+.myButton:active {
   position: relative;
   top: 1px;
 }
@@ -78,8 +92,11 @@ strong {
 /* titles style */
 .bigTitle {
   text-align: center;
-  font-size: 1.7rem;
-  color: rgb(34, 39, 43);
+  font-size: 3rem;
+  font-family: "Dancing Script", cursive;
+  color: #17242b;
+  margin-bottom: 50px;
+  padding: 20px 0 20px 0;
 }
 
 /* menu burger */
@@ -120,7 +137,7 @@ header .burger {
   font-family: "Oswald", sans-serif;
   font-size: 1.4rem;
 }
-.mainNav div {
+.mainNav .mainMenu {
   width: 65%;
   justify-content: space-around;
 }
@@ -128,6 +145,26 @@ header .burger {
   color: white;
   text-shadow: 1px 1px black;
   text-decoration: none;
+}
+/* menu burger */
+.burger {
+  width: 48px;
+  height: 48px;
+  padding: 10px;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.burger span {
+  height: 4px;
+  background: white;
+  width: 100%;
+}
+/* hide menu burger on desktop */
+.burger {
+  display: none;
 }
 #smallNav {
   height: 50px;
@@ -157,14 +194,11 @@ header .burger {
 .mainWrapper {
   width: 100%;
   position: relative;
-  /* top: 750px; */
-  background: #fff;
 }
 
 /* banner */
 .banner-container {
   width: 100%;
-  height: 100vh;
   -webkit-background-size: cover;
   background-size: cover;
   background-position: center center;
@@ -244,16 +278,11 @@ header .burger {
   width: 70%;
   position: relative;
 }
-.imgIndication {
-  border-radius: 20px;
-  filter: drop-shadow(0 0 0.25rem rgb(66, 64, 64));
-}
 .fgrIndication figcaption {
   position: absolute;
-  background-color: rgba(58, 119, 211, 0.7);
+  background-color: #95540a77;
   text-shadow: 1px 1px black;
   color: white;
-  border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -274,9 +303,12 @@ header .burger {
 }
 .articleNewPosts {
   box-shadow: 5px 5px 5px rgb(180, 180, 180);
+  text-align: center;
 }
 .articleNewPosts h3 {
   text-align: center;
+  margin: 0;
+  margin-top: 5px;
 }
 .articleNewPosts p {
   padding: 15px;
@@ -291,12 +323,16 @@ header .burger {
 /* slider */
 /* section slider & background */
 .sliderSection {
-  height: 72vh;
   display: flex;
   align-items: center;
   flex-direction: column;
   width: 85%;
   margin: auto;
+  margin-bottom: 45px;
+}
+.sliderSection h2 {
+  font-family: "Dancing Script", cursive;
+  margin-bottom: 40px;
 }
 /* slider size and overflow hidden */
 .slider {
@@ -425,11 +461,14 @@ header .burger {
   font-size: 1.3rem;
   font-style: italic;
 }
-
+.promoting figure {
+  background-image: url("../img/promoting_Stallion.jpg");
+  background-color: #17242b;
+  background-blend-mode: darken;
+}
 /* new users promoting */
 .recentPosts {
   padding: 55px;
-  margin-bottom: 55px;
 }
 
 /* second promoting */
@@ -437,10 +476,17 @@ header .burger {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 55px;
+  background-color: #17242b;
+  color: white;
+}
+.secondPromotingSection article {
+  width: 65%;
+  padding: 25px;
+  margin-bottom: 25px;
 }
 .secondPromotingSection h2 {
-  font-size: 2rem;
+  color: white;
+  font-family: "Dancing Script", cursive;
 }
 .secondPromotingSection p {
   text-align: center;
@@ -448,7 +494,7 @@ header .burger {
   text-align: justify;
 }
 .secondPromotingSection .thanks {
-  color: rgba(15, 31, 173, 0.8);
+  color: white;
 }
 .thanks .fa-heart {
   margin-left: 5px;
@@ -562,7 +608,7 @@ form {
   width: 45%;
   margin: auto;
   position: relative;
-  top: 10px;
+  top: 45px;
   color: rgb(255, 255, 255);
   background: rgba(0, 0, 0, 0.4);
   padding: 15px;
@@ -595,6 +641,8 @@ form {
   font-size: 30px;
   margin-left: 20px;
 }
+
+/* backgrounds */
 .backgroundColor {
   background-color: #f9f7f7;
   min-height: 100vh;

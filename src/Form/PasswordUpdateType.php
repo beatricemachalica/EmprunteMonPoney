@@ -75,7 +75,6 @@ class PasswordUpdateType extends AbstractType
           'class' => 'form-control'
         ],
         'label' => 'Confirmez le nouveau mot de passe',
-        'help' => 'Le nouveau mot de passe doit contenir au moins huit caractères, dont des lettres majuscules et minuscules, un chiffre et un symbole.',
       ]);
   }
 

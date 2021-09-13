@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="backgroundGrey">
+	<div class="backgroundColor">
 
 		{% block header %}
 			{% include "smallHeader.html.twig" %}
@@ -83,13 +83,13 @@
 						<thead>
 							<tr>
 								<th scope="col">Adresse mail</th>
-								<th scope="col">Téléphone</th>
+								{# <th scope="col">Téléphone</th> #}
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td>{{ app.user.email }}</td>
-								<td>{{ app.user.phoneNumber }}</td>
+								{# <td>{{ app.user.phoneNumber }}</td> #}
 							</tr>
 						</tbody>
 					</table>

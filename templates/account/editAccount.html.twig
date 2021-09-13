@@ -33,7 +33,8 @@
 
 				{{ form_row(form.departement) }}
 
-				{{ form_row(form.phoneNumber) }}
+				{# {{ form_row(form.phoneNumber) }} #}
+				{% do form.phoneNumber.setRendered() %}
 
 				<div class="centerButton">
 					<button type="submit" class="btn btn-primary mt-20">
@@ -43,10 +44,6 @@
 				{{ form_end(form) }}
 
 			</div>
-		{% endblock %}
-
-		{% block footer %}
-			{% include "smallFooter.html.twig" %}
 		{% endblock %}
 
 	</div>

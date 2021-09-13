@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	<main class="backgroundGrey">
+	<main class="backgroundColor">
 
 		{% block header %}
 			{% include "smallHeader.html.twig" %}
@@ -261,7 +261,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td scope="col" class="font-weight-bold">Prix / mois</td>
+											<td scope="col" class="font-weight-bold">Budget / mois</td>
 											<td>{{ post.price|number_format(2, ',', ' ') }}
 												€</td>
 										</tr>

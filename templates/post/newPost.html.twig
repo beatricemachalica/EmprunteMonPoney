@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="backgroundForm">
+	<div class="backgroundColor">
 
 		{% block header %}
 			{% include "smallHeader.html.twig" %}
@@ -28,10 +28,6 @@
 			{{ form_row(form.price) }}
 
 			{{ form_row(form.photo) }}
-			{# {% if proprioPost %}
-										{% else %}
-											{% do form.photo.setRendered() %}
-									{% endif %} #}
 
 			<ul id="activities" data-prototype="{{ form_row(form.activities.vars.prototype)|e }}" style="list-style-type:none;" class="mt-2 p-0">
 
@@ -50,10 +46,6 @@
 			{{ form_end(form) }}
 
 		</div>
-
-		{% block footer %}
-			{% include "smallFooter.html.twig" %}
-		{% endblock %}
 
 	</div>
 {% endblock %}

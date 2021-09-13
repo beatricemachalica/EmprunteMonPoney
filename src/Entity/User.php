@@ -73,6 +73,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @Assert\Range(
+     *      min = 1000,
+     *      max = 98890,
+     *      notInRangeMessage = "Veuillez entrer un code postal valable.",
+     * )
      */
     private $cp;
 
