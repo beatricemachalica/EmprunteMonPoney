@@ -1,16 +1,7 @@
 // Menu burger :
-
 document.querySelector(".burger").addEventListener("click", function () {
   document.getElementById("mainMenu").classList.toggle("visible");
 });
-
-// fonctionnement :
-
-// dans le document, je recherche le selecteur avec la class burger ; puis écouter les événements clic
-// lorsqu'il "entend" le clic, il execute une fonction
-// dans le doc, on recherche le selecteur "nav", on regarde sa liste de classe, et on lui demande
-// d'alterner entre ajouter/supprimer la classe "visible"
-// toggle = alterner un état vers un autre
 
 // "Go to Top" button
 function scrolltotop() {
@@ -20,7 +11,7 @@ function scrolltotop() {
 // Animation navbar
 const navigation = document.getElementById("mainNav");
 window.addEventListener("scroll", () => {
-  if (window.scrollY > 50) {
+  if (window.scrollY > 20) {
     navigation.classList.add("nav-animation");
     // navigation.classList.remove("");
   } else {

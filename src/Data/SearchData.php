@@ -38,5 +38,19 @@ class SearchData
    * @var null|float
    */
   public $min;
-  
+
+  /**
+   * @var null|float
+   */
+  public $lat;
+
+  /**
+   * @var null|float
+   */
+  public $lng;
+
+  /**
+   * @var null|integer
+   */
+  public $distance;
 }

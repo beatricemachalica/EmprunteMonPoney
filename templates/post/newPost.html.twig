@@ -21,11 +21,23 @@
 				<h1 class="d-flex justify-content-center">Nouvelle annonce</h1>
 			{% endif %}
 
-			{{ form_start(form) }}
+			{{ form_start(form, { attr: {id: 'form'} }) }}
 
 			{{ form_row(form.text) }}
 
-			{{ form_row(form.price) }}
+			<div class="form-row mt-3">
+				<div class="col">
+					{% if proprioPost %}
+						<label class="form-text mt-0">La ville où se situe votre cheval.</label>
+					{% else %}
+						<label class="form-text mt-0">Indiquez la ville où vous habitez.</label>
+					{% endif %}
+					{{ form_row(form.city) }}
+				</div>
+				<div class="col">
+					{{ form_row(form.price) }}
+				</div>
+			</div>
 
 			{{ form_row(form.photo) }}
 

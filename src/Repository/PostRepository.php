@@ -65,6 +65,18 @@ class PostRepository extends ServiceEntityRepository
                 ->andWhere('a.id IN(:activities)')
                 ->setParameter(':activities', $search->activities);
         }
+        // lat
+        // lng
+        // distance
+        if (!empty($search->lat) && !empty($search->lng) && !empty($search->distance)) {
+            $query = $query
+                ->select('p')
+                ->andWhere('(6353 * 2 * ASIN(SQRT( POWER(SIN((p.lat - :lat) * pi()/180 / 2), 2) + COS(p.lat 
+                * pi()/180) * COS(:lat * pi()/180) * POWER(SIN((p.lng - :lng) * pi()/180 / 2), 2) ))) <= :distance')
+                ->setParameter(':lng', $search->lng)
+                ->setParameter(':lat', $search->lat)
+                ->setParameter(':distance', $search->distance);
+        }
 
         $query = $query
             ->addOrderBy('p.createdAt', 'DESC')

@@ -13,7 +13,9 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class PostType extends AbstractType
@@ -74,7 +76,17 @@ class PostType extends AbstractType
                 'required' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
-            ]);
+            ])
+            ->add('city', TextType::class, [
+                'required' => true,
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Strasbourg',
+                ]
+            ])
+            ->add('lat', HiddenType::class)
+            ->add('lng', HiddenType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

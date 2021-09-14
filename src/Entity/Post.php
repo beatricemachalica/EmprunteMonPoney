@@ -76,6 +76,21 @@ class Post
      */
     private $activities;
 
+    /**
+     * @ORM\Column(type="float", scale=4, precision=6)
+     */
+    private $lat;
+
+    /**
+     * @ORM\Column(type="float", scale=4, precision=7)
+     */
+    private $lng;
+
+    /**
+     * @ORM\Column(type="string", length=75)
+     */
+    private $city;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -281,6 +296,42 @@ class Post
         if ($this->activities->removeElement($activity)) {
             $activity->removePost($this);
         }
+
+        return $this;
+    }
+
+    public function getLat(): ?float
+    {
+        return $this->lat;
+    }
+
+    public function setLat(float $lat): self
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    public function getLng(): ?float
+    {
+        return $this->lng;
+    }
+
+    public function setLng(float $lng): self
+    {
+        $this->lng = $lng;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

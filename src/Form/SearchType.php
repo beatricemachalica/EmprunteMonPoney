@@ -10,6 +10,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class SearchType extends AbstractType
@@ -60,7 +62,18 @@ class SearchType extends AbstractType
                     'placeholder' => 'Prix maximum',
                     'class' => 'w-100',
                 ]
-            ]);
+            ])
+            ->add('distance', ChoiceType::class, [
+                'label' => false,
+                'choices' => [
+                    '10 km' => 10,
+                    '20 km' => 20,
+                    '30 km' => 30,
+                    '40 km' => 40,
+                ]
+            ])
+            ->add('lat', HiddenType::class)
+            ->add('lng', HiddenType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
