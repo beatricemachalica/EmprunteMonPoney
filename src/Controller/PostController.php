@@ -127,105 +127,111 @@ class PostController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        $addPostMode = false;
+        $addNewPostMode = false;
+
         if (!$post) {
             $post = new Post();
-            $addPostMode = true;
+            $addNewPostMode = true;
         }
 
-        $form = $this->createForm(PostType::class, $post);
+        if ((!$post) || (($addNewPostMode === false) && ($this->getUser()->getId() === $post->getUser()->getId()))) {
 
-        $form->handleRequest($request);
-        // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
-        // based on the HTTP method configured on the form (POST is default).
+            $form = $this->createForm(PostType::class, $post);
 
-        // get the array of user's roles
-        $userRolesArray = $this->getUser()->getRoles();
+            $form->handleRequest($request);
+            // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
+            // based on the HTTP method configured on the form (POST is default).
 
-        $userPosts = $this->getDoctrine()
-            ->getRepository(Post::class)
-            ->findBy(array('user' => $this->getUser()->getId()), null);
+            // get the array of user's roles
+            $userRolesArray = $this->getUser()->getRoles();
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            $userPosts = $this->getDoctrine()
+                ->getRepository(Post::class)
+                ->findBy(array('user' => $this->getUser()->getId()), null);
 
-            // set the authenticated user
-            $post->setUser($this->getUser());
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            // set the active attribut to true
-            // by default the post will be activated and will appear on the website
-            $post->setActive(true);
+                // set the authenticated user
+                $post->setUser($this->getUser());
 
-            // set automatically a category
-            // this may no longer be useful if several categories may be implemented to the website
+                // set the active attribut to true
+                // by default the post will be activated and will appear on the website
+                $post->setActive(true);
 
-            // get the category borrower
+                // set automatically a category
+                // this may no longer be useful if several categories may be implemented to the website
 
-            $categoryEmprunt = $this->getDoctrine()
-                ->getRepository(Category::class)
-                ->findOneBy(array('name' => 'profil d\'emprunteur'), null);
+                // get the category borrower
 
-            // if the user is a borrower ("ROLE_EMPRUNT") AND the user want to add a new post
+                $categoryEmprunt = $this->getDoctrine()
+                    ->getRepository(Category::class)
+                    ->findOneBy(array('name' => 'profil d\'emprunteur'), null);
 
-            if (in_array("ROLE_EMPRUNT", $userRolesArray) && (empty($userPosts)) && ($addPostMode)) {
+                // if the user is a borrower ("ROLE_EMPRUNT") AND the user want to add a new post
 
-                // set the right category
-                $post->setCategory($categoryEmprunt);
-            } elseif (in_array("ROLE_EMPRUNT", $userRolesArray) && (!empty($userPosts)) && $addPostMode) {
+                if (in_array("ROLE_EMPRUNT", $userRolesArray) && (empty($userPosts)) && ($addNewPostMode)) {
 
-                // if the user is a borrower ("ROLE_EMPRUNT") and already has one post
-                $this->addFlash('message', 'Vous avez déjà créé une annonce pour trouver un cheval. Afin d\'éviter les doublons les emprunteurs ne peuvent créer qu\'une seule annonce.');
+                    // set the right category
+                    $post->setCategory($categoryEmprunt);
+                } elseif (in_array("ROLE_EMPRUNT", $userRolesArray) && (!empty($userPosts)) && $addNewPostMode) {
+
+                    // if the user is a borrower ("ROLE_EMPRUNT") and already has one post
+                    $this->addFlash('message', 'Vous avez déjà créé une annonce pour trouver un cheval. Afin d\'éviter les doublons les emprunteurs ne peuvent créer qu\'une seule annonce.');
+                    return $this->redirectToRoute('my_posts');
+                }
+
+                // flash message in case of edit or a new post
+                $idPost = $post->getId();
+                if ($idPost == null) {
+                    $this->addFlash('message', 'L\'annonce a bien été enregistrée.');
+                } else {
+                    $this->addFlash('message', 'Votre annonce a bien été modifiée.');
+                }
+
+                // pictures
+                $pictures = $form->get('photo')->getData();
+
+                // for each new picture added by the user
+
+                foreach ($pictures as $picture) {
+
+                    // create a new name file with md5 & uniquid and set the right extension
+                    $file = md5(uniqid()) . '.' . $picture->guessExtension();
+
+                    // copy this file into uploads
+                    // move() : first param : destination
+                    // move() : second param : file
+                    $picture->move(
+                        $this->getParameter('images_directory'),
+                        $file
+                    );
+
+                    // save the name on DB
+
+                    $img = new Photo();
+                    $img->setName($file);
+                    $post->addPhoto($img);
+                }
+
+                // flush data
+                $post = $form->getData();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($post);
+                $entityManager->flush();
+
                 return $this->redirectToRoute('my_posts');
+                // end set automatically a category
+
             }
 
-            // flash message in case of edit or a new post
-            $idPost = $post->getId();
-            if ($idPost == null) {
-                $this->addFlash('message', 'L\'annonce a bien été enregistrée.');
-            } else {
-                $this->addFlash('message', 'Votre annonce a bien été modifiée.');
-            }
-
-            // pictures
-            $pictures = $form->get('photo')->getData();
-
-            // for each new picture added by the user
-
-            foreach ($pictures as $picture) {
-
-                // create a new name file with md5 & uniquid and set the right extension
-                $file = md5(uniqid()) . '.' . $picture->guessExtension();
-
-                // copy this file into uploads
-                // move() : first param : destination
-                // move() : second param : file
-                $picture->move(
-                    $this->getParameter('images_directory'),
-                    $file
-                );
-
-                // save the name on DB
-
-                $img = new Photo();
-                $img->setName($file);
-                $post->addPhoto($img);
-            }
-
-            // flush data
-            $post = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($post);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('my_posts');
-            // end set automatically a category
-
+            return $this->render('post/newPost.html.twig', [
+                'form' => $form->createView(),
+                'editMode' => $post->getId() !== null,
+                'proprioPost' => in_array("ROLE_PROPRIO", $userRolesArray)
+            ]);
+        } else {
+            return $this->redirectToRoute('home');
         }
-
-        return $this->render('post/newPost.html.twig', [
-            'form' => $form->createView(),
-            'editMode' => $post->getId() !== null,
-            'proprioPost' => in_array("ROLE_PROPRIO", $userRolesArray)
-        ]);
     }
 
     /**
@@ -236,92 +242,96 @@ class PostController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        $post = new Post();
+        if ($this->getUser()->getId() === $equid->getUser()->getId()) {
 
-        $form = $this->createForm(PostType::class, $post);
 
-        $form->handleRequest($request);
-        // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
-        // based on the HTTP method configured on the form (POST is default).
+            $post = new Post();
 
-        // get the array of user's roles
-        $userRolesArray = $this->getUser()->getRoles();
+            $form = $this->createForm(PostType::class, $post);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            $form->handleRequest($request);
+            // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
+            // based on the HTTP method configured on the form (POST is default).
 
-            // set automatically a category
-            // this may no longer be useful if several categories may be implemented to the website
+            // get the array of user's roles
+            $userRolesArray = $this->getUser()->getRoles();
 
-            // get the category owner
-            $categoryProprio = $this->getDoctrine()
-                ->getRepository(Category::class)
-                ->findOneBy(array('name' => 'profil d\'un cheval'), null);
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            // if the user truly is an owner ("ROLE_PROPRIO") and his horse has been correctly registered
-            if ((in_array("ROLE_PROPRIO", $userRolesArray)) && (!empty($equid))) {
+                // set automatically a category
+                // this may no longer be useful if several categories may be implemented to the website
 
-                // set the right category
-                $post->setCategory($categoryProprio);
+                // get the category owner
+                $categoryProprio = $this->getDoctrine()
+                    ->getRepository(Category::class)
+                    ->findOneBy(array('name' => 'profil d\'un cheval'), null);
 
-                // set the right horse
-                $post->setEquid($equid);
+                // if the user truly is an owner ("ROLE_PROPRIO") and his horse has been correctly registered
+                if ((in_array("ROLE_PROPRIO", $userRolesArray)) && (!empty($equid))) {
 
-                // set the authenticated user
-                $post->setUser($this->getUser());
+                    // set the right category
+                    $post->setCategory($categoryProprio);
 
-                // set the active attribut to true
-                // by default the post will be activated and will appear on the website
-                $post->setActive(true);
-            } elseif (empty($equid)) {
+                    // set the right horse
+                    $post->setEquid($equid);
 
-                $this->addFlash('message', "Veuillez inscrire au moins un cheval avant de créer une annonce.");
-                return $this->redirectToRoute('user_account');
+                    // set the authenticated user
+                    $post->setUser($this->getUser());
+
+                    // set the active attribut to true
+                    // by default the post will be activated and will appear on the website
+                    $post->setActive(true);
+                } elseif (empty($equid)) {
+
+                    $this->addFlash('message', "Veuillez inscrire au moins un cheval avant de créer une annonce.");
+                    return $this->redirectToRoute('user_account');
+                }
+                // end set automatically a category
+
+                // pictures
+
+                $pictures = $form->get('photo')->getData();
+
+                // for each new picture added by the user
+
+                foreach ($pictures as $picture) {
+
+                    // create a new name file with md5 & uniquid and set the right extension
+                    $file = md5(uniqid()) . '.' . $picture->guessExtension();
+
+                    // copy this file into uploads
+                    // move() : first param : destination
+                    // move() : second param : file
+                    $picture->move(
+                        $this->getParameter('images_directory'),
+                        $file
+                    );
+
+                    // save the name on DB
+
+                    $img = new Photo();
+                    $img->setName($file);
+                    $post->addPhoto($img);
+                }
+
+                // flush data
+                $post = $form->getData();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($post);
+                $entityManager->flush();
+
+                // flash message
+                $this->addFlash('message', 'L\'annonce a bien été enregistrée.');
+                return $this->redirectToRoute('my_posts');
             }
-            // end set automatically a category
 
-            // pictures
-
-            $pictures = $form->get('photo')->getData();
-
-            // for each new picture added by the user
-
-            foreach ($pictures as $picture) {
-
-                // create a new name file with md5 & uniquid and set the right extension
-                $file = md5(uniqid()) . '.' . $picture->guessExtension();
-
-                // copy this file into uploads
-                // move() : first param : destination
-                // move() : second param : file
-                $picture->move(
-                    $this->getParameter('images_directory'),
-                    $file
-                );
-
-                // save the name on DB
-
-                $img = new Photo();
-                $img->setName($file);
-                $post->addPhoto($img);
-            }
-
-            // flush data
-            $post = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($post);
-            $entityManager->flush();
-
-            // flash message
-            $this->addFlash('message', 'L\'annonce a bien été enregistrée.');
-            return $this->redirectToRoute('my_posts');
+            return $this->render('post/newPost.html.twig', [
+                'form' => $form->createView(),
+                'editMode' => $post->getId() !== null,
+                'horse' => $equid,
+                'proprioPost' => in_array("ROLE_PROPRIO", $userRolesArray)
+            ]);
         }
-
-        return $this->render('post/newPost.html.twig', [
-            'form' => $form->createView(),
-            'editMode' => $post->getId() !== null,
-            'horse' => $equid,
-            'proprioPost' => in_array("ROLE_PROPRIO", $userRolesArray)
-        ]);
     }
 
     /**
@@ -332,59 +342,65 @@ class PostController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        $form = $this->createForm(PostType::class, $post);
+        if ($this->getUser()->getId() === $post->getUser()->getId()) {
 
-        $form->handleRequest($request);
-        // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
-        // based on the HTTP method configured on the form (POST is default).
+            $form = $this->createForm(PostType::class, $post);
 
-        // get the array of user's roles
-        $userRolesArray = $this->getUser()->getRoles();
+            $form->handleRequest($request);
+            // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
+            // based on the HTTP method configured on the form (POST is default).
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            // get the array of user's roles
+            $userRolesArray = $this->getUser()->getRoles();
 
-            // pictures
 
-            $pictures = $form->get('photo')->getData();
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            // for each new picture added by the user
+                // pictures
 
-            foreach ($pictures as $picture) {
+                $pictures = $form->get('photo')->getData();
 
-                // create a new name file with md5 & uniquid and set the right extension
-                $file = md5(uniqid()) . '.' . $picture->guessExtension();
+                // for each new picture added by the user
 
-                // copy this file into uploads
-                // move() : first param : destination
-                // move() : second param : file
-                $picture->move(
-                    $this->getParameter('images_directory'),
-                    $file
-                );
+                foreach ($pictures as $picture) {
 
-                // save the name on DB
+                    // create a new name file with md5 & uniquid and set the right extension
+                    $file = md5(uniqid()) . '.' . $picture->guessExtension();
 
-                $img = new Photo();
-                $img->setName($file);
-                $post->addPhoto($img);
+                    // copy this file into uploads
+                    // move() : first param : destination
+                    // move() : second param : file
+                    $picture->move(
+                        $this->getParameter('images_directory'),
+                        $file
+                    );
+
+                    // save the name on DB
+
+                    $img = new Photo();
+                    $img->setName($file);
+                    $post->addPhoto($img);
+                }
+
+                // flush data
+                $post = $form->getData();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($post);
+                $entityManager->flush();
+
+                // flash message
+                $this->addFlash('message', 'Votre annonce a bien été modifiée.');
+                return $this->redirectToRoute('my_posts');
             }
 
-            // flush data
-            $post = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($post);
-            $entityManager->flush();
-
-            // flash message
-            $this->addFlash('message', 'Votre annonce a bien été modifiée.');
-            return $this->redirectToRoute('my_posts');
+            return $this->render('post/newPost.html.twig', [
+                'form' => $form->createView(),
+                'editMode' => $post->getId() !== null,
+                'proprioPost' => in_array("ROLE_PROPRIO", $userRolesArray)
+            ]);
+        } else {
+            return $this->redirectToRoute('home');
         }
-
-        return $this->render('post/newPost.html.twig', [
-            'form' => $form->createView(),
-            'editMode' => $post->getId() !== null,
-            'proprioPost' => in_array("ROLE_PROPRIO", $userRolesArray)
-        ]);
     }
 
     /**
@@ -437,13 +453,14 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/favoritePosts/{id}", name="favorite_post")
+     * @Route("/favoritePosts", name="favorite_post")
      */
-    public function showFavorite(User $user): Response
+    public function showFavorite(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
+        $user = $this->getUser();
         $posts = $user->getFavorites();
 
         return $this->render('post/favoritePosts.html.twig', [
@@ -504,30 +521,33 @@ class PostController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // create form
-        $form = $this->createForm(CommentType::class, $com);
+        if ($this->getUser()->getId() === $com->getUser()->getId()) {
 
-        // get information from $request
-        $form->handleRequest($request);
-        // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
-        // based on the HTTP method configured on the form (POST is default).
+            // create form
+            $form = $this->createForm(CommentType::class, $com);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            // get information from $request
+            $form->handleRequest($request);
+            // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
+            // based on the HTTP method configured on the form (POST is default).
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($com);
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            // flash message
-            $this->addFlash('message', 'Votre commentaire a bien été mis à jour.');
-            return $this->redirectToRoute('show_post', [
-                'id' => $com->getPost()->getId()
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($com);
+                $entityManager->flush();
+
+                // flash message
+                $this->addFlash('message', 'Votre commentaire a bien été mis à jour.');
+                return $this->redirectToRoute('show_post', [
+                    'id' => $com->getPost()->getId()
+                ]);
+            }
+
+            return $this->render('comment/editComment.html.twig', [
+                'form' => $form->createView(),
             ]);
         }
-
-        return $this->render('comment/editComment.html.twig', [
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -542,7 +562,7 @@ class PostController extends AbstractController
         // get post Id
         $postId = $com->getPost()->getId();
 
-        if ($currentUserId == $com->getUser()->getId()) {
+        if ($currentUserId === $com->getUser()->getId()) {
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($com);
@@ -594,28 +614,32 @@ class PostController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        // get all pictures
-        $pictures = $post->getPhotos();
+        if ($this->getUser()->getId() === $post->getUser()->getId()) {
 
-        if ($pictures) {
 
-            foreach ($pictures as $picture) {
-                // get the picture path
-                $pictureName = $this->getParameter("images_directory") . '/' . $picture->getName();
+            // get all pictures
+            $pictures = $post->getPhotos();
 
-                // delete this picture if this file exists
-                if (file_exists($pictureName)) {
-                    unlink($pictureName);
+            if ($pictures) {
+
+                foreach ($pictures as $picture) {
+                    // get the picture path
+                    $pictureName = $this->getParameter("images_directory") . '/' . $picture->getName();
+
+                    // delete this picture if this file exists
+                    if (file_exists($pictureName)) {
+                        unlink($pictureName);
+                    }
                 }
             }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($post);
+            $entityManager->flush();
+
+            // flash message
+            $this->addFlash('message', 'Votre annonce a bien été supprimée.');
+            return $this->redirectToRoute('my_posts');
         }
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($post);
-        $entityManager->flush();
-
-        // flash message
-        $this->addFlash('message', 'Votre annonce a bien été supprimée.');
-        return $this->redirectToRoute('my_posts');
     }
 }
