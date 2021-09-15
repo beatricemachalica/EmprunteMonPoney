@@ -47,30 +47,32 @@ class AccountController extends AbstractController
     public function editAccount(Request $request, User $user = null): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
 
-        if (!$user) {
-            $user = new User();
+        if ($this->getUser()->getId() === $user->getId()) {
+
+            $form = $this->createForm(UserAccountType::class, $user);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $user = $form->getData();
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                // flash message
+                $this->addFlash('message', 'Votre profil a bien été mis à jour.');
+                return $this->redirectToRoute('user_account');
+            }
+
+            return $this->render('account/editAccount.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        } else {
+            return $this->redirectToRoute('home');
         }
-
-        $form = $this->createForm(UserAccountType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $user = $form->getData();
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // flash message
-            $this->addFlash('message', 'Votre profil a bien été mis à jour.');
-            return $this->redirectToRoute('user_account');
-        }
-
-        return $this->render('account/editAccount.html.twig', [
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -81,15 +83,20 @@ class AccountController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        // set token to null or it will throw an error 
-        $user = $this->getUser();
-        $this->container->get('security.token_storage')->setToken(null);
+        if ($this->getUser()->getId() === $user->getId()) {
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($user);
-        $entityManager->flush();
+            // set token to null or it will throw an error 
+            $user = $this->getUser();
+            $this->container->get('security.token_storage')->setToken(null);
 
-        return $this->redirectToRoute('home');
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('home');
+        } else {
+            return $this->redirectToRoute('home');
+        }
     }
 
     /**
@@ -146,11 +153,15 @@ class AccountController extends AbstractController
     public function deleteEquid(Equid $equid): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($equid);
-        $entityManager->flush();
+        if ($this->getUser()->getId() === $equid->getUser()->getId()) {
 
-        return $this->redirectToRoute('user_account');
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($equid);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_account');
+        }
     }
 }

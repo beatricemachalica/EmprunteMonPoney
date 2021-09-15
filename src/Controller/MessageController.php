@@ -116,14 +116,14 @@ class MessageController extends AbstractController
         $user = $this->getUser()->getId();
 
         // if the current user want to delete a sent message
-        if ($user == $message->getSender()->getId()) {
+        if ($user === $message->getSender()->getId()) {
 
             // set "deleted_sender"
             $message->setDeletedSender(true);
             $em = $this->getDoctrine()->getManager();
             $em->persist($message);
             $em->flush();
-        } elseif ($user == $message->getRecipient()->getId()) {
+        } elseif ($user === $message->getRecipient()->getId()) {
             // if the current user want to delete a received message
 
             // set "deleted_recipient"       
@@ -131,6 +131,8 @@ class MessageController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($message);
             $em->flush();
+        } else {
+            return $this->redirectToRoute('home');
         }
 
         if (($message->getDeletedSender() == true) && ($message->getDeletedRecipient() == true)) {
