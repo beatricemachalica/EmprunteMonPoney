@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Data\SearchData;
 use DateTime;
 use App\Entity\Post;
 use App\Entity\User;
@@ -11,9 +10,10 @@ use App\Entity\Photo;
 use App\Form\PostType;
 use PHPUnit\Util\Json;
 use App\Entity\Comment;
+use App\Data\SearchData;
 use App\Entity\Category;
-use App\Form\CommentType;
 use App\Form\SearchType;
+use App\Form\CommentType;
 use App\Repository\PostRepository;
 use App\Repository\ActivityRepository;
 use App\Repository\CategoryRepository;
@@ -21,12 +21,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostController extends AbstractController
 {
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/posts", name="posts")
      */
     public function index(PostRepository $postRepository, Request $request): Response
@@ -37,12 +39,15 @@ class PostController extends AbstractController
         // data initialization
         $data = new SearchData();
 
+        // paginator
         $data->page = $request->get('page', 1);
 
         // form creation
         $form = $this->createForm(SearchType::class, $data);
 
         $form->handleRequest($request);
+        // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
+        // based on the HTTP method configured on the form (POST is default).
 
         $posts = $postRepository->findSearch($data);
 
