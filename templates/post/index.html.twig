@@ -13,8 +13,12 @@
 
 		{% block container %}
 
-			<main
-				class="container-lg">
+			<section class="backgroundBannerFilter">
+				<h1 class="bigTitle">Trouvez la perle rare...</h1>
+			</section>
+
+			<section
+				class="container-lg js-posts">
 
 				{# flash message #}
 				{% for message in app.flashes('message') %}
@@ -23,21 +27,25 @@
 					</div>
 				{% endfor %}
 
+				{# filter #}
+				<div class="flex justify-content-center js-posts-filter">
+					{% include "post/_filter.html.twig" with {form: form} %}
+				</div>
+
 				<div class="row">
 
-					<div class="col-md-2">
-						{% include "post/_filter.html.twig" with {form: form} %}
-					</div>
+					<section
+						id="content" class="col-md-12" style="margin-top: 75px;">
 
-					<section id="content" class="col-md-10 mt-3">
-
-						<div class="d-flex justify-content-start mb-2">
+						{# sorting by price #}
+						<div class="d-flex justify-content-start mb-2 js-posts-sorting">
 							{{ knp_pagination_sortable(posts, 'Prix', 'p.price') }}
 						</div>
 
 						{# cards container #}
 						<div
-							class="row row-cols-1 row-cols-md-3">
+							class="row row-cols-1 row-cols-md-3 js-posts-content">
+
 							{# cards #}
 							{% if posts is not null %}
 								{% for post in posts %}
@@ -52,7 +60,7 @@
 						</div>
 
 						{# pagination #}
-						<div class="centerButton">
+						<div class="centerButton js-posts-pagination">
 							{{ knp_pagination_render(posts) }}
 						</div>
 
@@ -61,7 +69,7 @@
 				</div>
 
 
-			</main>
+			</section>
 
 		{% endblock %}
 

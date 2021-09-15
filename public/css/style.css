@@ -2,6 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 
+/* main color #17242b */
+
 * {
   box-sizing: border-box;
 }
@@ -670,4 +672,42 @@ form {
   position: relative;
   width: 100%;
   height: 100vh;
+}
+.backgroundBannerFilter {
+  background-image: url("../img/bg-filter.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #09192b9c;
+  background-blend-mode: luminosity;
+  position: relative;
+  width: 100%;
+  height: 55vh;
+}
+
+/* filter */
+.filterSection {
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgb(231, 228, 228);
+  border-radius: 10px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  color: #17242b;
+  position: absolute;
+  z-index: 1;
+  top: 145px;
+}
+.buttonFilter {
+  background-color: #17242b;
+  border: 1px solid #1d2d36;
+  display: inline-block;
+  cursor: pointer;
+  color: white;
+  font-size: 1.1rem;
+  padding: 10px;
+  text-decoration: none;
+  width: 30% !important;
+  border-radius: 10px;
+}
+.buttonFilter:hover {
+  background-color: rgb(31, 46, 71);
 }

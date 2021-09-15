@@ -1,41 +1,44 @@
 {# filter #}
-<section class="filter" style="display:block; position:sticky; top:75px">
+<section class="filterSection w-80 mt-3 p-4">
 
 	{{ form_start(form, { attr: {class: 'filter'} } ) }}
 
-	<div class="mt-3">
+	<div>
 		<h2 class="filterTitle" style="font-size: 1rem;">Recherche</h2>
 		{{ form_row(form.q) }}
 	</div>
+	<div class="flex mt-3">
 
-	<div class="mt-3">
-		<h2 class="filterTitle" style="font-size: 1rem;">Catégories</h2>
-		{{ form_row(form.categories) }}
+		<div>
+			<h2 class="filterTitle" style="font-size: 1rem;">Prix</h2>
+			{{ form_row(form.min) }}
+			{{ form_row(form.max) }}
+		</div>
+
+		<div class="ml-5">
+			<h2 class="filterTitle" style="font-size: 1rem;">Votre ville</h2>
+			<input type="text" value="" placeholder="Ville" id="search_city" class="form-control" style="margin-bottom:1rem;">
+			{{ form_row(form.distance) }}
+		</div>
+
+		<div class="ml-5">
+			<h2 class="filterTitle" style="font-size: 1rem;">Catégories</h2>
+			{{ form_row(form.categories) }}
+		</div>
+
+
+		<div class="ml-5">
+			<h2 class="filterTitle" style="font-size: 1rem;">Activités</h2>
+			{{ form_row(form.activities) }}
+		</div>
+
 	</div>
 
-	<div class="mt-3">
-		<h2 class="filterTitle" style="font-size: 1rem;">Prix</h2>
-		{{ form_row(form.min) }}
-		{{ form_row(form.max) }}
+	<div class="centerButton">
+		<button type="submit" class="buttonFilter">
+			Filtrer
+		</button>
 	</div>
-
-	<div class="mt-3">
-		<h2 class="filterTitle" style="font-size: 1rem;">Votre ville</h2>
-		<input type="text" value="" placeholder="Ville" id="search_city" class="form-control">
-	</div>
-
-	<div class="mt-3">
-		{{ form_row(form.distance) }}
-	</div>
-
-	<div class="mt-3">
-		<h2 class="filterTitle" style="font-size: 1rem;">Activités</h2>
-		{{ form_row(form.activities) }}
-	</div>
-
-	<button type="submit" class="btn btn-primary mt-3 w-100">
-		Filtrer
-	</button>
 
 	{{ form_end(form)}}
 
