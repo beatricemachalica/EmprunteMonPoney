@@ -221,26 +221,68 @@
 		<div class="marginContainer">
 			<section class="recentPosts">
 				<h2 class="bigTitle">Nos nouveaux arrivants :</h2>
-				<div class="flex newPostsContainer">
+				<div
+					class="flex newPostsContainer">
 
-					{% for post in posts %}
-						<article class="articleNewPosts">
+					{# if current user is connected #}
+					{% if app.user %}
 
-							<figure class="figureNewPosts">
-								{% for photo in post.photos %}
-									<img src="{{ asset('/uploads/' ~ photo.name ) }}" alt="photo {{ post.equid.breed }}"/>
-								{% endfor %}
-							</figure>
+						{% for post in posts %}
 
-							<h3>{{ post.equid.name }}</h3>
-							<p>
-								Un
-								{{ post.equid.breed |capitalize }}, proposé par
-								{{ post.user.pseudo |capitalize }}.
-							</p>
+							<a href="{{ path('show_post', {id: post.id}) }}" class="BlackFt">
+								<article class="articleNewPosts">
 
-						</article>
-					{% endfor %}
+									{% if post.photos is not null and post.photos is defined %}
+										<figure class="figureNewPosts">
+
+											{% for photo in post.photos %}
+												<img src="{{ asset('/uploads/' ~ photo.name ) }}" alt="photo {{ post.equid.breed }}"/>
+											{% endfor %}
+										</figure>
+									{% endif %}
+
+									<h3>{{ post.equid.name }}</h3>
+									<p>
+										Un
+										{{ post.equid.breed |capitalize }}, proposé par
+										{{ post.user.pseudo |capitalize }}.
+									</p>
+
+								</article>
+							</a>
+
+						{% endfor %}
+
+						{# if current user is not connected #}
+					{% else %}
+
+						{% for post in posts %}
+
+							<a href="{{path('app_login')}}" class="BlackFt">
+								<article class="articleNewPosts">
+
+									{% if post.photos is not null and post.photos is defined %}
+										<figure class="figureNewPosts">
+
+											{% for photo in post.photos %}
+												<img src="{{ asset('/uploads/' ~ photo.name ) }}" alt="photo {{ post.equid.breed }}"/>
+											{% endfor %}
+										</figure>
+									{% endif %}
+
+									<h3>{{ post.equid.name }}</h3>
+									<p>
+										Un
+										{{ post.equid.breed |capitalize }}, proposé par
+										{{ post.user.pseudo |capitalize }}.
+									</p>
+
+								</article>
+							</a>
+
+						{% endfor %}
+					{% endif %}
+
 
 				</div>
 			</section>

@@ -2,8 +2,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 
-/* main color #17242b */
-
 * {
   box-sizing: border-box;
 }
@@ -41,7 +39,10 @@ strong {
   color: #95550a;
 }
 .whiteFt {
-  color: white;
+  color: white !important;
+}
+.BlackFt {
+  color: #17242b !important;
 }
 .mt-20 {
   margin-top: 20px;
