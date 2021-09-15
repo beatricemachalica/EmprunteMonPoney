@@ -1,12 +1,13 @@
 // Google geocode
-
 window.onload = () => {
   let cityInput = document.getElementById("search_city");
+  // get input city
   cityInput.addEventListener("change", geocode);
 };
 
 function geocode() {
   let city = document.querySelector("#search_city").value;
+  // get the city name (value of input #search_city)
   // console.log(city);
 
   axios
@@ -17,15 +18,15 @@ function geocode() {
       },
     })
     .then(function (response) {
-      // full response
+      // full data response
       // console.log(response.data);
 
-      // latitude and longitude
+      // get latitude and longitude
       let lat = response.data.results[0].geometry.location.lat;
       let lng = response.data.results[0].geometry.location.lng;
       // console.log(lng);
 
-      // set the right latitude and longitude in form
+      // set the right latitude and longitude in inputs type hidden
       document.querySelector("#lat").value = lat;
       document.querySelector("#lng").value = lng;
     })

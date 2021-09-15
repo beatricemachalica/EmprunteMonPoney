@@ -66,9 +66,7 @@ class PostRepository extends ServiceEntityRepository
                 ->andWhere('a.id IN(:activities)')
                 ->setParameter(':activities', $search->activities);
         }
-        // lat
-        // lng
-        // distance
+
         if (!empty($search->lat) && !empty($search->lng) && !empty($search->distance)) {
             $query = $query
                 ->select('p')
