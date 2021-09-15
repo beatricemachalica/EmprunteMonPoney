@@ -1,23 +1,5 @@
-// toggle button = activate post
 window.onload = () => {
-  let activateButtons = document.querySelectorAll("input[type='checkbox']");
-
-  for (let button of activateButtons) {
-    button.addEventListener("click", function () {
-      let xmlhttp = new XMLHttpRequest();
-
-      // xmlhttp.onreadystatechange = () => {
-      //   // vérifier si 200 etc
-      //   }
-
-      xmlhttp.open("get", `/activate/${this.dataset.id}`);
-      xmlhttp.send();
-    });
-  }
-};
-
-// delete a picture
-window.onload = () => {
+  // delete a picture
   // get all links "delete"
   let links = document.querySelectorAll("[data-delete]");
 
@@ -57,5 +39,32 @@ window.onload = () => {
       // end if confirmation
     });
     // end function on click
+  }
+
+  // toggle button = activate post
+  let activateButtons = document.querySelectorAll(".custom-control-input");
+  // console.log(activateButtons);
+
+  for (let button of activateButtons) {
+    button.addEventListener("click", function () {
+      let postId = this.dataset.id;
+      // console.log("click!");
+      fetch("/activate", {
+        method: "UPDATE",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ postId }),
+      })
+        .then(
+          // get JSON response
+          (response) => response.json()
+        )
+        .then((data) => {
+          // console.log(data);
+        })
+        .catch((e) => alert(e));
+    });
   }
 };

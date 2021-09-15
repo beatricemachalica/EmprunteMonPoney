@@ -18,7 +18,8 @@
 				{{ post.equid.breed|capitalize }}
 			</h5>
 		{% else %}
-			<h5 class="card-title">{{ post.user.pseudo|capitalize }}</h5>
+			<h5 class="card-title">
+				{{ post.user.pseudo|capitalize }}</h5>
 
 		{% endif %}
 
@@ -34,6 +35,13 @@
 				€ / mois
 			{% endif %}
 		</h6>
+
+		{# city #}
+		{% if post.city is not null and post.city is defined %}
+			<h6 class="card-subtitle mb-2 text-muted">
+				{{ post.city |capitalize }}
+			</h6>
+		{% endif %}
 
 		{# text #}
 		<p class="card-text">{{ post.text |u.truncate(50,'...') |raw }}</p>

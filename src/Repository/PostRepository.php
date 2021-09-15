@@ -34,7 +34,8 @@ class PostRepository extends ServiceEntityRepository
             ->createQueryBuilder('p')
             ->select('c', 'p', 'a')
             ->join('p.category', 'c')
-            ->leftJoin('p.activities', 'a');
+            ->leftJoin('p.activities', 'a')
+            ->where('p.active = 1');
 
         if (!empty($search->q)) {
             $query = $query
@@ -85,7 +86,7 @@ class PostRepository extends ServiceEntityRepository
         return $this->paginator->paginate(
             $query,
             $search->page,
-            21
+            9
         );
     }
 }

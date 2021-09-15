@@ -8,7 +8,6 @@ use App\Entity\Category;
 
 class SearchData
 {
-
   /**
    * @var int
    */

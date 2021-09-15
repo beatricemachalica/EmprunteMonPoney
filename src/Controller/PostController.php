@@ -46,6 +46,12 @@ class PostController extends AbstractController
 
         $posts = $postRepository->findSearch($data);
 
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'content' => $this->renderView('post/_indexContent.html.twig', ['posts' => $posts])
+            ]);
+        }
+
         return $this->render('post/index.html.twig', [
             'posts' => $posts,
             'form' => $form->createView()
@@ -80,22 +86,36 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/activate/{id}", name="activate_post")
+     * @Route("/activate", name="activate_post")
      * this method allow to activate or not a post
      */
-    public function activatePost(Post $post)
+    public function activatePost(PostRepository $repo)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        // if the post is already activated => false, if it is not activated => true
-        $post->setActive(($post->getActive()) ? false : true);
+        $json = file_get_contents('php://input');
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($post);
-        $entityManager->flush();
+        // on décode la réponse json
+        $data = json_decode($json);
 
-        return new Response("true");
+        if (isset($data)) {
+
+            $postId = $data->postId;
+
+            $post = $repo->findOneBy(array('id' => $postId));
+
+            // if the post is already activated => false, if it is not activated => true
+            $post->setActive(($post->getActive()) ? false : true);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            return $this->json("ok");
+        } else {
+            return $this->json("error");
+        }
     }
 
     /**
