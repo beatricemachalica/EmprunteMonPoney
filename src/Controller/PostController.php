@@ -64,6 +64,7 @@ class PostController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/myPosts", name="my_posts")
      */
     public function myPost(): Response
@@ -124,8 +125,10 @@ class PostController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/newPost", name="add_post")
      * @Route("/editPost/{id}", name="edit_post")
+     * add or new post for "ROLE_EMPRUNT" user
      */
     public function newPost(Request $request, Post $post = null): Response
     {
@@ -135,11 +138,14 @@ class PostController extends AbstractController
         $addNewPostMode = false;
 
         if (!$post) {
-            $post = new Post();
             $addNewPostMode = true;
         }
 
         if ((!$post) || (($addNewPostMode === false) && ($this->getUser()->getId() === $post->getUser()->getId()))) {
+
+            if (!$post) {
+                $post = new Post();
+            }
 
             $form = $this->createForm(PostType::class, $post);
 
@@ -249,7 +255,6 @@ class PostController extends AbstractController
 
         if ($this->getUser()->getId() === $equid->getUser()->getId()) {
 
-
             $post = new Post();
 
             $form = $this->createForm(PostType::class, $post);
@@ -336,6 +341,8 @@ class PostController extends AbstractController
                 'horse' => $equid,
                 'proprioPost' => in_array("ROLE_PROPRIO", $userRolesArray)
             ]);
+        } else {
+            return $this->redirectToRoute('home');
         }
     }
 
@@ -526,6 +533,7 @@ class PostController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        // security
         if ($this->getUser()->getId() === $com->getUser()->getId()) {
 
             // create form
@@ -552,6 +560,8 @@ class PostController extends AbstractController
             return $this->render('comment/editComment.html.twig', [
                 'form' => $form->createView(),
             ]);
+        } else {
+            return $this->redirectToRoute('home');
         }
     }
 
@@ -572,14 +582,17 @@ class PostController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($com);
             $entityManager->flush();
+
+            $this->addFlash('message', 'Votre commentaire a bien été supprimé.');
+            return $this->redirectToRoute('show_post', [
+                'id' => $postId
+            ]);
         } else {
             $this->addFlash('message', 'Vous n\'êtes pas autorisé.e à supprimer ce commentaire.');
+            return $this->redirectToRoute('show_post', [
+                'id' => $postId
+            ]);
         }
-
-        $this->addFlash('message', 'Votre commentaire a bien été supprimé.');
-        return $this->redirectToRoute('show_post', [
-            'id' => $postId
-        ]);
     }
 
     /**
@@ -645,6 +658,8 @@ class PostController extends AbstractController
             // flash message
             $this->addFlash('message', 'Votre annonce a bien été supprimée.');
             return $this->redirectToRoute('my_posts');
+        } else {
+            return $this->redirectToRoute('home');
         }
     }
 }

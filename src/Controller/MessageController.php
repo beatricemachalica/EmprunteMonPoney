@@ -93,14 +93,19 @@ class MessageController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        // set "is read" to this message
-        $message->setIsRead(true);
+        if (($this->getUser()->getId() === $message->getSender()->getId()) || ($this->getUser()->getId() === $message->getRecipient()->getId())) {
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($message);
-        $em->flush();
+            // set "is read" to this message
+            $message->setIsRead(true);
 
-        return $this->render('message/read.html.twig', compact("message"));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($message);
+            $em->flush();
+
+            return $this->render('message/read.html.twig', compact("message"));
+        } else {
+            return $this->redirectToRoute('home');
+        }
     }
 
     /**

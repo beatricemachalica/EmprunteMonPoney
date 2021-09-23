@@ -51,13 +51,12 @@
 					{# <div class="col">{{ form_row(registrationForm.phoneNumber) }}</div> #}
 					{% do registrationForm.phoneNumber.setRendered() %}
 
-				</div>
-				<div class="mt-3">
-					{{ form_row(registrationForm.plainPassword, {
-            label: 'Mot de passe'
-        }) }}
+					<div class="col">
+						{{ form_row(registrationForm.plainPassword, {label: 'Mot de passe'}) }}
 
-					<small class="form-text">Le mot de passe doit contenir huit caractères, dont des lettres majuscules et minuscules, un chiffre et un symbole.</small>
+						<small class="form-text">Le mot de passe doit contenir huit caractères, dont des lettres majuscules et minuscules, un chiffre et un symbole.</small>
+					</div>
+
 				</div>
 
 				{{ form_row(registrationForm.agreeTerms) }}

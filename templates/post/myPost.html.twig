@@ -47,9 +47,9 @@
 					<section class="shadow p-3 mb-4 mt-4 bg-white rounded">
 
 						{% if post.category == "profil d'un cheval" and post.equid is not null %}
-							<h3 class="text-center">{{ post.equid.name |capitalize }}</h3>
+							<h3 class="text-center">{{ post.equid.name|capitalize }}</h3>
 						{% else %}
-							<h3 class="text-center">{{ app.user.pseudo |capitalize }}</h3>
+							<h3 class="text-center">{{ app.user.pseudo|capitalize }}</h3>
 						{% endif %}
 
 						<div class="d-lg-flex flex-row justify-content-between">

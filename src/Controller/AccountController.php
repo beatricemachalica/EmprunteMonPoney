@@ -104,46 +104,52 @@ class AccountController extends AbstractController
      * @Route("/newEquid", name="add_equid")
      * @Route("/editEquid/{id}", name="edit_equid")
      */
-    public function newEquid(ActivityRepository $activityRepository, Request $request, Equid $equid = null): Response
+    public function newEquid(Request $request, Equid $equid = null): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // deny the access if the user is not completely authenticated
 
-        if (!$equid) {
-            $equid = new Equid();
-        }
+        if ((!$equid) || (($this->getUser()->getId() === $equid->getUser()->getId()))) {
 
-        $form = $this->createForm(EquidType::class, $equid);
 
-        $form->handleRequest($request);
-        // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
-        // based on the HTTP method configured on the form (POST is default).
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // flash message
-            $idEquid = $equid->getId();
-            if ($idEquid == null) {
-                $this->addFlash('message', 'Votre cheval a bien été enregistré.');
-            } else {
-                $this->addFlash('message', 'Les informations de votre cheval ont bien été modifiées.');
+            if (!$equid) {
+                $equid = new Equid();
             }
 
-            // set the authenticated user (the owner)
-            $equid->setUser($this->getUser());
+            $form = $this->createForm(EquidType::class, $equid);
 
-            $equid = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($equid);
-            $entityManager->flush();
+            $form->handleRequest($request);
+            // handleRequest() = read data off of the correct PHP superglobals (i.e. $_POST or $_GET) 
+            // based on the HTTP method configured on the form (POST is default).
 
-            return $this->redirectToRoute('user_account');
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                // flash message
+                $idEquid = $equid->getId();
+                if ($idEquid == null) {
+                    $this->addFlash('message', 'Votre cheval a bien été enregistré.');
+                } else {
+                    $this->addFlash('message', 'Les informations de votre cheval ont bien été modifiées.');
+                }
+
+                // set the authenticated user (the owner)
+                $equid->setUser($this->getUser());
+
+                $equid = $form->getData();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($equid);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('user_account');
+            }
+
+            return $this->render('account/equid/newEquid.html.twig', [
+                'form' => $form->createView(),
+                'editMode' => $equid->getId() !== null
+            ]);
+        } else {
+            return $this->redirectToRoute('home');
         }
-
-        return $this->render('account/equid/newEquid.html.twig', [
-            'form' => $form->createView(),
-            'editMode' => $equid->getId() !== null
-        ]);
     }
 
     /**
@@ -162,6 +168,8 @@ class AccountController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('user_account');
+        } else {
+            return $this->redirectToRoute('home');
         }
     }
 }

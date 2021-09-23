@@ -1,5 +1,5 @@
-import Filter from "./modules/Filter.js";
-new Filter(document.querySelector(".js-posts"));
+// import Filter from "./modules/Filter.js";
+// new Filter(document.querySelector(".js-posts"));
 
 // Menu burger :
 document.querySelector(".burger").addEventListener("click", function () {

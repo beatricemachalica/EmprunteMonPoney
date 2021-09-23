@@ -51,7 +51,7 @@
     font-size: 2.2rem;
     padding: 0;
     margin-bottom: 0;
-    margin: 10px 0 20px 0;
+    margin: 25px 0 20px 0;
   }
   .indicationsSection h2 {
     padding: 0;
@@ -94,9 +94,6 @@
   .newPostsContainer {
     flex-wrap: wrap;
     justify-content: center;
-  }
-  .articleNewPosts {
-    margin-bottom: 25px;
   }
   .sliderSection {
     width: 100%;
@@ -143,7 +140,7 @@
   }
 }
 /* iPad and iPad Pro */
-@media screen and (min-device-width: 768px) and (max-width: 1025px) {
+@media screen and (min-device-width: 766px) and (max-width: 1025px) {
   .gotop {
     display: none;
   }
