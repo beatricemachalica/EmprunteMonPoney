@@ -1,11 +1,11 @@
-# EmprunteMonPoney
+# EmprunteMonPoney - a Symfony project
 
 ## Languages and tools
 
 Several technologies, tools and languages were used in this project :
 * HTML 5, CSS 3, Bootstrap 4, JavaScript (ES6)
 * PHP 7, SQL.
-* phpMyAdmin, laragon
+* phpMyAdmin, Laragon
 * API Google geocoding
 * However, I mostly made this website thanks to **Symfony 5** & twig, composer, doctrine. 
 
